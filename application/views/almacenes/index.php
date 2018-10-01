@@ -232,7 +232,7 @@
                     index:'Localizacion',
                     // width: "3px",
                     sorttype: 'text',
-                    formatter: 'number',
+                    // formatter: 'number',
                     align: 'center'
                 },{
                     label: 'Estado',

@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:85/Ventos_Stock_APP/stock/';
+$config['base_url'] = 'http://localhost:80/stock/';
 
 /*
 |--------------------------------------------------------------------------

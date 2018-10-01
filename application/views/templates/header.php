@@ -77,6 +77,8 @@
     <script src="<?php echo base_url('assets/bower_components/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
     <!-- datepicker -->
     <script src="<?php echo base_url('assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') ?>"></script>
+
     <!-- Bootstrap WYSIHTML5 -->
     <script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') ?>"></script>
     <!-- Slimscroll -->
@@ -112,7 +114,7 @@
     <link type="text/css" rel="stylesheet" href="<?php echo base_url('assets/plugins/jqGrid/css/theme-jqgrid.css') ?>"/>
 <!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jqGrid/css/ui-lightness/jquery-ui-1.7.1.custom.css') ?><!--"/>-->
 <!--    <script src="--><?php //echo base_url('assets/plugins/jqGrid/js/jquery-1.4.2.min.js') ?><!--"> type="text/javascript"></script>-->
-    <script src="<?php echo base_url('assets/plugins/jqGrid/js/i18n/grid.locale-en.js') ?>"></script>
+    <script src="<?php echo base_url('assets/plugins/jqGrid/js/i18n/grid.locale-es.js') ?>"></script>
     <script src="<?php echo base_url('assets/plugins/jqGrid/js/jquery.jqGrid.js') ?>"></script>
 
     <!--Dropzone-->

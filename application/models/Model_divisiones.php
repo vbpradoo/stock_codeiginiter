@@ -40,14 +40,15 @@ class Model_divisiones extends CI_Model
         return $query->result_array();
     }
 
-    public function getDivisionDataByLote($id = null)
-    {
+    public function getDivisionDataByLote($id = null){
         if ($id) {
             $sql = "SELECT * FROM division where Lote = ?";
             $query = $this->db->query($sql,array($id));
             return $query->result_array();
         }
     }
+
+
 
 //    public function getDivisionByArray($id = null)
 //    {

@@ -24,14 +24,14 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
               <div class="inner">
-                <h3><?php echo $total_products ?></h3>
+                <h3><?php echo $total_lotes ?></h3>
 
-                <p>Productos</p>
+                <p>Lotes</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="<?php echo base_url('products/') ?>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url('lotes/') ?>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -69,14 +69,14 @@
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
-                <h3><?php echo $total_stores ?></h3>
+                <h3><?php echo $total_almacenes ?></h3>
 
-                <p>Alamacenes</p>
+                <p>Almacenes</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-home"></i>
               </div>
-              <a href="<?php echo base_url('stores/') ?>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url('almacenes/') ?>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

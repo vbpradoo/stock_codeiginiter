@@ -18,7 +18,13 @@ class Lotes extends Admin_Controller
         $this->load->model('model_divisiones');
         $this->load->model('model_almacenes');
 
-        $this->data['lotes'] = $this->model_lotes->getLoteData();;
+        $this->load->model('model_proovedores');
+
+        $this->load->library('form_validation');
+
+
+
+//        $this->data['lotes'] = $this->model_lotes->getLoteData();
 
     }
 
@@ -32,9 +38,25 @@ class Lotes extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $this->render_template('entradas/create', $this->data);
+//        $this->render_template('lotes/edit', $this->data);
+        $this->render_template('lotes/index', $this->data);
     }
+    public function edit()
+    {
+        // echo "PUTO";
+        if (!in_array('viewProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
 
+
+        $this->data['articulos'] = $this->model_articulos->getArticuloData();
+        $this->data['almacenes'] = $this->model_almacenes->getAlmacenesData();
+        $this->data['entradas'] = $this->model_entradas->getEntradasData();
+        $this->data['proovedores'] = $this->model_proovedores->getProovedorData();
+
+        $this->render_template('lotes/edit', $this->data);
+
+    }
     /*
     * It Fetches the products data from the product tabled
     * this function is called from the datatable ajax function
@@ -49,14 +71,17 @@ class Lotes extends Admin_Controller
         foreach ($data as $key => $value) {
 
             $store_data = $this->model_almacenes->getAlmacenesData($value['Almacen']);
+            $articulo_data = $this->model_articulos->getArticuloData($value['Articulo']);
+//            echo $articulo_data['Nombre'];
+//            echo $store_data['Nombre'];
             // button
             $buttons = '';
-            if (in_array('updateProduct', $this->permission)) {
-                $buttons .= '<a href="' . base_url('entradas/update/' . $value['ID']) . '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
-            }
 
             if (in_array('deleteProduct', $this->permission)) {
-                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value['ID'] . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value['ID'] . ',' . $value['Entrada'] . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+            if (in_array('deleteProduct', $this->permission)) {
+                $buttons .= ' <a type="button" class="btn btn-default" href= "edit?lote_serial='. $value['Serial'] .'&lote_id='. $value['ID'] .' "><i class="fa fa-pencil"></i></a>';
             }
 
 
@@ -72,18 +97,55 @@ class Lotes extends Admin_Controller
             }
 
 
-            $result['data'][$key] = array(
-                $value['ID'],
-                $value['Serial'],
-                $value['Descripcion'],
-                $value['Stock'] . ' ' . $qty_status,
-                $store_data['Nombre'],
+            $result['rows'][$key] = array(
+                'ID'=>$value['ID'],
+                'Articulo'=>$articulo_data['Nombre'],
+                'Serial'=>$value['Serial'],
+                'Entrada'=>$value['Entrada'],
+                'Coste'=>$value['Coste'],
+                'Precio'=>$value['Precio'],
+                'Cantidad'=>$value['Cantidad'],
+//                'Unidades'=>$value['Unidades'],
+                'Division'=>$value['Division'],
+                'Stock'=>$value['Stock'] . ' ' . $qty_status,
+                'Descripcion'=>$value['Descripcion'],
+                'Almacen'=>$store_data['Nombre'],
 //                $availability,
-                $buttons
+                'Buttons'=>$buttons
             );
         } // /foreach
 
         echo json_encode($result);
+    }
+
+    public function fetchLoteSerial(){
+
+        $result = array();
+
+        $data = $this->model_lotes->getLoteData();
+
+        foreach ($data as $key => $value) {
+            $result['rows'][$key] = array('Serial'=>$value['Serial']);
+
+        }
+
+        echo json_encode($result);
+
+    }
+
+    public function fetchLoteSerialByArticulo(){
+
+        $result = array();
+
+        $data = $this->model_lotes->getLoteDataByArticulo($_GET['articulo_id']);
+
+        foreach ($data as $key => $value) {
+            $result['rows'][$key] = array('Serial'=>$value['Serial']);
+
+        }
+
+        echo json_encode($result);
+
     }
 
     public function getLoteByName()
@@ -167,9 +229,9 @@ class Lotes extends Admin_Controller
             $result['rows'][$key] = array(
                 'ID' => $value['ID'],
                 'Piezas' => $value['Piezas'] . ' ' . $qty_status,
-                'Ancho' => $value['Ancho'],
-                'Alto' => $value['Alto'],
                 'Largo' => $value['Largo'],
+                'Alto' => $value['Alto'],
+                'Espesor' => $value['Espesor'],
                 'Buttons' => $buttons
             );
         } // /foreach11
@@ -180,6 +242,7 @@ class Lotes extends Admin_Controller
 
         $result = array('data' => array());
 
+//        echo $_GET['id'];
         $data = $this->model_divisiones->getDivisionDataByLote($_GET['id']);
 
         foreach ($data as $key => $value) {
@@ -207,9 +270,9 @@ class Lotes extends Admin_Controller
             $result['rows'][$key] = array(
                 'ID' => $value['ID'],
                 'Piezas' => $value['Piezas'] . ' ' . $qty_status,
-                'Ancho' => $value['Ancho'],
-                'Alto' => $value['Alto'],
                 'Largo' => $value['Largo'],
+                'Alto' => $value['Alto'],
+                'Espesor' => $value['Espesor'],
                 'Buttons' => $buttons
             );
         } // /foreach11
@@ -226,6 +289,73 @@ class Lotes extends Admin_Controller
         }
     }
 
+    /************VALIDATORS***************************/
+    public function decimal_numeric($str)
+    {
+//        echo "AKI";
+        if (!is_numeric($str)) //Use your logic to check here
+        {
+            $this->form_validation->set_message('decimal_numeric', 'El campo %s no se corresponde con el formato');
+            return FALSE;
+        }
+        else
+        {
+            try{
+
+
+                $results=explode(".",$str,2);
+                //SI es mayor de tres decimales
+                if(count($results)==2){
+                    //Compruebo si es solo 0
+                    if(intval($results[0])==0 && intval($results[1]==0)){
+
+                        $this->form_validation->set_message('decimal_numeric', 'El campo %s no puede ser 0');
+                        return FALSE;
+                    }
+                    if(strlen($results[1])>3) {
+                        $this->form_validation->set_message('decimal_numeric', 'El campo %s no puede exceder de 3 decimales');
+
+                        return FALSE;
+                    }
+                }else if(intval($results[0])==0){
+                    $this->form_validation->set_message('decimal_numeric', 'El campo %s no puede ser 0');
+                    return FALSE;
+                }
+                return TRUE;
+            }catch (Exception $e){
+                return FALSE;
+            }
+        }
+    }
+
+    public function entire_numeric($str)
+    {
+//        echo "AKI";
+        if (!is_numeric($str)) //Use your logic to check here
+        {
+            $this->form_validation->set_message('entire_numeric', 'El campo %s no se corresponde con el formato');
+            return FALSE;
+        }
+        else {
+
+            $results=explode(".",$str,2);
+//            echo $results[0];
+            if(intval($results[0])==0) {
+                $this->form_validation->set_message('entire_numeric', 'El campo %s no puede ser 0');
+                return FALSE;
+            }else if(!(count($results)>=2)) {
+//                echo "ENTRA";
+                return TRUE;
+            }else{
+                $this->form_validation->set_message('entire_numeric', 'El campo %s debe ser un número entero');
+                return FALSE;
+            }
+        }
+
+    }
+
+
+
     public function createDivision($Lote)
     {
 
@@ -234,10 +364,14 @@ class Lotes extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $this->form_validation->set_rules('create_piezas', 'Piezas', 'trim|required');
-        $this->form_validation->set_rules('create_ancho', 'Ancho', 'trim|required');
-        $this->form_validation->set_rules('create_alto', 'Alto', 'trim|required');
-        $this->form_validation->set_rules('create_largo', 'Largo', 'trim|required');
+        if(!$Lote)
+//            $Lote=$_GET[''];
+
+        $this->form_validation->set_rules('create_piezas', 'Piezas', 'trim|required|callback_entire_numeric');
+        $this->form_validation->set_rules('create_largo', 'Largo', 'trim|required|callback_decimal_numeric');
+        $this->form_validation->set_rules('create_alto', 'Alto/Ancho', 'trim|required|callback_decimal_numeric');
+        $this->form_validation->set_rules('create_espesor', 'Espesor', 'trim|required|callback_decimal_numeric');
+
 //        $this->form_validation->set_rules('create_lote', 'Largo', 'trim|required');
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
@@ -248,9 +382,10 @@ class Lotes extends Admin_Controller
         if ($this->form_validation->run() == TRUE) {
             $data = array(
                 'Piezas' => $this->input->post('create_piezas'),
-                'Ancho' => $this->input->post('create_ancho'),
-                'Alto' => $this->input->post('create_alto'),
                 'Largo' => $this->input->post('create_largo'),
+                'Alto' => $this->input->post('create_alto'),
+                'Espesor' => $this->input->post('create_espesor'),
+                'Piezas_Stock' => $this->input->post('create_piezas'),
                 'Lote'  => $Lote,
             );
 
@@ -259,9 +394,9 @@ class Lotes extends Admin_Controller
 
             if ($create == true) {
                 $response['success'] = true;
-                $response['messages'] = 'Entrada creada';
+                $response['messages'] = 'División creada';
 
-//                $response['division'] = $result;
+                $response['division'] = $create;
 
             } else {
                 $response['success'] = false;
@@ -277,7 +412,6 @@ class Lotes extends Admin_Controller
         echo json_encode($response);
     }
 
-
     public function editDivisionDataById($id)
     {
         if (!in_array('updateProduct', $this->permission)) {
@@ -288,10 +422,13 @@ class Lotes extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $this->form_validation->set_rules('edit_piezas', 'Piezas', 'trim|required');
-        $this->form_validation->set_rules('edit_alto', 'Alto', 'trim|required');
-        $this->form_validation->set_rules('edit_ancho', 'Ancho', 'trim|required');
-        $this->form_validation->set_rules('edit_largo', 'Largo', 'trim|required');
+        $this->form_validation->set_rules('edit_piezas', 'Piezas', 'trim|required|callback_entire_numeric');
+        $this->form_validation->set_rules('edit_largo', 'Largo', 'trim|required|callback_decimal_numeric');
+        $this->form_validation->set_rules('edit_alto', 'Alto/Ancho', 'trim|required|callback_decimal_numeric');
+        $this->form_validation->set_rules('edit_espesor', 'Espesor', 'trim|required|callback_decimal_numeric');
+
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
 
 
         if ($this->form_validation->run() == TRUE) {
@@ -300,9 +437,10 @@ class Lotes extends Admin_Controller
             $data = array(
 
                 'Piezas' => $this->input->post('edit_piezas'),
-                'Ancho' => $this->input->post('edit_ancho'),
-                'Alto' => $this->input->post('edit_alto'),
                 'Largo' => $this->input->post('edit_largo'),
+                'Alto' => $this->input->post('edit_alto'),
+                'Espesor' => $this->input->post('edit_espesor'),
+                'Piezas_Stock' => $this->input->post('edit_piezas'),
 
             );
 
@@ -364,118 +502,33 @@ class Lotes extends Admin_Controller
         $Serial=$_GET['serial'];
         $response = array();
 
-//        $this->form_validation->set_rules('lote_serial', 'Lote Serial', 'trim|required');
-//        $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
-//        $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
-//        $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim|required');
-//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
-//        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
-//        $this->form_validation->set_rules('division', 'Division', 'trim|required');
-//        $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
-//        $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
-//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
-//        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
-
-
-
-
-            $data = array(
-                'Serial' => $Serial,
-//                'Articulo' => $this->input->post('articulo'),
-//                'Entrada' => $this->input->post('entrada'),
-//                'Coste' => $this->input->post('coste'),
-//                'Cantidad' => $this->input->post('cantidad'),
-//                'Unidades' => $this->input->post('unidades'),
-//                'Stock' => $this->input->post('stock'),
-//                'Division' => $this->input->post('division'),
-//                'Descripcion' => $this->input->post('descripcion'),
-//                'Almacen' => $this->input->post('store')
-            );
-
-            $create = $this->model_lotes->create($data);
-            if($create == true) {
-                $response['success'] = true;
-                $response['messages'] = 'Lote creado';
-            }
-            else {
-                $response['success'] = false;
-                $response['messages'] = 'Error!';
-            }
-//        }else {
-//            $response['success'] = false;
-//            foreach ($_POST as $key => $value) {
-//                $response['messages'][$key] = form_error($key);
-//            }
-//        }
-
-        echo json_encode($response);
-
-    }
-
-    /*
-    * This function is invoked from another function to upload the image into the assets folder
-    * and returns the image path
-    */
-//    public function upload_image()
-//    {
-//        // assets/images/product_image
-//        $config['upload_path'] = 'assets/images/product_image';
-//        $config['file_name'] =  uniqid();
-//        $config['allowed_types'] = 'gif|jpg|png';
-//        $config['max_size'] = '1000';
-//
-//        // $config['max_width']  = '1024';s
-//        // $config['max_height']  = '768';
-//
-//        $this->load->library('upload', $config);
-//        if ( ! $this->upload->do_upload('product_image'))
-//        {
-//            $error = $this->upload->display_errors();
-//            return $error;
-//        }
-//        else
-//        {
-//            $data = array('upload_data' => $this->upload->data());
-//            $type = explode('.', $_FILES['product_image']['name']);
-//            $type = $type[count($type) - 1];
-//
-//            $path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
-//            return ($data == true) ? $path : false;
-//        }
-//    }
-
-    /*
-    * If the validation is not valid, then it redirects to the edit product page
-    * If the validation is successfully then it updates the data into the database
-    * and it stores the operation message into the session flashdata and display on the manage product page
-    */
-    public function update($entrada_id)
-    {
-        if (!in_array('updateProduct', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
-        if (!$entrada_id) {
-            redirect('dashboard', 'refresh');
-        }
-
         $this->form_validation->set_rules('lote_serial', 'Lote Serial', 'trim|required');
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim|required');
         $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
         $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
-        $this->form_validation->set_rules('division', 'Division', 'trim|required');
+//        $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
         $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
-        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
+//        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
 
-        if ($this->form_validation->run() == TRUE) {
-            // true case
+        if($this->form_validation->run() == True) {
+
+//            $divisiones = $this->model_divisiones->getDivisionDataByLote($lote_id);
+//            echo json_encode($divisiones);
+//            $list = array();
+
+//            foreach ($divisiones as $k => $value) {
+//                array_push($list, intval($value['ID']));
+//            }
+//            $lista = array(
+//                'id' => $list
+//            );
 
             $data = array(
-                'Serial' => $this->input->post('lote_serial'),
+                'Serial' => $Serial,
                 'Articulo' => $this->input->post('articulo'),
                 'Entrada' => $this->input->post('entrada'),
                 'Coste' => $this->input->post('coste'),
@@ -487,47 +540,249 @@ class Lotes extends Admin_Controller
                 'Almacen' => $this->input->post('store')
             );
 
-
-//            if($_FILES['product_image']['size'] > 0) {
-//                $upload_image = $this->upload_image();
-//                $upload_image = array('image' => $upload_image);
-//
-//                $this->model_products->update($upload_image, $entrada_id);
-//            }
-
-            $update = $this->model_entradas->update($data, $entrada_id);
-            if ($update == true) {
-                $this->session->set_flashdata('success', 'Se ha creado correctamente!');
-                redirect('entradas/', 'refresh');
+            $create = $this->model_lotes->create($data);
+            if ($create == true) {
+                $response['success'] = true;
+                $response['messages'] = 'Lote creado';
             } else {
-                $this->session->set_flashdata('errors', 'Ha ocurrido un error!!');
-                redirect('entradas/update', 'refresh');
+                $response['success'] = false;
+                $response['messages'] = 'Error!';
             }
-        } else {
-            // attributes
-//            $attribute_data = $this->model_attributes->getActiveAttributeData();
-//
-//            $attributes_final_data = array();
-//            foreach ($attribute_data as $k => $v) {
-//                $attributes_final_data[$k]['attribute_data'] = $v;
-//
-//                $value = $this->model_attributes->getAttributeValueData($v['id']);
-//
-//                $attributes_final_data[$k]['attribute_value'] = $value;
-//            }
-//
-//            // false case
-//            $this->data['attributes'] = $attributes_final_data;
-//            $this->data['brands'] = $this->model_brands->getActiveBrands();
-//            $this->data['category'] = $this->model_category->getActiveCategroy();
-//            $this->data['stores'] = $this->model_stores->getActiveStore();
-//
-//            $product_data = $this->model_products->getProductData($entrada_id);
-//            $this->data['product_data'] = $product_data;
-//            $this->render_template('products/edit', $this->data);
+        }else {
+            $response['success'] = false;
+            foreach ($_POST as $key => $value) {
+                $response['messages'][$key] = form_error($key);
+            }
         }
+        echo json_encode($response);
+
     }
 
+/*
+    * If the validation is not valid, then it redirects to the edit product page
+    * If the validation is successfully then it updates the data into the database
+    * and it stores the operation message into the session flashdata and display on the manage product page
+    */
+    public function update()
+    {
+        $lote_id=$_GET['lote_id'];
+
+        if (!in_array('updateProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        if (!$lote_id) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $response = array();
+
+
+//        $this->form_validation->set_rules('lote_serial', 'Lote Serial', 'trim|required');
+        $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
+        $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
+        $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
+        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
+//        $this->form_validation->set_rules('division', 'Division', 'trim|required');
+        $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
+        $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
+//        $this->form_validation->set_rules('salida', 'Almacen', 'trim');
+        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
+        $this->form_validation->set_rules('fecha', 'Fecha', 'trim|required');
+        $this->form_validation->set_rules('proovedor', 'Proovedor', 'trim|required');
+
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+//        die(var_dump($_POST));
+//        foreach ($_POST as $key => $value) {
+//            echo "<tr>";
+//            echo "<td>";
+//            echo $key;
+//            echo "</td>";
+//            echo "<td>";
+//            echo $value;
+//            echo "</td>";
+//            echo "</tr>";
+//        }
+//        die();
+        if ($this->form_validation->run() == TRUE) {
+            // true case
+//            echo "ENTRA";
+            $entrada_data=array('Fecha'=>$this->input->post('fecha'),'Proovedor' => $this->input->post('proovedor'),'ID'=>$this->input->post('entrada'));
+
+            $this->updateFromLote($entrada_data);
+
+
+            $divisiones=$this->model_divisiones->getDivisionDataByLote($lote_id);
+
+            $list= array();
+            foreach ($divisiones as $k => $value) {
+                array_push($list,intval($value['ID']));
+            }
+            $lista=array(
+                'id'=>$list
+            );
+
+
+            $data = array(
+//                'Serial' => $this->input->post('lote_serial'),
+                'Articulo' => intval($this->input->post('articulo')),
+                'Entrada' => intval($this->input->post('entrada')),
+                'Coste' => $this->input->post('coste'),
+                'Cantidad' => $this->input->post('cantidad'),
+                'Precio' => $this->input->post('precio'),
+//                'Unidades' => $this->input->post('unidades'),
+//                'Stock' => $this->input->post('stock'),
+                'Division' => json_encode($lista),
+                'Descripcion' => $this->input->post('descripcion'),
+                'Almacen' => intval($this->input->post('almacen'))
+            );
+
+//            echo json_encode($data);
+//            die();
+
+            $update = $this->model_lotes->update($data, $lote_id);
+            if ($update == true) {
+//                    echo "ENTRA";
+                $response['success'] = true;
+                $response['messages'] = 'Lote actualizado';
+            } else {
+                $response['success'] = false;
+                $response['messages'] = 'Error al actualizar';
+            }
+
+        }else {
+            $response['success'] = false;
+            foreach ($_POST as $key => $value) {
+                $response['messages'][$key] = form_error($key);
+            }
+        }
+
+        echo json_encode($response);
+
+    }
+
+    public function updateFromEntrada()
+    {
+        $lote_id=$_GET['lote_id'];
+
+        if (!in_array('updateProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        if (!$lote_id) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $response = array();
+
+
+        $this->form_validation->set_rules('lote_serial', 'Lote Serial', 'trim|required');
+        $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
+        $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
+        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
+//        $this->form_validation->set_rules('division', 'Division', 'trim|required');
+        $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
+        $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
+//        $this->form_validation->set_rules('salida', 'Almacen', 'trim');
+        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
+        $this->form_validation->set_rules('fecha', 'Fecha', 'trim|required');
+        $this->form_validation->set_rules('proovedor', 'Proovedor', 'trim|required');
+        $this->form_validation->set_rules('pagado', 'Estado', 'trim|required');
+
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+
+
+        if ($this->form_validation->run() == TRUE) {
+            // true case
+//            $entrada_data=array('Fecha'=>$this->input->post('fecha'),'Proovedor' => $this->input->post('proovedor'));
+            $entrada_data=array('Proovedor' => $this->input->post('proovedor'),'Pagado'=>$this->input->post('pagado'));
+
+            $create_entrada = $this->model_entradas->create($entrada_data);
+
+            $divisiones=$this->model_divisiones->getDivisionDataByLote($lote_id);
+
+            $list= array();
+            foreach ($divisiones as $k => $value) {
+                array_push($list,intval($value['ID']));
+            }
+            $lista=array(
+                'id'=>$list
+            );
+
+
+            $data = array(
+                'Serial' => $this->input->post('lote_serial'),
+                'Articulo' => intval($this->input->post('articulo')),
+                'Entrada' => intval($create_entrada),
+                'Coste' => $this->input->post('coste'),
+                'Cantidad' => $this->input->post('cantidad'),
+                'Precio' => $this->input->post('precio'),
+//                'Unidades' => $this->input->post('unidades'),
+                'Stock' => $this->input->post('cantidad'),
+                'Division' => json_encode($lista),
+                'Descripcion' => $this->input->post('descripcion'),
+                'Almacen' => intval($this->input->post('almacen'))
+            );
+
+//            echo json_encode($data);
+//            die();
+
+            $update = $this->model_lotes->update($data, $lote_id);
+            if ($update == true) {
+//                    echo "ENTRA";
+                $response['success'] = true;
+                $response['messages'] = 'Lote creado';
+            } else {
+                $response['success'] = false;
+                $response['messages'] = 'Error al actualizar';
+            }
+
+        }else {
+            $response['success'] = false;
+            foreach ($_POST as $key => $value) {
+                $response['messages'][$key] = form_error($key);
+            }
+        }
+
+        echo json_encode($response);
+
+    }
+
+
+    public function updateFromLote($entrada_data)
+    {
+        if (!in_array('updateProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $response = array();
+
+            // true case
+//                echo "ENTRA2";
+
+                $data = array(
+                    'Proovedor' => $entrada_data['Proovedor'],
+                    'Fecha' => $entrada_data['Fecha'],
+                );
+
+                $update = $this->model_entradas->update($data, $entrada_data['ID']);
+
+                if ($update == true) {
+//                    echo "ENTRA";
+                    $response['success'] = true;
+                    $response['messages'] = 'Entrada actualizada';
+                } else {
+                    $response['success'] = false;
+                    $response['messages'] = 'Error al actualizar';
+                }
+//        echo json_encode($response);
+    }
     /*
     * It removes the data from the database
     * and it returns the response into the json format
@@ -538,11 +793,86 @@ class Lotes extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
+        $lote_id = $this->input->post('lote_id');
         $entrada_id = $this->input->post('entrada_id');
+        $divisiones = $this->model_divisiones->getDivisionDataByLote($lote_id);
 
         $response = array();
-        if ($entrada_id) {
-            $delete = $this->model_entradas->remove($entrada_id);
+
+        if ($lote_id) {
+
+            $deleteEntrada = $this->model_entradas->remove($entrada_id);
+            $deleteLote = $this->model_lotes->remove($lote_id);
+
+            foreach($divisiones as $key=>$value){
+                $delete_array = $this->model_divisiones->remove($value['ID']);
+                if($delete_array==false)
+                    $response['messages'] .= 'No se pudo eliminar la division con ID:'. $value['ID'];
+
+            }
+
+            if (($deleteEntrada && $deleteLote) == true) {
+                $response['success'] = true;
+                $response['messages'] = "Eliminado correctamente!!";
+            } else {
+                $response['success'] = false;
+                $response['messages'] = "Error in the database while removing the product information";
+            }
+        } else {
+            $response['success'] = false;
+            $response['messages'] = "Refresh the page again!!";
+        }
+
+        echo json_encode($response);
+    }
+    public function createSerial()
+    {
+        if (!in_array('createProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $Serial=$_GET['serial'];
+        $response = array();
+
+
+
+        $data = array(
+            'Serial' => $Serial,
+        );
+
+        $create = $this->model_lotes->createSerial($data);
+        if($create == true) {
+            $response['success'] = true;
+            $response['messages'] = 'Lote creado';
+            $response['loteID']=$create;
+        }
+        else {
+            $response['success'] = false;
+            $response['messages'] = 'Error!';
+        }
+//        }else {
+//            $response['success'] = false;
+//            foreach ($_POST as $key => $value) {
+//                $response['messages'][$key] = form_error($key);
+//            }
+//        }
+
+        echo json_encode($response);
+
+    }
+
+
+    public function removeBySerial()
+    {
+        if (!in_array('deleteProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $Serial=$_GET['serial'];
+
+        $response = array();
+        if ($Serial) {
+            $delete = $this->model_lotes->removeBySerial($Serial);
             if ($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Eliminado correctamente!!";
@@ -558,4 +888,87 @@ class Lotes extends Admin_Controller
         echo json_encode($response);
     }
 
+    public function removeFromEntrada()
+    {
+        if (!in_array('deleteProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $id=$_GET['id'];
+
+        $response = array();
+        if ($id) {
+            $delete = $this->model_lotes->remove($id);
+            if ($delete == true) {
+                $response['success'] = true;
+                $response['messages'] = "Eliminado correctamente!!";
+            } else {
+                $response['success'] = false;
+                $response['messages'] = "Error in the database while removing the product information";
+            }
+        } else {
+            $response['success'] = false;
+            $response['messages'] = "Refresh the page again!!";
+        }
+
+        echo json_encode($response);
+    }
+
+        ////PRUEBA CON PAGINADO Y FILTRADO
+        public function fetchLotesDataFilteringPagination()
+        {
+            $result = array('data' => array());
+
+
+            $search_field = $this->input->get('searchField'); // search field name
+            $search_strings = $this->input->get('searchString'); // search string
+            $page = $this->input->get('page'); //page number
+            $limit = $this->input->get('rows'); // number of rows fetch per page
+            $sidx = $this->input->get('sidx'); // field name which you want to sort
+            $sord = $this->input->get('sord'); // field data which you want to soft
+            if(!$sidx) { $sidx = 1; } // if its empty set to 1
+            $count = $this->model_lotes->countTotal($search_field, $search_strings);
+            $total_pages = 0;
+            if($count > 0) { $total_pages = ceil($count/$limit); }
+            if($page > $total_pages) { $page = $total_pages; }
+            $start = ($limit * $page) - $limit;
+
+            if($this->input->get('_search') && $this->input->get('filters')) {
+
+                $search_strings = json_decode($this->input->get('filters')) ;
+            }
+
+            $lotedata=($this->model_lotes->getLoteDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings));
+
+    //        echo $lotedata;
+    //        die();
+            foreach ($lotedata as $key => $value) {
+                $buttons = '';
+    //            echo $x['ID'];
+                if (in_array('deleteProduct', $this->permission)) {
+                    $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ',' . $value->Ent_ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+                }
+                if (in_array('updateProduct', $this->permission)) {
+                    $buttons .= ' <a type="button" class="btn btn-default" href= "edit?lote_serial='. $value->Serial .'&lote_id='. $value->ID .' "><i class="fa fa-pencil"></i></a>';
+                }
+
+                $value->Buttons=$buttons;
+    //            echo  $value->Buttons;
+            }
+
+
+
+            $data = array('page'=>$page,
+                'total'=>$total_pages,
+                'records'=>$count,
+                'rows'=>$lotedata,
+            );
+
+
+            echo json_encode($data);
+        }
+
+
 }
+
+

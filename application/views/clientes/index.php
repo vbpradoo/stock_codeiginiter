@@ -4,11 +4,11 @@
     <section class="content-header">
         <h1>
             Control
-            <small>Proovedores</small>
+            <small>Clientes</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Principal</a></li>
-            <li class="active">Proovedores</li>
+            <li class="active">Clientes</li>
         </ol>
     </section>
 
@@ -35,14 +35,14 @@
                 <?php endif; ?>
 
                 <?php if (in_array('createProduct', $user_permission)): ?>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Añadir Proovedor
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Añadir Cliente
                     </button>
                     <br/> <br/>
                 <?php endif; ?>
 
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Control de Proovedores</h3>
+                        <h3 class="box-title">Control de Clientes</h3>
                     </div>
                     <!-- /.box-header -->
                     <table id="jqGrid" class="box-body"></table>
@@ -69,19 +69,19 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Añadir Proovedor</h4>
+                    <h4 class="modal-title">Añadir Cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/create') ?>" method="POST" id="createForm"
+                <form role="form" action="<?php echo base_url('clientes/create') ?>" method="POST" id="createForm"
                       enctype="multipart/form-data">
 
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="proovedor_image">Imagen</label>
+                            <label for="cliente_image">Imagen</label>
                             <div class="kv-avatar">
                                 <div class="file-loading">
-                                    <input id="proovedor_image" name="proovedor_image" type="file">
+                                    <input id="cliente_image" name="cliente_image" type="file">
                                 </div>
                             </div>
                             <!--                                <div id="proovedor_image" class="dropzone">-->
@@ -92,35 +92,35 @@
                             <!--                                </div>-->
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_nombre">Nombre Proovedor</label>
-                            <input type="text" class="form-control" id="proovedor_nombre" name="proovedor_nombre"
-                                   placeholder="Introduzca nombre de proovedor" autocomplete="off">
+                            <label for="cliente_nombre">Nombre Cliente</label>
+                            <input type="text" class="form-control" id="cliente_nombre" name="cliente_nombre"
+                                   placeholder="Introduzca nombre de cliente" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_empresa">Empresa</label>
-                            <input type="text" class="form-control" id="proovedor_empresa" name="proovedor_empresa"
+                            <label for="cliente_empresa">Empresa</label>
+                            <input type="text" class="form-control" id="cliente_empresa" name="cliente_empresa"
                                    placeholder="Introduzca nombre de empresa" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_telefono">Teléfono</label>
-                            <input type="text" class="form-control" id="proovedor_telefono"
-                                   name="proovedor_telefono"
+                            <label for="cliente_telefono">Teléfono</label>
+                            <input type="text" class="form-control" id="cliente_telefono"
+                                   name="cliente_telefono"
                                    placeholder="Introduzca teléfono" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_correo">Correo</label>
-                            <input type="text" class="form-control" id="proovedor_correo" name="proovedor_correo"
+                            <label for="cliente_correo">Correo</label>
+                            <input type="text" class="form-control" id="cliente_correo" name="cliente_correo"
                                    placeholder="Introduzca correo" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_cantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="proovedor_cantidad"
-                                   name="proovedor_cantidad"
+                            <label for="cliente_cantidad">Cantidad</label>
+                            <input type="text" class="form-control" id="cliente_cantidad"
+                                   name="cliente_cantidad"
                                    placeholder="Introduzca cantidad" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_gastado">Gastado</label>
-                            <input type="text" class="form-control" id="proovedor_gastado" name="proovedor_gastado"
+                            <label for="cliente_gastado">Gastado</label>
+                            <input type="text" class="form-control" id="cliente_gastado" name="cliente_gastado"
                                    placeholder="Introduzca lo que lleva gastado" autocomplete="off">
                         </div>
                     </div>
@@ -146,10 +146,10 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Editar Proovedor</h4>
+                    <h4 class="modal-title">Editar Cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/update') ?>" method="post" id="updateForm"
+                <form role="form" action="<?php echo base_url('clientes/update') ?>" method="post" id="updateForm"
                       enctype="multipart/form-data">
 
                     <div class="modal-body">
@@ -159,46 +159,46 @@
                             <img id="preimage" width="150" height="150" class="img-circle">
                         </div>
                         <div class="form-group">
-                            <label for="edit_proovedor_image">Imagen</label>
+                            <label for="edit_cliente_image">Imagen</label>
                             <div class="kv-avatar">
                                 <div class="file-loading">
-                                    <input id="edit_proovedor_image" name="edit_proovedor_image" type="file">
+                                    <input id="edit_cliente_image" name="edit_cliente_image" type="file">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_nombre">Nombre Proovedor</label>
-                                <input type="text" class="form-control" id="edit_proovedor_nombre"
-                                       name="edit_proovedor_nombre"
-                                       placeholder="Introduzca nombre de proovedor" autocomplete="off">
+                                <label for="edit_cliente_nombre">Nombre Cliente</label>
+                                <input type="text" class="form-control" id="edit_cliente_nombre"
+                                       name="edit_cliente_nombre"
+                                       placeholder="Introduzca nombre de cliente" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_empresa">Empresa</label>
-                                <input type="text" class="form-control" id="edit_proovedor_empresa"
-                                       name="edit_proovedor_empresa"
+                                <label for="edit_cliente_empresa">Empresa</label>
+                                <input type="text" class="form-control" id="edit_cliente_empresa"
+                                       name="edit_cliente_empresa"
                                        placeholder="Introduzca nombre de empresa" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_telefono">Teléfono</label>
-                                <input type="text" class="form-control" id="edit_proovedor_telefono"
-                                       name="edit_proovedor_telefono"
+                                <label for="edit_cliente_telefono">Teléfono</label>
+                                <input type="text" class="form-control" id="edit_cliente_telefono"
+                                       name="edit_cliente_telefono"
                                        placeholder="Introduzca teléfono" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_correo">Correo</label>
-                                <input type="text" class="form-control" id="edit_proovedor_correo"
-                                       name="edit_proovedor_correo"
+                                <label for="edit_cliente_correo">Correo</label>
+                                <input type="text" class="form-control" id="edit_cliente_correo"
+                                       name="edit_cliente_correo"
                                        placeholder="Introduzca correo" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_cantidad">Cantidad</label>
-                                <input type="text" class="form-control" id="edit_proovedor_cantidad"
-                                       name="edit_proovedor_cantidad"
+                                <label for="edit_cliente_cantidad">Cantidad</label>
+                                <input type="text" class="form-control" id="edit_cliente_cantidad"
+                                       name="edit_cliente_cantidad"
                                        placeholder="Introduzca cantidad" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_gastado">Gastado</label>
-                                <input type="text" class="form-control" id="edit_proovedor_gastado"
-                                       name="edit_proovedor_gastado"
+                                <label for="edit_cliente_gastado">Gastado</label>
+                                <input type="text" class="form-control" id="edit_cliente_gastado"
+                                       name="edit_cliente_gastado"
                                        placeholder="Introduzca lo que lleva gastado" autocomplete="off">
                             </div>
 
@@ -225,12 +225,12 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Eliminar proovedor</h4>
+                    <h4 class="modal-title">Eliminar cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/remove') ?>" method="post" id="removeForm">
+                <form role="form" action="<?php echo base_url('clientes/remove') ?>" method="post" id="removeForm">
                     <div class="modal-body">
-                        <p>Está seguro de que desea eliminar este proovedor?</p>
+                        <p>Está seguro de que desea eliminar este cliente?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -251,12 +251,12 @@
 
     $(document).ready(function () {
 
-        $("#proovedorNav").addClass('active');
+        $("#clienteNav").addClass('active');
 
 
         $("#jqGrid").jqGrid({
 
-            url: base_url + "proovedores/getProovedorData",
+            url: base_url + "clientes/getClienteData",
             datatype: "json",
             styleUI: "Bootstrap",
             colModel: [
@@ -333,7 +333,7 @@
             rowNum: 15,
             autowidth: true,
             pager: "#jqGridPager",
-            caption: "Proovedores",
+            caption: "clientes",
 
             loadComplete: function () {
                 // var objRows = $("#jqGrid tr").splice(1);
@@ -497,7 +497,7 @@
             'onclick="alert(\'Call your custom code here.\')">' +
             '<i class="glyphicon glyphicon-tag"></i>' +
             '</button>';
-        $("#proovedor_image").fileinput({
+        $("#cliente_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
             showClose: false,
@@ -520,7 +520,7 @@
             'onclick="alert(\'Call your custom code here.\')">' +
             '<i class="glyphicon glyphicon-tag"></i>' +
             '</button>';
-        $("#edit_proovedor_image").fileinput({
+        $("#edit_cliente_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
             showClose: false,
@@ -544,7 +544,7 @@
     // edit function
     function editFunc(id) {
         $.ajax({
-            url: 'getProovedoresDataById/' + id,
+            url: 'getClienteDataById/' + id,
             type: 'post',
             dataType: 'json',
             success: function (response) {
@@ -552,12 +552,12 @@
                 console.log(response);
                 // $("#edit_proovedor_").val(response.);
                 $("#preimage").attr("src", base_url + "/" + response.image);
-                $("#edit_proovedor_nombre").val(response.Nombre);
-                $("#edit_proovedor_empresa").val(response.Empresa);
-                $("#edit_proovedor_telefono").val(response.Telefono);
-                $("#edit_proovedor_correo").val(response.Correo);
-                $("#edit_proovedor_cantidad").val(response.Cantidad);
-                $("#edit_proovedor_gastado").val(response.Gastado);
+                $("#edit_cliente_nombre").val(response.Nombre);
+                $("#edit_cliente_empresa").val(response.Empresa);
+                $("#edit_cliente_telefono").val(response.Telefono);
+                $("#edit_cliente_correo").val(response.Correo);
+                $("#edit_cliente_cantidad").val(response.Cantidad);
+                $("#edit_cliente_gastado").val(response.Gastado);
 
                 // submit the edit from
                 $("#updateForm").unbind('submit').bind('submit', function () {
@@ -632,7 +632,7 @@
                 $.ajax({
                     url: form.attr('action'),
                     type: form.attr('method'),
-                    data: {proovedor_id: id},
+                    data: {cliente_id: id},
                     dataType: 'json',
                     success: function (response) {
 

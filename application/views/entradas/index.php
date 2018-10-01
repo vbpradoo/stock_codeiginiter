@@ -35,7 +35,7 @@
                 <?php endif; ?>
 
                 <?php if (in_array('createProduct', $user_permission)): ?>
-                    <a class="btn btn-primary" href="<?php echo base_url('entradas/create') ?>">Añadir Entrada</a>
+                    <a class="btn btn-primary" href="<?php echo base_url('entradas/createEntrada') ?>">Añadir Entrada</a>
                     <br/> <br/>
                 <?php endif; ?>
 
@@ -215,6 +215,14 @@
                     // width: "1px",
                     align: 'center'
                     // formatter: formatTitle
+                },{
+                    label: 'Lote',
+                    name: 'Lote',
+                    index:'Lote',
+                    sorttype: 'text',
+                    // width: "2px",
+                    align: 'center'
+                    // formatter: formatLink
                 },
                 {
                     label: 'Proovedor',
@@ -239,7 +247,6 @@
                     index:'Cantidad',
                     // width: "3px",
                     sorttype: 'text',
-                    formatter: 'number',
                     align: 'center'
                 },{
                     label: 'Descripción',

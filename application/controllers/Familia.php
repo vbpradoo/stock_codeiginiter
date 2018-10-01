@@ -203,5 +203,61 @@ class Familia extends Admin_Controller
         echo json_encode($response);
     }
 
+    /*************FAMILIA CON PAGINADO Y FILTRADO******************/
+    ////PRUEBA CON PAGINADO Y FILTRADO
+    public function fetchFamiliaDataFilteringPagination()
+    {
+        $result = array('data' => array());
+
+
+        $search_field = $this->input->get('searchField'); // search field name
+        $search_string = $this->input->get('searchString'); // search string
+        $page = $this->input->get('page'); //page number
+        $limit = $this->input->get('rows'); // number of rows fetch per page
+        $sidx = $this->input->get('sidx'); // field name which you want to sort
+        $sord = $this->input->get('sord'); // field data which you want to soft
+        if(!$sidx) { $sidx = 1; } // if its empty set to 1
+        $count = $this->model_familia->countTotal($search_field, $search_string);
+        $total_pages = 0;
+        if($count > 0) { $total_pages = ceil($count/$limit); }
+        if($page > $total_pages) { $page = $total_pages; }
+        $start = ($limit * $page) - $limit;
+
+        $familiadata=($this->model_familia->fetchFamiliaDataFilteringPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+//        $famdata = $this->model_familia->getFamiliaData();
+
+
+        foreach ($familiadata as $key => $value) {
+            $buttons = '';
+            $nombreFamilia='';
+//            echo $x['ID'];
+            if (in_array('deleteProduct', $this->permission)) {
+                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFamilia(' . $value->ID . ')" data-toggle="modal" data-target="#removeFamiliaModal"><i class="fa fa-trash"></i></button>';
+            }
+            if (in_array('updateProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="editFamilia('.$value->ID.')" data-toggle="modal" data-target="#editFamiliaModal"><i class="fa fa-pencil"></i></button>';
+            }
+            $value->Buttons=$buttons;
+
+//            $status = ($value->Activo == 1) ? '<span class="label label-success" >Activo</span>' : '<span class="label label-warning" >Inactivo</span>';
+//            $value -> Activo =$status;
+
+//                foreach($famdata as $famkey => $famvalue){
+//                    if($famvalue['ID']==$value->Familia)
+//                        $nombreFamilia = $famvalue['Nombre'];
+//                }
+
+//            $value->Familia = $nombreFamilia;
+        }
+
+        $data = array('page'=>$page,
+            'total'=>$total_pages,
+            'records'=>$count,
+            'rows'=>$familiadata,
+        );
+
+        echo json_encode($data);
+    }
+
 
 }

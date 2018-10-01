@@ -154,7 +154,7 @@ class Almacenes extends Admin_Controller
                     'Activo' => $this->input->post('edit_active'),
                 );
 
-                $update = $this->model_stores->update($data, $id);
+                $update = $this->model_almacenes->update($data, $id);
                 if ($update == true) {
                     $response['success'] = true;
                     $response['messages'] = 'Almacén actualizado';

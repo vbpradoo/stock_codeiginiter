@@ -33,8 +33,7 @@ class Model_articulos extends CI_Model
 //        return $query->result_array();
 //    }
 
-    public function create($data)
-    {
+    public function create($data){
         if($data) {
             $insert = $this->db->insert('articulo', $data);
             return ($insert == true) ? true : false;
@@ -65,4 +64,46 @@ class Model_articulos extends CI_Model
         $query = $this->db->query($sql);
         return $query->num_rows();
     }
+
+
+    public function getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string)
+    {
+//        $this->db->select('lote.ID, lote.Serial, lote.Articulo, lote.Entrada, lote.Descripcion, lote.Cantidad, lote.Stock, lote.Precio, lote.Coste, lote.Almacen, lote.Vendido');
+        $this->db->select('Articulo.ID, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo as Activo,Articulo.Descripcion');
+
+        $this->db->from('articulo Articulo');
+        $this->db->join('familia fam','fam.ID = Articulo.Familia','left');
+
+        if($sidx == 'ID') { $this->db->order_by('Articulo.ID', $sord); }
+        else if($sidx == 'Nombre') { $this->db->order_by('Articulo.Nombre', $sord); }
+        else if($sidx == 'Familia') { $this->db->order_by('Familia', $sord); }
+        else if($sidx == 'Estado') { $this->db->order_by('Articulo.Activo', $sord); }
+        else if($sidx == 'Descripcion') { $this->db->order_by('Articulo.Descripcion', $sord); }
+        else { $this->db->order_by('Articulo.ID', $sord); }
+        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+
+        $this->db->limit($limit, $start);
+        $query = $this->db->get();
+        $result=$query->result();
+
+        return $result;
+    }
+
+    public function countTotal($search_field, $search_string)
+    {
+        $this->db->select('Articulo.ID, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo,Articulo.Descripcion');
+
+        $this->db->from('articulo  Articulo');
+
+
+        $this->db->join('familia fam','fam.ID = Articulo.Familia','left');
+
+        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+
+        $query = $this->db->get();
+        return count($query->result());
+    }
+
 }

@@ -3143,6 +3143,7 @@ $.jgrid.extend({
 	},
 	delRowData : function(rowid) {
 		var success = false, rowInd, ia;
+		console.log("sdabshbslbPOLLAAA");
 		this.each(function() {
 			var $t = this;
 			rowInd = $($t).jqGrid('getGridRowById', rowid);

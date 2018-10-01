@@ -53,16 +53,14 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="form-group">
-                            <label for="lote_serial">Id Lote</label>
-                            <input type="text" class="form-control" id="lote_serial" name="lote_serial"
-                                   placeholder="Introduzca Id Lote" autocomplete="off"/>
-                        </div>
-
-                        <form role="form"  method="post" enctype="multipart/form-data" id="initForm">
+                        <form role="form" method="post" enctype="multipart/form-data" id="initForm">
                             <?php echo validation_errors(); ?>
 
-
+                            <div class="form-group">
+                                <label for="lote_serial">Id Lote</label>
+                                <input type="text" class="form-control" id="lote_serial" name="lote_serial"
+                                       placeholder="Introduzca Id Lote" autocomplete="off" maxlength="11"/>
+                            </div>
                             <!--  Añadimos la referencia al articulo -->
                             <div id="Articulo" class="form-group" style="display: none;">
                                 <label for="articulo">Código de Producto</label>
@@ -77,11 +75,18 @@
 
                             <div id="Proovedor" class="form-group" style="display: none;">
                                 <label for="proovedor">Proveedor</label>
-                                <select class="form-control select_group" id="proovedor" name="proovedor[]">
+                                <select class="form-control select_group" id="proovedor" name="proovedor">
                                     <?php foreach ($proovedor as $k => $v): ?>
                                         <option id="<?php echo $v['ID'] ?>"
                                                 value="<?php echo $v['ID'] ?>"><?php echo $v['Nombre'] ?></option>
                                     <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div id="Pagado" class="form-group" style="display: none;">
+                                <label for="pagado">Estado</label>
+                                <select class="form-control select_group" id="pagado" name="pagado">
+                                    <option value="0">Sin pagar</option>
+                                    <option value="1">Pagado</option>
                                 </select>
                             </div>
 
@@ -93,7 +98,8 @@
 
                             <div id="Division" class="box-body" style="display: none;">
                                 <?php if (in_array('createProduct', $user_permission)): ?>
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" type="button">Añadir
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"
+                                            type="button">Añadir
                                         Elemento
                                     </button>
                                     <br>
@@ -136,19 +142,9 @@
                             </div>
 
 
-                            <!--                            <div class="form-group">-->
-                            <!--                                <label for="store">Availability</label>-->
-                            <!--                                <select class="form-control" id="availability" name="availability">-->
-                            <!--                                    <option value="1">Yes</option>-->
-                            <!--                                    <option value="2">No</option>-->
-                            <!--                                </select>-->
-                            <!--                            </div>-->
-
-                            <!-- /.box-body -->
-
                             <div class="box-footer" id="Footer" style="display: none;">
-                                <button id="Enviar" type="button" class="btn btn-primary">Guardar entrada</button>
-                                <a href="<?php echo base_url('entradas/create') ?>" class="btn btn-warning">Volver</a>
+                                <button id="Enviar" type="submit" class="btn btn-primary">Guardar entrada</button>
+                                <a href="javascript:volverFunc();" class="btn btn-warning">Volver</a>
                             </div>
                         </form>
                     </div>
@@ -179,7 +175,7 @@
                     <h4 class="modal-title">Añadir Elemento</h4>
                 </div>
 
-                <form role="form"  action="<?php echo base_url('lotes/createDivision') ?>" method="post" id="createForm">
+                <form role="form" method="post" id="createForm">
 
                     <div class="modal-body">
                         <div id="messages"></div>
@@ -191,9 +187,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="create_ancho">Ancho</label>
-                            <input type="text" class="form-control" id="create_ancho" name="create_ancho"
-                                   placeholder="Introduzca ancho" autocomplete="off">
+                            <label for="create_largo">Largo</label>
+                            <input type="text" class="form-control" id="create_largo" name="create_largo"
+                                   placeholder="Introduzca largo" autocomplete="off">
                         </div>
 
                         <div class="form-group">
@@ -202,16 +198,9 @@
                                    placeholder="Introduzca alto" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="create_largo">Largo</label>
-                            <input type="text" class="form-control" id=create_largo" name="create_largo"
-                                   placeholder="Introduzca largo" autocomplete="off">
+                            <label for="create_espesor">Espesor</label>
+                            <input type="text" class="form-control"  id="create_espesor" name="create_espesor" placeholder="Introduzca espesor" autocomplete="off">
                         </div>
-<!--                        <div style="display: none;" class="form-group">-->
-<!--                              <label for="create_lote">Largo</label>-->
-<!--                            <input type="text" class="form-control" id=create_lote" name="create_lote"-->
-<!--                                   placeholder="Introduzca largo" autocomplete="off">-->
-<!--                        </div>-->
-
 
                     </div>
 
@@ -249,19 +238,19 @@
                                    placeholder="Introduzca piezas" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="edit_ancho">Ancho</label>
-                            <input type="text" class="form-control" id="edit_ancho" name="edit_ancho"
-                                   placeholder="Introduzca ancho" autocomplete="off">
+                            <label for="edit_largo">Largo</label>
+                            <input type="text" class="form-control" id="edit_largo" name="edit_largo"
+                                   placeholder="Introduzca largo" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="edit_alto">Alto</label>
+                            <label for="edit_alto">Alto/Ancho</label>
                             <input type="text" class="form-control" id="edit_alto" name="edit_alto"
                                    placeholder="Introduzca alto" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="edit_largo">Largo</label>
-                            <input type="text" class="form-control" id="edit_largo" name="edit_largo"
-                                   placeholder="Introduzca largo" autocomplete="off">
+                            <label for="edit_espesor">Espesor</label>
+                            <input type="text" class="form-control" id="edit_espesor" name="edit_espesor"
+                                   placeholder="Introduzca espesor" autocomplete="off">
                         </div>
                     </div>
 
@@ -289,7 +278,7 @@
                     <h4 class="modal-title">Eliminar Elemento</h4>
                 </div>
 
-                <form role="form" method="post" id="removeForm">
+                <form role="form" action="<?php echo base_url('lotes/deleteDivision') ?>" method="post" id="removeForm">
                     <div class="modal-body">
                         <p>Está seguro de que desea eliminar el elemento?</p>
                     </div>
@@ -307,27 +296,25 @@
 
 
 <script type="text/javascript">
-    var divisionTable;
+
     var base_url = "<?php echo base_url(); ?>";
     var lote;
     var editor;
-    var form=$("#initForm");;
+    var form = $("#initForm");
+    var map =new Map();
 
     $(document).ready(function () {
 
         $(".select_group").select2({width: 'resolve'});
-
-
-
-        //Load todays date
-        var date = moment.locale('es');
-        $("#fecha").val(moment(Date.now()));
+        $("#entradasNav").addClass('active');
+        $("#createENav").addClass('active');
+        $("#descripcion").wysihtml5();
 
         //I add for display
         document.getElementById("lote_serial").addEventListener('input', function (evt) {
             var serial = document.getElementById('lote_serial').value;
 
-            if (serial.length === 6) {
+            if (serial.length === 11 && validateSerial(serial)) {
                 console.log(base_url + 'lotes/getLoteByName');
 
                 //WE PLACE HERE OUR ALGORITHM TO DETECT FORMAT SERIAL
@@ -339,125 +326,66 @@
 
                 }).done(function (evt) {
                     //Cargamos la información previa si eciste LOTE
-                    if (evt !== null) {
+                    $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                        '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + "El lote ya existe" +
+                        '</div>');
+                }).fail(function () {
 
-                        form.attr("action",base_url+'lotes/updateFromEntrada');
-                        console.log(form.attr("action"));
-
-                        console.log(evt);
-                        lote = JSON.parse(evt);
-                        //Create array query
-                        console.log(lote.Division);
-                        var obj = JSON.parse(lote.Division);
-                        var string = "?";
-                        for (var i = 0; i < obj.id.length; i++) {
-                            if (i === obj.id.length - 1)
-                                string += "id[]=" + obj.id[i];
-                            else
-                                string += "id[]=" + obj.id[i] + "&";
-                        }
-
-
-
-
-                        // initialize the datatable
-                        // divisionTable = $('#divisionTable').DataTable({
-                        //     'lengthChange': 'false',
-                        //     'ajax': base_url + 'lotes/getDivisionData' + string,
-                        //     'dataSrc': 'data',
-                        //     'order': [],
-                        //     "columns": [
-                        //         {"width": "20%"},
-                        //         {"width": "20%"},
-                        //         {"width": "20%"},
-                        //         {"width": "20%"},
-                        //         {"width": "20%"},
-                        //         {"width": "20%"}
-                        //     ],
-                        //
-                        // });
-                        //
-                        // $('#divisionTable tbody').on('click', function () {
-                        //     if ($(this).hasClass('selected')) {
-                        //         $(this).removeClass('selected');
-                        //     }
-                        //     else {
-                        //         divisionTable.$('tr.selected').removeClass('selected');
-                        //         $(this).addClass('selected');
-                        //     }
-                        // });
-                        console.log(lote.ID);
-                        string = "?id="+lote.ID;
-                        initJqGrid(string);
-
-                        console.log(lote.Articulo + "\t" + lote.Almacen);
-
-                        $("#articulo").val(lote.Articulo).change();
-                        // $("#proovedores").val(lote.Proovedor).change();
-                        $("#cantidad").val(lote.Cantidad);
-                        $("#precio").val(lote.Precio);
-                        $("#coste").val(lote.Coste);
-                        $("#almacen").val(lote.Almacen).change();
-                        $("#descripcion").val(lote.Descripcion);
-                        $("#descripcion").wysihtml5();
-
-//                        console.log(lote.Articulo+"\t"+lote.Almacen);
-                        console.log($("#articulo").val() + "\t");
-                        console.log($("#almacen").val());
-
-                        $("#Articulo").show(100);
-                        $("#Proovedor").show(100);
-                        $("#Division").show(200);
-                        $("#Cantidad").show(200);
-                        $("#Precio").show(300);
-                        $("#Coste").show(400);
-                        $("#Almacen").show(500);
-                        $("#Descripcion").show(500);
-                        $("#Footer").show(600);
-                        // $("#descripcion").val(lote.Descripcion);
-
-                    }
-                }).fail(function (){
-
-                    if(confirm("El lote no existe, quiere crear uno nuevo¿?")) {
-                        form.attr("action",base_url+'lotes/create');
+                    if (confirm("El lote no existe, quiere crear uno nuevo¿?")) {
+                        // $("#lote_serial").prop('disabled', true);
+                        form.attr("action", base_url + 'lotes/create');
                         //Crear lote nuevo.
                         console.log(serial);
                         $.ajax({
-                            url: base_url + 'lotes/create/?'+serial,
+                            url: base_url + 'lotes/createSerial/?' + serial,
                             type: 'post',
                             // data: serial,
                             dataType: 'json'
-                        }).done( function (response) {
+                        }).done(function (response) {
 
+                            console.log(response);
 
-                                $("#Articulo").show(100);
-                                $("#Proovedor").show(100);
-                                $("#Division").show(200);
-                                $("#Cantidad").show(200);
-                                $("#Precio").show(300);
-                                $("#Coste").show(400);
-                                $("#Almacen").show(500);
-                                $("#Descripcion").show(500);
-                                $("#Footer").show(600);
+                            //Inicailizo el Grid
+                            initJqGrid("?id="+response.loteID);
+
+                            lote = response.loteID;
+
+                            viewAll();
 
                         });
                     }
 
 
-
                 });
+            }
+
+            else if(serial.length === 11){
+                $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + "Formato de lote invalido." +
+                    '</div>');
+
+                document.getElementById('lote_serial').value="";
             }
 
         });
 
 
-        $("#Enviar").on('click', function () {
+        // $("#Enviar").on('click', function () {
+
+        $("#initForm").unbind('submit').on('submit', function () {
 
             // remove the text-danger
             $(".text-danger").remove();
 
+            //First we need to create the Entrada
+
+            var form = $("#initForm");
             console.log(form.attr("action"));
+            console.log(form.attr("action",base_url+"lotes/updateFromEntrada?lote_id="+lote));
+            console.log("SIOH");
+            console.log(form.serialize());
 
             $.ajax({
                 url: form.attr('action'),
@@ -467,7 +395,7 @@
                 success: function (response) {
 
                     console.log();
-                    $('#jqGrid').trigger('reloadGrid');
+                    // $('#jqGrid').trigger('reloadGrid');
 
                     if (response.success === true) {
                         $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
@@ -476,12 +404,12 @@
                             '</div>');
 
 
-                        // hide the modal
-                        $("#addArticuloModal").modal('hide');
-
                         // reset the form
-                        $("#createArticuloForm")[0].reset();
-                        $("#createArticuloForm .form-group").removeClass('has-error').removeClass('has-success');
+                        $("#initForm")[0].reset();
+                        $("#initForm .form-group").removeClass('has-error').removeClass('has-success');
+                        closeAll();
+                        $("#jqGrid").jqGrid("clearGridData");
+
 
                     } else {
 
@@ -510,58 +438,77 @@
             return false;
         });
 
-        $("#articulo").change(function () {
-            console.log($("#articulo").val());
-            if ($("#articulo").val() !== "")
-                $("#Proovedor").show();
-        });
-        document.getElementById("proovedor").addEventListener('select', function (evt) {
-            if (evt.val() !== "")
-                $("#Fecha").show();
-        });
-        document.getElementById("fecha").addEventListener('select', function (evt) {
-            if (evt.val() !== "")
-                $("#Division").show();
-            $("#Cantidad").show();
-        });
-        document.getElementById("cantidad").addEventListener('input', function (evt) {
-            if (evt.val() !== "")
-                $("#Precio").show()
-        });
-        document.getElementById("precio").addEventListener('input', function (evt) {
-            $("#Almacen").show()
-        });
-        document.getElementById("almacen").addEventListener('input', function (evt) {
-            $("#Descripcion").show()
-        });
 
-        $("#mainEntryNav").addClass('active');
-        $("#addEntry").addClass('active');
-
-        var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-            'onclick="alert(\'Call your custom code here.\')">' +
-            '<i class="glyphicon glyphicon-tag"></i>' +
-            '</button>';
-
-
-        // $("#product_image").fileinput({
-        //     overwriteInitial: true,
-        //     maxFileSize: 1500,
-        //     showClose: false,
-        //     showCaption: false,
-        //     browseLabel: '',
-        //     removeLabel: '',
-        //     browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
-        //     removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-        //     removeTitle: 'Cancel or reset changes',
-        //     elErrorContainer: '#kv-avatar-errors-1',
-        //     msgErrorClass: 'alert alert-block alert-danger',
-        //     // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
-        //     layoutTemplates: {main2: '{preview} ' + btnCust + ' {remove} {browse}'},
-        //     allowedFileExtensions: ["jpg", "png", "gif"]
+        // $("#articulo").change(function () {
+        //     console.log($("#articulo").val());
+        //     if ($("#articulo").val() !== "")
+        //         $("#Proovedor").show();
+        // });
+        // document.getElementById("proovedor").addEventListener('select', function (evt) {
+        //     if (evt.val() !== "")
+        //         $("#Fecha").show();
+        // });
+        // document.getElementById("fecha").addEventListener('select', function (evt) {
+        //     if (evt.val() !== "")
+        //         $("#Division").show();
+        //     $("#Cantidad").show();
+        // });
+        // document.getElementById("cantidad").addEventListener('input', function (evt) {
+        //     if (evt.val() !== "")
+        //         $("#Precio").show()
+        // });
+        // document.getElementById("precio").addEventListener('input', function (evt) {
+        //     $("#Almacen").show()
+        // });
+        // document.getElementById("almacen").addEventListener('input', function (evt) {
+        //     $("#Descripcion").show()
         // });
 
     });
+
+    function volverFunc() {
+        console.log("ENTRAA");
+        $.ajax({
+            url: base_url + "lotes/removeFromEntrada?id=" + lote,
+        }).done(function (evt) {
+            //Cargamos la información previa si eciste LOTE
+            console.log("Eliminado lote ID:" + lote);
+
+            window.location.href=base_url+"entradas/index";
+
+        })
+    }
+    function viewAll(){
+        $("#Articulo").show(100);
+        $("#Proovedor").show(100);
+        $("#Pagado").show(100);
+        //Load todays date
+        moment.locale('es');
+        $("#fecha").val(moment().format('DD/MM/YYYY'));
+        $("#Fecha").show(100);
+        $("#Division").show(200);
+        $("#Cantidad").show(200);
+        // $("#cantidad").prop("disabled", true);
+        $("#Precio").show(300);
+        $("#Coste").show(400);
+        $("#Almacen").show(500);
+        $("#Descripcion").show(500);
+        $("#Footer").show(600);
+    }
+    function closeAll(){
+        $("#Articulo").hide(100);
+        $("#Proovedor").hide(100);
+        $("#Pagado").hide(100);
+        $("#Fecha").hide(100);
+        $("#Division").hide(200);
+        $("#Cantidad").hide(200);
+        // $("#cantidad").prop("disabled", true);
+        $("#Precio").hide(300);
+        $("#Coste").hide(400);
+        $("#Almacen").hide(500);
+        $("#Descripcion").hide(500);
+        $("#Footer").hide(600);
+    }
 
     function initJqGrid(string) {
         var lastsel;
@@ -590,15 +537,15 @@
                     // formatter: formatLink
                 },
                 {
-                    label: 'Ancho',
-                    name: 'Ancho',
-                    index: 'Ancho',
+                    label: 'Largo',
+                    name: 'Largo',
+                    index: 'Largo',
                     // width: "3px",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center'
                 }, {
-                    label: 'Alto',
+                    label: 'Ancho/Alto',
                     name: 'Alto',
                     index: 'Alto',
                     sorttype: 'text',
@@ -606,9 +553,9 @@
                     align: 'center'
                 },
                 {
-                    label: 'Largo',
-                    name: 'Largo',
-                    index: 'Largo',
+                    label: 'Espesor',
+                    name: 'Espesor',
+                    index: 'Espesor',
                     sorttype: 'text',
                     // width: "3px",
                     align: 'center'
@@ -650,13 +597,6 @@
 
         });
 
-
-        // document.getElementById("lote_serial").addEventListener('input', function (evt) {
-        //
-        // });
-
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
 
@@ -670,20 +610,7 @@
                 view: true,
                 viewicon: 'ace-icon fa fa-search-plus grey'
             });
-            //navButtons
 
-            // jQuery(table).jqGrid('inlineNav', pager,
-            //     {  //navbar options
-            //         edit: true,
-            //         editicon: 'ace-icon fa fa-pencil blue',
-            //         add: true,
-            //         addicon: 'ace-icon fa fa-plus-circle purple',
-            //         del: true,
-            //         delicon: 'ace-icon fa fa-trash-o red'
-            //     });
-
-            //replace icons with FontAwesome icons like above
-            //updatePagerIcons
             var replacement =
                 {
                     'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
@@ -706,33 +633,10 @@
                 newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
             $grid.jqGrid("setGridWidth", newWidth, true);
 
-            // var objRows = $("#jqGrid tr").splice(1);
-            // var objHeader = $("tr[class=ui-jqgrid-labels]");
-            // var objFirstRowHeader = $(objHeader[1]).children("th");
-            //
-            // for (i = 0; i < objRows.length; i++) {
-            //     var objFirstRowColumns = $(objRows[i]).children("td");
-            //
-            //     for (i = 0; i < objFirstRowColumns.length; i++) {
-            //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-            //     }
-            // }
-
             $(window).on("resize", function () {
                 var $grid = $(table), newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
                 $grid.jqGrid("setGridWidth", newWidth, true);
 
-                // var objRows = $("#jqGrid tr").splice(1);
-                // var objHeader = $("tr[class=ui-jqgrid-labels]");
-                // var objFirstRowHeader = $(objHeader[1]).children("th");
-                //
-                // for (i = 0; i < objRows.length; i++) {
-                //     var objFirstRowColumns = $(objRows[i]).children("td");
-                //
-                //     for (i = 0; i < objFirstRowColumns.length; i++) {
-                //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-                //     }
-                // }
             });
         }
     }
@@ -743,7 +647,7 @@
         var form = $(this);
         //We place the action for the add Division Form
         console.log(lote);
-        form.attr('action',base_url+'lotes/createDivision/'+lote.ID);
+        form.attr('action', base_url + 'lotes/createDivision/' + lote);
         // $("#create_lote").val(lote.ID);
         // remove the text-danger
         $(".text-danger").remove();
@@ -769,6 +673,13 @@
                     // hide the modal
                     $("#addModal").modal('hide');
 
+
+                    var data ={'Piezas':parseInt($("#create_piezas").val()),'Largo':parseFloat($("#create_largo").val()),'Alto': parseFloat($("#create_alto").val()),'Espesor':parseFloat($("input[name=create_espesor]").val())};
+                    // $("#cantidad").val("Area Total: "+data1 + "m²" +"\tVolumen Total: "+ data2 +"m³");
+
+                    map.set(response.division,data);
+                    console.log(response.division);
+                    getCantidad();
                     // reset the form
                     $("#createForm")[0].reset();
                     $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
@@ -796,9 +707,10 @@
                 }
             }
         });
-
         return false;
+
     });
+
 
     // });
 
@@ -812,8 +724,8 @@
                 console.log(response.Piezas);
                 $("#edit_piezas").val(response.Piezas);
                 $("#edit_alto").val(response.Alto);
-                $("#edit_ancho").val(response.Ancho);
                 $("#edit_largo").val(response.Largo);
+                $("#edit_espesor").val(response.Espesor);
 
                 // submit the edit from
                 $("#updateForm").unbind('submit').bind('submit', function () {
@@ -828,7 +740,7 @@
                         data: form.serialize(), // /converting the form data into array and sending it to server
                         dataType: 'json',
                         success: function (response) {
-                            console.log(response)
+                            console.log(response);
 
                             $('#jqGrid').trigger('reloadGrid');
 
@@ -840,6 +752,12 @@
 
                                 // hide the modal
                                 $("#editModal").modal('hide');
+                                var data ={'Piezas':parseInt($("#edit_piezas").val()),'Largo':parseFloat($("#edit_largo").val()),'Alto': parseFloat($("#edit_alto").val()),'Espesor':parseFloat($("input[name=edit_espesor]").val())};
+                                map.set(id,data);
+
+                                getCantidad();
+
+
                                 // reset the form
                                 $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
 
@@ -899,6 +817,8 @@
                                 '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
                                 '</div>');
 
+                            map.delete(id);
+                            getCantidad(id);
                             // hide the modal
                             $("#removeModal").modal('hide');
 
@@ -917,5 +837,66 @@
         }
     }
 
+    function getCantidad(){
+        console.log("ENTRA");
+        var alto=0.000,largo=0.000,piezas=0,espesor=0.000;
+        for (const value of map.values()) {
+
+            alto += value.Alto;
+            largo += value.Largo;
+            piezas += value.Piezas;
+            espesor += value.Espesor;
+        }
+        console.log();
+        var data1 = piezas*(largo*alto);
+        var data2 = piezas*(largo*alto*espesor);
+
+        $("#cantidad").val("Area Total: "+data1 + "m²" +"\tVolumen Total: "+ data2 +"m³");
+
+    }
+    ///VALIDATE DATA,
+
+    //HANDLE THE GOING BACK
+    $(window).on('beforeunload', function() {
+        alert("CUIDADO!!!");
+    });
+
+    // var unloadEvent = function (e) {
+    //     var confirmationMessage = "Warning: Leaving this page will result in any unsaved data being lost. Are you sure you wish to continue?";
+    //     console.log("ENTRA AKI");
+    //     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+    //     return confirmationMessage; //Webkit, Safari, Chrome etc.
+    // };
+    // window.addEventListener("beforeunload", unloadEvent);
+    function validateSerial(serial){
+
+        var pattern=new RegExp('^[0-9]$');
+        var pattern_letters=new RegExp('^[A-Z]$');
+        var string = serial.split("");
+        if(string[0]!=='L')
+            return false;
+        else if(!pattern.test(string[1]))
+            return false;
+        else if(!pattern.test(string[2]))
+            return false;
+        else if(!pattern_letters.test(string[3]))
+            return false;
+        else if(!pattern_letters.test(string[4]))
+            return false;
+        else if(!pattern_letters.test(string[5]))
+            return false;
+        else if(!pattern.test(string[6]))
+            return false;
+        else if(!pattern.test(string[7]))
+            return false;
+        else if(!pattern.test(string[8]))
+            return false;
+        else if(!pattern.test(string[9]))
+            return false;
+        else if(!pattern_letters.test(string[10]))
+            return false;
+        else
+            return true;
+    }
 
 </script>

@@ -36,7 +36,8 @@ class Model_entradas extends CI_Model
     {
         if($data) {
             $insert = $this->db->insert('entrada', $data);
-            return ($insert == true) ? true : false;
+//            return ($insert == true) ? true : false;
+            return $this->db->insert_id();
         }
     }
 
@@ -58,7 +59,7 @@ class Model_entradas extends CI_Model
         }
     }
 
-    public function countTotalEntries()
+    public function countTotalEntradas()
     {
         $sql = "SELECT * FROM entrada";
         $query = $this->db->query($sql);

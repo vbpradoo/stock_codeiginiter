@@ -61,7 +61,7 @@
 
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Control de Articulos</h3>
+                        <h3 class="box-title">Control de Artículos</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -117,14 +117,9 @@
                         </div>
                         <div class="form-group">
                             <label for="articulo_familia">Familia</label>
-                            <!--                            <input type="text" class="form-control" id="articulo_familia" name="articulo_familia"-->
-                            <!--                                   placeholder="Introduzca familia de artículo" autocomplete="off">-->
-                            <select class="form-control" id="articulo_familia" name="articulo_familia"
+                            <select class="form-control articulo_familia" id="articulo_familia" name="articulo_familia"
                                     style="width: 100% !important;">
-                                <?php foreach ($familia as $k => $v): ?>
-                                    <option id="<?php echo $v['ID'] ?>"
-                                            value="<?php echo $v['ID'] ?>"> <?php echo $v['Nombre'] ?></option>
-                                <?php endforeach ?>
+                                <option></option>
                             </select>
                         </div>
 
@@ -183,12 +178,9 @@
                         </div>
                         <div class="form-group">
                             <label for="edit_articulo_familia">Familia</label>
-                            <select class="form-control" id="edit_articulo_familia" name="edit_articulo_familia"
+                            <select class="form-control edit_articulo_familia" id="edit_articulo_familia" name="edit_articulo_familia"
                                     style="width: 100% !important;">
-                                <?php foreach ($familia as $k => $v): ?>
-                                    <option id="<?php echo $v['ID'] ?>"
-                                            value="<?php echo $v['ID'] ?>"> <?php echo $v['Nombre'] ?></option>
-                                <?php endforeach ?>
+                                <option></option>
                             </select>
                         </div>
 
@@ -362,6 +354,9 @@
     $(document).ready(function () {
 
         $("#articuloNav").addClass('active');
+        // $(".edit_articulo_familia").select2();
+        //init select
+        initselect();
 
         $("#verFamiliaModal").click(function () {
             if ($(this).hasClass("btn-info")) {
@@ -384,7 +379,7 @@
 
         $("#jqGrid").jqGrid({
 
-            url: base_url + "articulos/getArticulosData",
+            url: base_url + "articulos/fetchArticulosDataFilteringPagination",
             datatype: "json",
             styleUI: "Bootstrap",
             colModel: [
@@ -415,7 +410,7 @@
                     align: 'center'
                 }, {
                     label: 'Familia',
-                    name: 'FamName',
+                    name: 'Familia',
                     index: 'Familia',
                     // width: "3px",
                     sorttype: 'text',
@@ -431,14 +426,16 @@
                     name: 'Buttons',
                     index: 'Control',
                     // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    sortable:false,
                 }
             ],
 
             viewrecords: true, // show the current page, data rang and total records on the toolbar
             width: "auto",
             height: "auto",
-            rowNum: 15,
+            rowNum: 10,
+            rowList : [10, 20, 50, 100],
             autowidth: true,
             pager: "#jqGridPager",
             caption: "Artículos",
@@ -509,7 +506,7 @@
 
             $("#familiaGrid").jqGrid({
 
-                url: base_url + "familia/getFamiliaData",
+                url: base_url + "familia/fetchFamiliaDataFilteringPagination",
                 datatype: "json",
                 styleUI: "Bootstrap",
                 colModel: [
@@ -550,7 +547,8 @@
                 viewrecords: true, // show the current page, data rang and total records on the toolbar
                 width: "auto",
                 height: "auto",
-                rowNum: 15,
+                rowNum: 10,
+                rowList : [10, 20, 50, 100],
                 autowidth: true,
                 pager: "#familiyPager",
                 caption: "Familias",
@@ -691,7 +689,9 @@
                 console.log(response);
                 $("#edit_articulo_nombre").val(response.Nombre);
                 $("#edit_articulo_descripcion").val(response.Descripcion);
-                $("#edit_articulo_familia> [value=" + response.Familia + "]").attr("selected", "true");
+                // $("#edit_articulo_familia> [value=" + response.Familia + "]").attr("selected", "true");
+                $(".edit_articulo_familia").val(response.Familia);
+                $(".edit_articulo_familia").trigger('change.select2');
                 $("#edit_articulo_active> [value=" + response.Activo + "]").attr("selected", "true");
                 $("#edit_articulo_active").change();
 
@@ -701,6 +701,8 @@
 
                     // remove the text-danger
                     $(".text-danger").remove();
+
+
 
                     $.ajax({
                         url: form.attr('action') + '/' + id,
@@ -823,6 +825,10 @@
                         '</div>');
 
 
+                    //reload the select
+                    initselect();
+
+
                     // hide the modal
                     $("#addFamiliaModal").modal('hide');
 
@@ -830,8 +836,8 @@
                     $("#createFamiliaForm")[0].reset();
                     $("#createFamiliaForm .form-group").removeClass('has-error').removeClass('has-success');
 
-                    if(confirm("Necesita recargar la página para operar con las nuevsa entradas. Si no desea seguir introduciendo más familias, pulse OK!!"))
-                        location.reload();
+                    // if(confirm("Necesita recargar la página para operar con las nuevsa entradas. Si no desea seguir introduciendo más familias, pulse OK!!"))
+                    //     location.reload();
 
                 } else {
 
@@ -888,7 +894,8 @@
                         success: function (response) {
 
                             $('#familiaGrid').trigger('reloadGrid');
-
+                            //reload the select
+                            initselect();
                             if (response.success === true) {
                                 $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
                                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
@@ -950,7 +957,8 @@
                     success: function (response) {
 
                         $('#familiaGrid').trigger('reloadGrid');
-
+                        //reload the select
+                        initselect();
                         if (response.success === true) {
                             $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
@@ -973,6 +981,58 @@
                 return false;
             });
         }
+    }
+
+    function initselect(){
+
+        console.log("START");
+
+        $('.articulo_familia').empty();
+        $('.edit_articulo_familia').empty();
+
+        $.ajax({
+            url: base_url+"articulos/getFamiliaData",
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8'
+        }).then(function (response) {
+
+            // Conversion to Select2 data format
+            var results = [];
+            response = JSON.parse(response) ;
+            console.log(response);
+
+            $.each(response, function (i, element) {
+                // console.log(element);
+                // console.log(i);
+                results.push(
+                    {
+                        "id": element.ID,
+                        "text": element.Nombre
+                    }
+                )
+            });
+            console.log(results);
+            $('.articulo_familia').select2({
+                width: '100%',
+                placeholder: 'Seleccione famiilia',
+                data: results,
+                // multiple: false,
+                // maximumSelectionLength: 1,
+                allowClear: true,
+                containerCssClass: "margin-bottom-1",
+            });
+
+            console.log("ENTRA");
+            $('.edit_articulo_familia').select2({
+                width: '100%',
+                placeholder: 'Seleccione famiilia',
+                data: results,
+                // multiple: false,
+                // maximumSelectionLength: 1,
+                allowClear: true,
+                containerCssClass: "margin-bottom-1",
+            });
+        });
     }
 
 </script>

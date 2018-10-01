@@ -190,6 +190,7 @@ class Proovedores extends Admin_Controller
 
 
             $this->form_validation->set_rules('edit_proovedor_nombre', 'Nombre Proovedor', 'trim|required');
+            $this->form_validation->set_rules('edit_proovedor_empresa', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_telefono', 'Telefono', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_correo', 'Correo', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_cantidad', 'Cantidad', 'trim|required');
@@ -200,7 +201,7 @@ class Proovedores extends Admin_Controller
 
                 $data = array(
                     'Nombre' => $this->input->post('edit_proovedor_nombre'),
-                    'Empresa' => $this->input->post('edit_proovedor_telefono'),
+                    'Empresa' => $this->input->post('edit_proovedor_empresa'),
                     'Telefono' => $this->input->post('edit_proovedor_telefono'),
                     'Correo' => $this->input->post('edit_proovedor_correo'),
                     'Cantidad' => $this->input->post('edit_proovedor_cantidad'),
@@ -208,13 +209,13 @@ class Proovedores extends Admin_Controller
                 );
 
 
-                if ($_FILES['proovedores']['size'] > 0) {
-                    $upload_image = $this->upload_image();
-                    $upload_image = array('image' => $upload_image);
-
-                    $this->model_proovedores->update($upload_image, $id);
-                    echo "IN";
-                }
+//                if ($_FILES['proovedores']['size'] > 0) {
+//                    $upload_image = $this->upload_image();
+//                    $upload_image = array('image' => $upload_image);
+//
+//                    $this->model_proovedores->update($upload_image, $id);
+////                    echo "IN";
+//                }
 
                 $update = $this->model_proovedores->update($data, $id);
 
