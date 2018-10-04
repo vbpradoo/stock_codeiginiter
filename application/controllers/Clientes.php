@@ -79,6 +79,13 @@ class Clientes extends Admin_Controller
             echo json_encode($data);
         }
     }
+//    public function fetchClienteData()
+//    {
+//
+//            $data = $this->model_clientes->getClienteData();
+//            echo json_encode($data);
+//
+//    }
 
     /*
     * If the validation is not valid, then it redirects to the create page.
@@ -271,5 +278,63 @@ class Clientes extends Admin_Controller
 
         echo json_encode($response);
     }
+
+    /*************CLIENTES CON PAGINADO Y FILTRADO******************/
+    ////PRUEBA CON PAGINADO Y FILTRADO
+    public function fetchClientesDataFilteringPagination()
+    {
+        $result = array('data' => array());
+
+
+        $search_field = $this->input->get('searchField'); // search field name
+        $search_string = $this->input->get('searchString'); // search string
+        $page = $this->input->get('page'); //page number
+        $limit = $this->input->get('rows'); // number of rows fetch per page
+        $sidx = $this->input->get('sidx'); // field name which you want to sort
+        $sord = $this->input->get('sord'); // field data which you want to soft
+        if (!$sidx) {
+            $sidx = 1;
+        } // if its empty set to 1
+        $count = $this->model_clientes->countTotal($search_field, $search_string);
+        $total_pages = 0;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+
+        $clientedata = ($this->model_clientes->getClientesDataFilteringPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+
+
+        foreach ($clientedata as $key => $value) {
+            $buttons = '';
+
+            if (in_array('deleteProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+            if (in_array('updateProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="editFunc(' . $value->ID . ')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
+            }
+            $value->Buttons = $buttons;
+
+//            $status = ($value->Activo == 1) ? '<span class="label label-success" >Activo</span>' : '<span class="label label-warning" >Inactivo</span>';
+//            $value->Activo = $status;
+            $img = '<img src="' . base_url($value->image) . '" alt="' . $value->Nombre . '" class="img-circle" width="50" height="50" />';
+
+            $value->image=$img;
+
+        }
+
+        $data = array('page' => $page,
+            'total' => $total_pages,
+            'records' => $count,
+            'rows' => $clientedata,
+        );
+
+        echo json_encode($data);
+    }
+
 
 }

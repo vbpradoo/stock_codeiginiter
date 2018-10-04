@@ -140,7 +140,7 @@ class Lotes extends Admin_Controller
         $data = $this->model_lotes->getLoteDataByArticulo($_GET['articulo_id']);
 
         foreach ($data as $key => $value) {
-            $result['rows'][$key] = array('Serial'=>$value['Serial']);
+            $result['rows'][$key] = array('ID'=>$value['ID'],'Serial'=>$value['Serial']);
 
         }
 
@@ -229,6 +229,7 @@ class Lotes extends Admin_Controller
             $result['rows'][$key] = array(
                 'ID' => $value['ID'],
                 'Piezas' => $value['Piezas'] . ' ' . $qty_status,
+                'Piezas_Stock' => $value['Piezas_Stock'] . ' ' . $qty_status,
                 'Largo' => $value['Largo'],
                 'Alto' => $value['Alto'],
                 'Espesor' => $value['Espesor'],
@@ -290,6 +291,17 @@ class Lotes extends Admin_Controller
     }
 
     /************VALIDATORS***************************/
+//    public function is0($str){
+//        if(intval($str)==0) {
+//            $this->form_validation->set_message('is0', 'El campo %s no puede ser 0');
+//            return FALSE;
+//        }else {
+////                echo "SHIT";
+//            return TRUE;
+//        }
+//    }
+
+
     public function decimal_numeric($str)
     {
 //        echo "AKI";
@@ -339,17 +351,20 @@ class Lotes extends Admin_Controller
         else {
 
             $results=explode(".",$str,2);
-//            echo $results[0];
-            if(intval($results[0])==0) {
-                $this->form_validation->set_message('entire_numeric', 'El campo %s no puede ser 0');
-                return FALSE;
-            }else if(!(count($results)>=2)) {
-//                echo "ENTRA";
-                return TRUE;
-            }else{
+//            echo "SHIT".$results[0];
+
+            if(count($results)>1){
                 $this->form_validation->set_message('entire_numeric', 'El campo %s debe ser un número entero');
                 return FALSE;
             }
+            if(intval($results[0])==0) {
+                $this->form_validation->set_message('entire_numeric', 'El campo %s no puede ser 0');
+                return FALSE;
+            }else {
+//                echo "SHIT";
+                return TRUE;
+            }
+
         }
 
     }
@@ -364,9 +379,8 @@ class Lotes extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        if(!$Lote)
+//        if(!$Lote)
 //            $Lote=$_GET[''];
-
         $this->form_validation->set_rules('create_piezas', 'Piezas', 'trim|required|callback_entire_numeric');
         $this->form_validation->set_rules('create_largo', 'Largo', 'trim|required|callback_decimal_numeric');
         $this->form_validation->set_rules('create_alto', 'Alto/Ancho', 'trim|required|callback_decimal_numeric');
@@ -376,6 +390,7 @@ class Lotes extends Admin_Controller
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
+//        $this->entire_numeric($this->input->post('create_piezas'));
 //        $lote = json_decode($this->getDivLoteDataById($Lote));
 //
 //        echo $Lote;
@@ -388,7 +403,7 @@ class Lotes extends Admin_Controller
                 'Piezas_Stock' => $this->input->post('create_piezas'),
                 'Lote'  => $Lote,
             );
-
+//            die();
             $create = $this->model_divisiones->create($data);
 
 
@@ -428,7 +443,6 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('edit_espesor', 'Espesor', 'trim|required|callback_decimal_numeric');
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
-
 
 
         if ($this->form_validation->run() == TRUE) {

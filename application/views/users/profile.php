@@ -44,7 +44,7 @@
                   <td><?php echo $user_data['lastname']; ?></td>
                 </tr>
                 <tr>
-                  <th>Sexo</th>
+                  <th>Género</th>
                   <td><?php echo ($user_data['gender'] == 1) ? 'Male' : 'Gender'; ?></td>
                 </tr>
                 <tr>

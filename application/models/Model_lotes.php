@@ -29,7 +29,7 @@ class Model_lotes extends CI_Model
     public function getDivLoteDataById($id = null)
     {
         if($id) {
-            $sql = "SELECT Division FROM lote where ID = ?";
+            $sql = "SELECT division FROM lote where ID = ?";
             $query = $this->db->query($sql, array($id));
             return $query->row_array();
         }
@@ -57,7 +57,7 @@ class Model_lotes extends CI_Model
     public function getMyLoteByName($nombre)
     {
        // if($nombre) {
-            $sql = "SELECT * FROM lote where Serial = $nombre";
+            $sql = "SELECT * FROM lote where Serial = ?";
             $query = $this->db->query($sql, array($nombre));
             return $query->row_array();
 //        }

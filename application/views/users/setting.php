@@ -44,8 +44,8 @@
                 <?php echo validation_errors(); ?>
 
                 <div class="form-group">
-                  <label for="username">Nombre de Usuario</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php echo $user_data['username'] ?>" autocomplete="off">
+                  <label for="username">Nombre de usuario</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" value="<?php echo $user_data['username'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
@@ -55,21 +55,21 @@
 
                 <div class="form-group">
                   <label for="fname">Nombre</label>
-                  <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" value="<?php echo $user_data['firstname'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="fname" name="fname" placeholder="Nombre" value="<?php echo $user_data['firstname'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                   <label for="lname">Apellidos</label>
-                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" value="<?php echo $user_data['lastname'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Apellidos" value="<?php echo $user_data['lastname'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                   <label for="phone">Teléfono</label>
-                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="<?php echo $user_data['phone'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" value="<?php echo $user_data['phone'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="gender">Sexo</label>
+                  <label for="gender">Género</label>
                   <div class="radio">
                     <label>
                       <input type="radio" name="gender" id="male" value="1" <?php if($user_data['gender'] == 1) {
@@ -107,7 +107,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Atrás</a>
+                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Volver</a>
               </div>
             </form>
           </div>

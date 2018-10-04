@@ -61,4 +61,41 @@ class Model_proovedores extends CI_Model
         return $query->num_rows();
     }
 
+
+    public function getProovedoresDataFilteringPagination($sidx, $sord, $start, $limit, $search_field, $search_string)
+    {
+        $this->db->select('*');
+
+        $this->db->from('proovedor');
+
+        if($sidx == 'ID') { $this->db->order_by('proovedor.ID', $sord); }
+        else if($sidx == 'Nombre') { $this->db->order_by('proovedor.Nombre', $sord); }
+        else if($sidx == 'Correo') { $this->db->order_by('proovedor.Correo', $sord); }
+        else if($sidx == 'Telefono') { $this->db->order_by('proovedor.Telefono', $sord); }
+        else if($sidx == 'Empresa') { $this->db->order_by('proovedor.Empresa', $sord); }
+        else { $this->db->order_by('proovedor.ID', $sord); }
+//        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+//        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+
+        $this->db->limit($limit, $start);
+        $query = $this->db->get();
+        $result=$query->result();
+
+        return $result;
+    }
+
+    public function countTotal($search_field, $search_string)
+    {
+        $this->db->select('*');
+
+        $this->db->from('proovedor');
+
+
+//        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+//        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+
+        $query = $this->db->get();
+        return count($query->result());
+    }
+
 }

@@ -106,7 +106,7 @@ class Proovedores extends Admin_Controller
 //            echo "AKI";
 
             $upload_image = $this->upload_image();
-            if($upload_image == false || $upload_image=='<p>You did not select a file to upload.</p>') {
+            if ($upload_image == false || $upload_image == '<p>You did not select a file to upload.</p>') {
                 $upload_image = 'assets/images/user.png';   //DEFAULT PIC
             }
 //            echo $upload_image;
@@ -146,31 +146,31 @@ class Proovedores extends Admin_Controller
     */
     public function upload_image()
     {
-            // assets/images/product_image
-            $config['upload_path'] = 'assets/images/proovedor_image';
-            $config['file_name'] = uniqid();
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size'] = '1000';
+        // assets/images/product_image
+        $config['upload_path'] = 'assets/images/proovedor_image';
+        $config['file_name'] = uniqid();
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '1000';
 
-            // $config['max_width']  = '1024';s
-            // $config['max_height']  = '768';
+        // $config['max_width']  = '1024';s
+        // $config['max_height']  = '768';
 
-            $this->load->library('upload', $config);
+        $this->load->library('upload', $config);
 //        echo(json_encode(! $this->upload->do_upload('proovedor_image')));
 //        die();
 
 
-            if (! $this->upload->do_upload('proovedor_image')) {
-                $error = $this->upload->display_errors();
-                return $error;
-            } else {
-                $data = array('upload_data' => $this->upload->data());
-                $type = explode('.', $_FILES['proovedor_image']['name']);
-                $type = $type[count($type) - 1];
+        if (!$this->upload->do_upload('proovedor_image')) {
+            $error = $this->upload->display_errors();
+            return $error;
+        } else {
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES['proovedor_image']['name']);
+            $type = $type[count($type) - 1];
 
-                $path = $config['upload_path'] . '/' . $config['file_name'] . '.' . $type;
-                return ($data == true) ? $path : false;
-            }
+            $path = $config['upload_path'] . '/' . $config['file_name'] . '.' . $type;
+            return ($data == true) ? $path : false;
+        }
 
     }
 
@@ -233,7 +233,7 @@ class Proovedores extends Admin_Controller
                 }
             }
         } else {
-                $response['success'] = false;
+            $response['success'] = false;
             $response['messages'] = "Recargue la página!!";
         }
 
@@ -241,35 +241,91 @@ class Proovedores extends Admin_Controller
 
     }
 
-/*
-* It removes the data from the database
-* and it returns the response into the json format
-*/
-public
-function remove()
-{
-    if (!in_array('deleteProduct', $this->permission)) {
-        redirect('dashboard', 'refresh');
-    }
+    /*
+    * It removes the data from the database
+    * and it returns the response into the json format
+    */
+    public function remove()
+    {
+        if (!in_array('deleteProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
 
-    $id = $this->input->post('proovedor_id');
+        $id = $this->input->post('proovedor_id');
 
-    $response = array();
-    if ($id) {
-        $delete = $this->model_proovedores->remove($id);
-        if ($delete == true) {
-            $response['success'] = true;
-            $response['messages'] = "Eliminado correctamente!!";
+        $response = array();
+        if ($id) {
+            $delete = $this->model_proovedores->remove($id);
+            if ($delete == true) {
+                $response['success'] = true;
+                $response['messages'] = "Eliminado correctamente!!";
+            } else {
+                $response['success'] = false;
+                $response['messages'] = "Error al eliminar";
+            }
         } else {
             $response['success'] = false;
-            $response['messages'] = "Error al eliminar";
+            $response['messages'] = "Recargue la página!!";
         }
-    } else {
-        $response['success'] = false;
-        $response['messages'] = "Recargue la página!!";
+
+        echo json_encode($response);
     }
 
-    echo json_encode($response);
-}
+    /*************PROOVEDORES CON PAGINADO Y FILTRADO******************/
+    ////PRUEBA CON PAGINADO Y FILTRADO
+    public function fetchProovedoresDataFilteringPagination()
+    {
+        $result = array('data' => array());
+
+
+        $search_field = $this->input->get('searchField'); // search field name
+        $search_string = $this->input->get('searchString'); // search string
+        $page = $this->input->get('page'); //page number
+        $limit = $this->input->get('rows'); // number of rows fetch per page
+        $sidx = $this->input->get('sidx'); // field name which you want to sort
+        $sord = $this->input->get('sord'); // field data which you want to soft
+        if (!$sidx) {
+            $sidx = 1;
+        } // if its empty set to 1
+        $count = $this->model_proovedores->countTotal($search_field, $search_string);
+        $total_pages = 0;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+
+        $provedordata = ($this->model_proovedores->getProovedoresDataFilteringPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+
+
+        foreach ($provedordata as $key => $value) {
+            $buttons = '';
+
+            if (in_array('deleteProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+            if (in_array('updateProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="editFunc(' . $value->ID . ')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
+            }
+            $value->Buttons = $buttons;
+
+//            $status = ($value->Activo == 1) ? '<span class="label label-success" >Activo</span>' : '<span class="label label-warning" >Inactivo</span>';
+//            $value->Activo = $status;
+            $img = '<img src="' . base_url($value->image) . '" alt="' . $value->Nombre . '" class="img-circle" width="50" height="50" />';
+
+            $value->image=$img;
+
+        }
+
+        $data = array('page' => $page,
+            'total' => $total_pages,
+            'records' => $count,
+            'rows' => $provedordata,
+        );
+
+        echo json_encode($data);
+    }
 
 }

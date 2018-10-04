@@ -10,7 +10,7 @@ class Company extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'Company';
+		$this->data['page_title'] = 'Empresa';
 
 		$this->load->model('model_company');
 	}
@@ -51,11 +51,11 @@ class Company extends Admin_Controller
 
         	$update = $this->model_company->update($data, 1);
         	if($update == true) {
-        		$this->session->set_flashdata('success', 'Successfully created');
+        		$this->session->set_flashdata('success', 'Actualizado correctamente!!');
         		redirect('company/', 'refresh');
         	}
         	else {
-        		$this->session->set_flashdata('errors', 'Error occurred!!');
+        		$this->session->set_flashdata('errors', 'Ha ocurrido un error!!');
         		redirect('company/index', 'refresh');
         	}
         }

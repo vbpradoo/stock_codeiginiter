@@ -48,6 +48,14 @@ class Model_divisiones extends CI_Model
         }
     }
 
+//    public function getStockDivisionDataByLote($id = null){
+//        if ($id) {
+//            $sql = "SELECT * FROM division where Lote = ?";
+//            $query = $this->db->query($sql,array($id));
+//            return $query->result_array();
+//        }
+//    }
+
 
 
 //    public function getDivisionByArray($id = null)
@@ -104,5 +112,7 @@ class Model_divisiones extends CI_Model
         $query = $this->db->query($sql);
         return $query->num_rows();
     }
+
+
 
 }

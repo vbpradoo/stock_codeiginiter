@@ -221,10 +221,10 @@ class Entradas extends Admin_Controller
 
         if ($entrada_id) {
 
-            $this->form_validation->set_rules('edit_proovedor', 'Proovedor', 'trim|required');
+//            $this->form_validation->set_rules('edit_proovedor', 'Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_fecha', 'Fecha', 'trim|required');
-            $this->form_validation->set_rules('edit_cantidad', 'Cantidad', 'trim|required');
-            $this->form_validation->set_rules('edit_descripcion', 'Descripcion', 'trim');
+//            $this->form_validation->set_rules('edit_cantidad', 'Cantidad', 'trim|required');
+//            $this->form_validation->set_rules('edit_descripcion', 'Descripcion', 'trim');
             $this->form_validation->set_rules('edit_active', 'Estado', 'trim|required');
             $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
@@ -235,11 +235,11 @@ class Entradas extends Admin_Controller
 //                echo "ENTRA2";
 
                 $data = array(
-                    'Proovedor' => $this->input->post('edit_proovedor'),
+//                    'Proovedor' => $this->input->post('edit_proovedor'),
                     'Fecha' => $this->input->post('edit_fecha'),
-                    'Cantidad' => $this->input->post('edit_cantidad'),
+//                    'Cantidad' => $this->input->post('edit_cantidad'),
                     'Pagado' => $this->input->post('edit_active'),
-                    'Descripcion' => $this->input->post('edit_descripcion'),
+//                    'Descripcion' => $this->input->post('edit_descripcion'),
                 );
 
 
@@ -280,6 +280,8 @@ class Entradas extends Admin_Controller
 
         $entrada_id = $this->input->post('entrada_id');
 
+//        echo "EOHHHH".$entrada_id;
+//        die();
         $response = array();
         if ($entrada_id) {
             $delete = $this->model_entradas->remove($entrada_id);
@@ -297,5 +299,61 @@ class Entradas extends Admin_Controller
 
         echo json_encode($response);
     }
+
+    /*************ENTRADAS CON PAGINADO Y FILTRADO******************/
+    ////PRUEBA CON PAGINADO Y FILTRADO
+    public function fetchEntradasDataFilteringPagination()
+    {
+        $result = array('data' => array());
+
+
+        $search_field = $this->input->get('searchField'); // search field name
+        $search_string = $this->input->get('searchString'); // search string
+        $page = $this->input->get('page'); //page number
+        $limit = $this->input->get('rows'); // number of rows fetch per page
+        $sidx = $this->input->get('sidx'); // field name which you want to sort
+        $sord = $this->input->get('sord'); // field data which you want to soft
+        if(!$sidx) { $sidx = 1; } // if its empty set to 1
+        $count = $this->model_entradas->countTotal($search_field, $search_string);
+        $total_pages = 0;
+        if($count > 0) { $total_pages = ceil($count/$limit); }
+        if($page > $total_pages) { $page = $total_pages; }
+        $start = ($limit * $page) - $limit;
+
+        $entradasdata=($this->model_entradas->getEntradasDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+//        $famdata = $this->model_familia->getFamiliaData();
+
+
+        foreach ($entradasdata as $key => $value) {
+            $buttons = '';
+
+            if (in_array('deleteProduct', $this->permission)) {
+                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+            if (in_array('updateProduct', $this->permission)) {
+                $buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value->ID.')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
+            }
+            $value->Buttons=$buttons;
+
+            $status = ($value->Pagado == 1) ? '<span class="label label-success" >Pagado</span>' : '<span class="label label-warning" >Sin pagar</span>';
+            $value -> Pagado =$status;
+
+//                foreach($famdata as $famkey => $famvalue){
+//                    if($famvalue['ID']==$value->Familia)
+//                        $nombreFamilia = $famvalue['Nombre'];
+//                }
+
+//            $value->Familia = $nombreFamilia;
+        }
+
+        $data = array('page'=>$page,
+            'total'=>$total_pages,
+            'records'=>$count,
+            'rows'=>$entradasdata,
+        );
+
+        echo json_encode($data);
+    }
+
 
 }

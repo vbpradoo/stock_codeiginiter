@@ -122,26 +122,26 @@
                     <div class="modal-body">
                         <div id="messages"></div>
 
-                        <div class="form-group">
-                            <label for="edit_proovedor">Proovedor</label>
-                            <input type="text" class="form-control" id="edit_proovedor" name="edit_proovedor"
-                                   placeholder="" autocomplete="off">
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="edit_proovedor">Proovedor</label>-->
+<!--                            <input type="text" class="form-control" id="edit_proovedor" name="edit_proovedor"-->
+<!--                                   placeholder="" autocomplete="off">-->
+<!--                        </div>-->
                         <div class="form-group">
                             <label for="edit_fecha">Fecha</label>
                             <input type="text" class="form-control" id="edit_fecha" name="edit_fecha"
                                    placeholder="Introduzca fecha" autocomplete="off">
                         </div>
-                        <div class="form-group">
-                            <label for="edit_cantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="edit_cantidad" name="edit_cantidad"
-                                   placeholder="Introduzca cantidad" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_descripcion">Descripción</label>
-                            <input type="text" class="form-control" id="edit_descripcion" name="edit_descripcion"
-                                   placeholder="Introduzca descripción" autocomplete="off">
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="edit_cantidad">Cantidad</label>-->
+<!--                            <input type="text" class="form-control" id="edit_cantidad" name="edit_cantidad"-->
+<!--                                   placeholder="Introduzca cantidad" autocomplete="off">-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="edit_descripcion">Descripción</label>-->
+<!--                            <input type="text" class="form-control" id="edit_descripcion" name="edit_descripcion"-->
+<!--                                   placeholder="Introduzca descripción" autocomplete="off">-->
+<!--                        </div>-->
                         <div class="form-group">
                             <label for="edit_active">Estado</label>
                             <select class="form-control select_group" id="edit_active" name="edit_active">
@@ -175,7 +175,7 @@
                     <h4 class="modal-title">Eliminar Almacén</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('lotes/remove') ?>" method="post" id="removeForm">
+                <form role="form" action="<?php echo base_url('entradas/remove') ?>" method="post" id="removeForm">
                     <div class="modal-body">
                         <p>Está seguro de que desea eliminar el lote?</p>
                     </div>
@@ -203,7 +203,7 @@
 
         $("#jqGrid").jqGrid({
 
-            url: base_url + "entradas/getEntradasData",
+            url: base_url + "entradas/fetchEntradasDataFilteringPagination",
             datatype:"json",
             styleUI:"Bootstrap",
             colModel: [
@@ -217,8 +217,8 @@
                     // formatter: formatTitle
                 },{
                     label: 'Lote',
-                    name: 'Lote',
-                    index:'Lote',
+                    name: 'Serial',
+                    index:'Serial',
                     sorttype: 'text',
                     // width: "2px",
                     align: 'center'
@@ -274,7 +274,8 @@
             viewrecords: true, // show the current page, data rang and total records on the toolbar
             width: "auto",
             height: "auto",
-            rowNum: 15,
+            rowNum: 10,
+            rowList : [10, 20, 50, 100],
             autowidth:true,
             pager: "#jqGridPager",
             caption: "Almacenes",
@@ -544,18 +545,13 @@
             success: function (response) {
                 console.log(response);
 
-                $("#edit_proovedor").val(response.Proovedor);
+                // $("#edit_proovedor").val(response.Proovedor);
                 $("#edit_fecha").val(response.Fecha);
-                $("#edit_cantidad").val(response.Cantidad);
-                $("#edit_descripcion").val(response.Descripcion);
+                // $("#edit_cantidad").val(response.Cantidad);
+                // $("#edit_descripcion").val(response.Descripcion);
 
-                if(response.Pagado==="0") {
-                    console.log(response.Pagado);
-                    $("#edit_active").val("1").change();
-                }else {
-                    $("#edit_active").val("2").change();
-                    console.log( $("#edit_active").val());
-                }
+                $("#edit_active").val(response.Pagado);
+                $("#edit_active").trigger('change.select2');
 
                 // submit the edit from
                 $("#updateForm").unbind('submit').bind('submit', function () {

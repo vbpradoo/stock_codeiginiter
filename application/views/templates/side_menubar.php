@@ -36,7 +36,7 @@
                 <?php if(in_array('createGroup', $user_permission) || in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission)): ?>
                     <li class="treeview" id="mainGroupNav">
                         <a href="#">
-                            <i class="fa fa-files-o"></i>
+                            <i class="fa fa-object-group"></i>
                             <span>Grupos</span>
                             <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -65,14 +65,14 @@
                 <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
                     <li id="proovedorNav">
                         <a href="<?php echo base_url('proovedores/') ?>">
-                            <i class="fa fa-files-o"></i> <span>Proovedores</span>
+                            <i class="fa fa-address-book"></i> <span>Proovedores</span>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
                     <li id="clienteNav">
                         <a href="<?php echo base_url('clientes/') ?>">
-                            <i class="fa fa-files-o"></i> <span>Clientes</span>
+                            <i class="fa fa-briefcase"></i> <span>Clientes</span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -80,7 +80,7 @@
                 <?php if(in_array('createStore', $user_permission) || in_array('updateStore', $user_permission) || in_array('viewStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
                     <li id="almacenNav">
                         <a href="<?php echo base_url('almacenes/') ?>">
-                            <i class="fa fa-files-o"></i> <span>Almacenes</span>
+                            <i class="fa fa-location-arrow"></i> <span>Almacenes</span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -94,7 +94,7 @@
                 <!--          --><?php //endif; ?>
                 <li class="treeview" id="lotesNav">
                     <a href="#">
-                        <i class="fa fa-cube"></i>
+                        <i class="fa fa-archive"></i>
                         <span>Lotes</span>
                         <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -108,7 +108,7 @@
 
                 <li class="treeview" id="entradasNav">
                     <a href="#">
-                        <i class="fa fa-cube"></i>
+                        <i class="fa fa-plus-circle"></i>
                         <span>Entradas</span>
                         <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -125,34 +125,33 @@
                     <li class="treeview" id="mainOrdersNav">
                         <a href="#">
                             <i class="fa fa-dollar"></i>
-                            <span>Pedidos</span>
+                            <span>Salidas</span>
                             <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
                         </a>
                         <ul class="treeview-menu">
                             <?php if(in_array('createOrder', $user_permission)): ?>
-                                <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Añadir Pedido</a></li>
+                                <li id="addOrderNav"><a href="<?php echo base_url('salidas/createSalida') ?>"><i class="fa fa-circle-o"></i> Añadir Salida</a></li>
                             <?php endif; ?>
                             <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                                <li id="manageOrdersNav"><a href="<?php echo base_url('orders') ?>"><i class="fa fa-circle-o"></i> Control de Pedidos</a></li>
+                                <li id="manageOrdersNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Control de Salidas</a></li>
                             <?php endif; ?>
                         </ul>
                     </li>
                 <?php endif; ?>
 
                 <?php if(in_array('viewReports', $user_permission)): ?>
-                    <li id="reportNav">
-                        <!--              <a href="--><?php //echo base_url('reports/') ?><!--">-->
-                        <a href="<?php echo base_url('reports/') ?>">
-                            <i class="glyphicon glyphicon-stats"></i> <span>Estadísticas</span>
-                        </a>
-                    </li>
+<!--                    <li id="reportNav">-->
+    <!--                        <a href="--><?php //echo base_url('reports/') ?><!--">-->
+<!--                            <i class="glyphicon glyphicon-stats"></i> <span>Estadísticas</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                 <?php endif; ?>
 
 
                 <?php if(in_array('updateCompany', $user_permission)): ?>
-                    <li id="companyNav"><a href="<?php echo base_url('company/') ?>"><i class="fa fa-files-o"></i> <span>Empresa</span></a></li>
+                    <li id="companyNav"><a href="<?php echo base_url('company/') ?>"><i class="fa fa-building"></i> <span>Empresa</span></a></li>
                 <?php endif; ?>
 
 

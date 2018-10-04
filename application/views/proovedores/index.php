@@ -256,7 +256,7 @@
 
         $("#jqGrid").jqGrid({
 
-            url: base_url + "proovedores/getProovedorData",
+            url: base_url + "proovedores/fetchProovedoresDataFilteringPagination",
             datatype: "json",
             styleUI: "Bootstrap",
             colModel: [
@@ -330,7 +330,8 @@
             viewrecords: true, // show the current page, data rang and total records on the toolbar
             width: "auto",
             height: "auto",
-            rowNum: 15,
+            rowNum: 10,
+            rowList : [10, 20, 50, 100],
             autowidth: true,
             pager: "#jqGridPager",
             caption: "Proovedores",

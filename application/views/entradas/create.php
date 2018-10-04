@@ -75,7 +75,7 @@
 
                             <div id="Proovedor" class="form-group" style="display: none;">
                                 <label for="proovedor">Proveedor</label>
-                                <select class="form-control select_group" id="proovedor" name="proovedor">
+                                <select class="form-control select_group" id="proovedor" name="proovedor" style="width: 100% !important;">
                                     <?php foreach ($proovedor as $k => $v): ?>
                                         <option id="<?php echo $v['ID'] ?>"
                                                 value="<?php echo $v['ID'] ?>"><?php echo $v['Nombre'] ?></option>
@@ -839,7 +839,7 @@
 
     function getCantidad(){
         console.log("ENTRA");
-        var alto=0.000,largo=0.000,piezas=0,espesor=0.000;
+        var alto=0,largo=0,piezas=0,espesor=0;
         for (const value of map.values()) {
 
             alto += value.Alto;
@@ -847,11 +847,12 @@
             piezas += value.Piezas;
             espesor += value.Espesor;
         }
-        console.log();
-        var data1 = piezas*(largo*alto);
-        var data2 = piezas*(largo*alto*espesor);
+        // console.log();
+        var data_lineal = piezas*largo;
+        var data_area = piezas*(largo*alto);
+        var data_vol = piezas*(largo*alto*espesor);
 
-        $("#cantidad").val("Area Total: "+data1 + "m²" +"\tVolumen Total: "+ data2 +"m³");
+        $("#cantidad").val("Lineal T: "+data_lineal + "m" +"\tÁrea T: "+data_area + "m²" +"\tVolumen T: "+ data_vol +"m³");
 
     }
     ///VALIDATE DATA,

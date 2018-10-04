@@ -92,7 +92,7 @@
 
                             <div id="Proovedor" class="form-group" style="display: none;">
                                 <label for="proovedor">Proveedor</label>
-                                <select class="form-control select_group" id="proovedor" name="proovedor">
+                                <select class="form-control select_group" id="proovedor" name="proovedor" style="width: 100% !important;">
                                     <?php foreach ($proovedores as $k => $v): ?>
                                         <option id="<?php echo $v['ID'] ?>"
                                                 value="<?php echo $v['ID'] ?>"><?php echo $v['Nombre'] ?></option>
@@ -206,17 +206,12 @@
                             <input type="text" class="form-control" id="create_alto" name="create_alto"
                                    placeholder="Introduzca alto" autocomplete="off">
                         </div>
+
                         <div class="form-group">
                             <label for="create_espesor">Espesor</label>
-                            <input type="text" class="form-control" id=create_espesor" name="create_espesor"
+                            <input type="text" class="form-control" id="create_espesor" name="create_espesor"
                                    placeholder="Introduzca espesor" autocomplete="off">
                         </div>
-                        <!--                        <div style="display: none;" class="form-group">-->
-                        <!--                              <label for="create_lote">Largo</label>-->
-                        <!--                            <input type="text" class="form-control" id=create_lote" name="create_lote"-->
-                        <!--                                   placeholder="Introduzca largo" autocomplete="off">-->
-                        <!--                        </div>-->
-
 
                     </div>
 
@@ -315,7 +310,7 @@
     var path=false;
     var base_url = "<?php echo base_url(); ?>";
     var lote;
-
+    var map =new Map();
 
     $(document).ready(function () {
 
@@ -362,7 +357,7 @@
 
             //WE PLACE HERE OUR ALGORITHM TO DETECT FORMAT SERIAL
 
-            var serial = 'serial=' + $("#lote_serial option:selected").text().trim();
+            var serial = 'serial=' + $("#lote_serial option:selected").text().trim().toString();
             console.log(serial);
             $.ajax({
                 url: base_url + "lotes/getLoteByName",
@@ -737,6 +732,18 @@
                     $('#jqGrid').jqGrid('editRow', id, true);
                     lastsel = id;
                 }
+            },
+
+            loadComplete: function(response){
+
+                /*********FUNCION PARA OBTENER LA CANTIDAD**************/
+                response.rows.forEach(function(data) {
+                    console.log(data);
+                    var datos={'Piezas':parseInt(data.Piezas),'Largo':parseFloat(data.Largo),'Alto': parseFloat(data.Alto),'Espesor':parseFloat(data.Espesor)};
+                    map.set(parseInt(data.ID),datos);
+
+                });
+                getCantidad();
             }
 
         });
@@ -820,6 +827,10 @@
                     // hide the modal
                     $("#addModal").modal('hide');
 
+                    var data ={'Piezas':parseInt($("#create_piezas").val()),'Largo':parseFloat($("#create_largo").val()),'Alto': parseFloat($("#create_alto").val()),'Espesor':parseFloat($("input[name=create_espesor]").val())};
+                    map.set(response.division,data);
+                    // console.log(response.division);
+                    // getCantidad();
                     // reset the form
                     $("#createForm")[0].reset();
                     $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
@@ -891,6 +902,11 @@
 
                                 // hide the modal
                                 $("#editModal").modal('hide');
+
+                                // var data ={'Piezas':parseInt($("#edit_piezas").val()),'Largo':parseFloat($("#edit_largo").val()),'Alto': parseFloat($("#edit_alto").val()),'Espesor':parseFloat($("input[name=edit_espesor]").val())};
+                                // map.set(id,data);
+                                //
+                                // getCantidad();
                                 // reset the form
                                 $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
 
@@ -950,6 +966,7 @@
                                 '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
                                 '</div>');
 
+                            map.delete(id);
                             // hide the modal
                             $("#removeModal").modal('hide');
 
@@ -966,7 +983,34 @@
                 return false;
             });
         }
+
     }
 
+
+    //HANDLE THE GOING BACK
+    $(window).on('beforeunload', function() {
+        alert("CUIDADO!!!");
+    });
+
+
+
+    function getCantidad(){
+        console.log("ENTRA");
+        var alto=0,largo=0,piezas=0,espesor=0;
+        for (const value of map.values()) {
+
+            alto += value.Alto;
+            largo += value.Largo;
+            piezas += value.Piezas;
+            espesor += value.Espesor;
+        }
+        // console.log();
+        var data_lineal = piezas*largo;
+        var data_area = piezas*(largo*alto);
+        var data_vol = piezas*(largo*alto*espesor);
+
+        $("#cantidad").val("Lineal T: "+data_lineal + "m" +"\tÁrea T: "+data_area + "m²" +"\tVolumen T: "+ data_vol +"m³");
+
+    }
 
 </script>

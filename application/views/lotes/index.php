@@ -147,7 +147,7 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "5px",
+                    width: "100%",
                     align: 'center',
                     searchoptions: {
                         // show search options
@@ -159,7 +159,7 @@
                     name: 'Serial',
                     index: 'Serial',
                     sorttype: 'text',
-                    // width: "10px",
+                    width: "100%",
                     search: true,
                     align: 'center',
                     searchoptions: {
@@ -172,7 +172,7 @@
                     label: 'Artículo',
                     name: 'Articulo',
                     index: 'Articulo',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -184,7 +184,7 @@
                     label: 'Entrada',
                     name: 'Entrada',
                     index: 'Entrada',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     align: 'center',
                     searchoptions: {
@@ -207,7 +207,7 @@
                     label: 'Descripción',
                     name: 'Descripcion',
                     index: 'Descripcion',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center'
@@ -215,7 +215,7 @@
                     label: 'Cantidad',
                     name: 'Cantidad',
                     index: 'Cantidad',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -237,7 +237,7 @@
                     label: 'Stock',
                     name: 'Stock',
                     index: 'Stock',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -250,7 +250,7 @@
                     label: 'Precio',
                     name: 'Precio',
                     index: 'Precio',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -263,7 +263,7 @@
                     label: 'Coste',
                     name: 'Coste',
                     index: 'Coste',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -276,7 +276,7 @@
                     label: 'Almacen',
                     name: 'Almacen',
                     index: 'Almacen',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -289,7 +289,7 @@
                     label: 'Vendido',
                     name: 'Vendido',
                     index: 'Vendido',
-                    // width: "10px",
+                    width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -311,7 +311,7 @@
                     label: 'Estado',
                     name: 'Pagado',
                     index: 'Pagado',
-                    // width: "10px",
+                    width: "100%",
                     align: 'center',
                     stype: "select",
                     // searchoptions value - name values pairs for the dropdown - they will appear as options
@@ -321,7 +321,7 @@
                     name: 'Buttons',
                     search: false,
                     index: 'Control',
-                    // width: "10px",
+                    width: "100%",
                     align: 'center'
                 }
             ],
@@ -349,7 +349,7 @@
                 // If we want to pass additional parameters to the url we can use
                 // the method getRowData(row_id) - which returns associative array in type name-value
                 // here we can easy construct the following
-
+                console.log(subgrid_id);
                 var string = "?";
                 var obj = JSON.parse($("#jqGrid").getRowData(row_id)['Division']);
                 console.log(obj);
@@ -374,6 +374,7 @@
                             label: 'ID',
                             name: 'ID',
                             index: 'ID',
+                            hidden: true,
                             sorttype: 'number',
                             // width: "1px",
                             align: 'center'
@@ -384,24 +385,33 @@
                             name: 'Piezas',
                             index: 'Piezas',
                             sorttype: 'text',
-                            // width: "2px",
+                            width: "100%",
                             align: 'center'
                             // formatter: formatLink
                         },
                         {
-                            label: 'Ancho',
-                            name: 'Ancho',
-                            index: 'Ancho',
-                            // width: "3px",
+                            label: 'Stock',
+                            name: 'Piezas_Stock',
+                            index: 'Piezas_Stock',
+                            sorttype: 'text',
+                            width: "100%",
+                            align: 'center'
+                            // formatter: formatLink
+                        },
+                        {
+                            label: 'Largo',
+                            name: 'Largo',
+                            index: 'Largo',
+                            width: "100%",
                             sorttype: 'text',
                             // formatter: 'number',
                             align: 'center'
                         }, {
-                            label: 'Alto',
+                            label: 'Alto/Ancho',
                             name: 'Alto',
                             index: 'Alto',
                             sorttype: 'text',
-                            // width: "3px",
+                            width: "100%",
                             align: 'center'
                         },
                         {
@@ -409,7 +419,31 @@
                             name: 'Espesor',
                             index: 'Espesor',
                             sorttype: 'text',
-                            // width: "3px",
+                            width: "100%",
+                            align: 'center'
+                        },
+                        {
+                            label: 'Metros Lineales',
+                            name: 'Metros Lineales',
+                            index: 'Metros Lineales',
+                            sorttype: 'text',
+                            width: "100%",
+                            align: 'center'
+                        },
+                        {
+                            label: 'Metros Cuadrados',
+                            name: 'Metros Cuadrados',
+                            index: 'Metros Cuadrados',
+                            sorttype: 'text',
+                            width: "150%",
+                            align: 'center'
+                        },
+                        {
+                            label: 'Metros Cúbicos',
+                            name: 'Metros Cubicos',
+                            index: 'Metros Cubicos',
+                            sorttype: 'text',
+                            width: "150%",
                             align: 'center'
                         }
                     ],
@@ -418,14 +452,48 @@
                     sortname: 'num',
                     sortorder: "asc"
                 });
+                var subgrid = $("#" + subgrid_table_id);
+                console.log(subgrid_table_id);
+                setTimeout(function() {
+                for (var j = 1; j <= obj.id.length; j++) {
+                    var piezas=parseFloat(subgrid.jqGrid('getCell',j,'Piezas_Stock'));
+                    var ml=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*piezas;
+                    var m2=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*parseFloat(subgrid.jqGrid('getCell',j,'Alto'))*piezas;
+                    var m3=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*parseFloat(subgrid.jqGrid('getCell',j,'Alto'))*parseFloat(subgrid.jqGrid('getCell',j,'Espesor'))*piezas;
+                    // console.log("ENTRA:"+subgrid.jqGrid('getCell',1,'Piezas_Stock'));
+                    subgrid.jqGrid('setCell',j,'Metros Lineales',ml+"   ml");
+                    subgrid.jqGrid('setCell',j,'Metros Cuadrados',m2+"   m²");
+                    subgrid.jqGrid('setCell',j,'Metros Cubicos',m3+"   m³   ");
+                } },200);
+
+
             },
-            loadComplete: function () {
+            loadComplete: function (data) {
 
 
                 // $(".sgcollapsed").width($("#jqGrid_subgrid").width());
                 // $(".sgcollapsed").css("display","inline-block");
                 $(".fa-angle-double-right").css("margin-left","1.2em") ;
 
+                //Subgrrid Meter Values
+                // $.each($('.ui-widget-content jqgrow ui-row-ltr ui-state-highlight'),function(i){
+                //
+                //     console.log($('#jqGrid').jqGrid('getCell',i,'Espesor'));
+                //
+                // });
+                // console.log(data.records);
+                // for(var i=1;i<=data.records;i++)
+                // {
+                //     var subgrid_table_id = "jqGrid_"+i.toString()+ "_t";
+                //     var subgrid = $("#" + subgrid_table_id);
+                //     console.log(subgrid);
+                //     for (var j = 1; j <= subgrid[0].rows.length-1; j++) {
+                //         var piezas = parseFloat(subgrid.jqGrid('getCell', j, 'Piezas_Stock'));
+                //         var ml = parseFloat(subgrid.jqGrid('getCell', j, 'Largo')) * piezas;
+                //         console.log("ENTRA:" + subgrid.jqGrid('getCell', j, 'Piezas_Stock'));
+                //         subgrid.jqGrid('setCell', j, 'Metros Lineales', ml)
+                //     }
+                // }
             },
 
         });

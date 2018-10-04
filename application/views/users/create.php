@@ -34,7 +34,7 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Add User</h3>
+              <h3 class="box-title">Añadir Usuario</h3>
             </div>
             <form role="form" action="<?php base_url('users/create') ?>" method="post">
               <div class="box-body">
@@ -42,9 +42,9 @@
                 <?php echo validation_errors(); ?>
 
                 <div class="form-group">
-                  <label for="groups">Groups</label>
+                  <label for="groups">Grupos</label>
                   <select class="form-control" id="groups" name="groups">
-                    <option value="">Select Groups</option>
+                    <option value="">Seleccione Grupos</option>
                     <?php foreach ($group_data as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['group_name'] ?></option>
                     <?php endforeach ?>
@@ -52,8 +52,8 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username" autocomplete="off">
+                  <label for="username">Nombre de usuario</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" autocomplete="off">
                 </div>
 
                 <div class="form-group">
@@ -62,40 +62,40 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
+                  <label for="password">Contraseña</label>
+                  <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="cpassword">Confirm password</label>
-                  <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password" autocomplete="off">
+                  <label for="cpassword">Confirmar contraseña</label>
+                  <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirmar contraseña" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="fname">First name</label>
-                  <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" autocomplete="off">
+                  <label for="fname">Nombre</label>
+                  <input type="text" class="form-control" id="fname" name="fname" placeholder="Nombre" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="lname">Last name</label>
-                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" autocomplete="off">
+                  <label for="lname">Apellidos</label>
+                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Apellidos" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" autocomplete="off">
+                  <label for="phone">Teléfono</label>
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="gender">Gender</label>
+                  <label for="gender">Género</label>
                   <div class="radio">
                     <label>
                       <input type="radio" name="gender" id="male" value="1">
-                      Male
+                      Hombre
                     </label>
                     <label>
                       <input type="radio" name="gender" id="female" value="2">
-                      Female
+                      Mujer
                     </label>
                   </div>
                 </div>
@@ -104,8 +104,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Back</a>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Volver</a>
               </div>
             </form>
           </div>

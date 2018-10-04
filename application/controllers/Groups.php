@@ -8,7 +8,7 @@ class Groups extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'Groups';
+		$this->data['page_title'] = 'Grupos';
 		
 
 		$this->load->model('model_groups');
@@ -56,11 +56,11 @@ class Groups extends Admin_Controller
 
         	$create = $this->model_groups->create($data);
         	if($create == true) {
-        		$this->session->set_flashdata('success', 'Successfully created');
+        		$this->session->set_flashdata('success', 'Grupo creado correctamente!!');
         		redirect('groups/', 'refresh');
         	}
         	else {
-        		$this->session->set_flashdata('errors', 'Error occurred!!');
+        		$this->session->set_flashdata('errors', 'Ha ocurrido un error!!');
         		redirect('groups/create', 'refresh');
         	}
         }
@@ -97,11 +97,11 @@ class Groups extends Admin_Controller
 
 	        	$update = $this->model_groups->edit($data, $id);
 	        	if($update == true) {
-	        		$this->session->set_flashdata('success', 'Successfully updated');
+	        		$this->session->set_flashdata('success', 'Actualizado correctamente');
 	        		redirect('groups/', 'refresh');
 	        	}
 	        	else {
-	        		$this->session->set_flashdata('errors', 'Error occurred!!');
+	        		$this->session->set_flashdata('errors', 'Ha ocurrido un error!!');
 	        		redirect('groups/edit/'.$id, 'refresh');
 	        	}
 	        }
@@ -130,17 +130,17 @@ class Groups extends Admin_Controller
 
 				$check = $this->model_groups->existInUserGroup($id);
 				if($check == true) {
-					$this->session->set_flashdata('error', 'Group exists in the users');
+					$this->session->set_flashdata('error', 'El grupo ya existe en los usuarios');
 	        		redirect('groups/', 'refresh');
 				}
 				else {
 					$delete = $this->model_groups->delete($id);
 					if($delete == true) {
-		        		$this->session->set_flashdata('success', 'Successfully removed');
+		        		$this->session->set_flashdata('success', 'Eliminado con exito!!');
 		        		redirect('groups/', 'refresh');
 		        	}
 		        	else {
-		        		$this->session->set_flashdata('error', 'Error occurred!!');
+		        		$this->session->set_flashdata('error', 'Ha ocurrido un error!!');
 		        		redirect('groups/delete/'.$id, 'refresh');
 		        	}
 				}	

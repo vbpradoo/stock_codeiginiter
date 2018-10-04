@@ -32,7 +32,7 @@
             </div>
           <?php endif; ?>
 
-          <h1>Do you really want to remove ?</h1>
+          <h1>Está seguro de que desea eliminar este usuario?</h1>
 
           <form action="<?php echo base_url('users/delete/'.$id) ?>" method="post">
             <input type="submit" class="btn btn-primary" name="confirm" value="Confirm">
