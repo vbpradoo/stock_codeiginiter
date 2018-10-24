@@ -88,6 +88,30 @@ class Model_divisiones extends CI_Model
         }
     }
 
+    public function createDiv($data)
+    {
+        if ($data) {
+            $insert = $this->db->insert('division', $data);
+            if($insert)
+                return $this->db->insert_id();
+            else
+                return false;
+        }
+    }
+
+    public function updateDiv($data, $id)
+    {
+        if ($data && $id) {
+            $this->db->where('ID', $id);
+            $update = $this->db->update('division', $data);
+            if($update)
+                return $this->db->insert_id();
+            else
+                return false;
+        }
+    }
+
+
     public function update($data, $id)
     {
         if ($data && $id) {
@@ -96,6 +120,8 @@ class Model_divisiones extends CI_Model
             return ($update == true) ? true : false;
         }
     }
+
+
 
     public function remove($id)
     {

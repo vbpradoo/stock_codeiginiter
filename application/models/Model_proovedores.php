@@ -70,6 +70,7 @@ class Model_proovedores extends CI_Model
 
         if($sidx == 'ID') { $this->db->order_by('proovedor.ID', $sord); }
         else if($sidx == 'Nombre') { $this->db->order_by('proovedor.Nombre', $sord); }
+        else if($sidx == 'NIF') { $this->db->order_by('proovedor.NIF', $sord); }
         else if($sidx == 'Correo') { $this->db->order_by('proovedor.Correo', $sord); }
         else if($sidx == 'Telefono') { $this->db->order_by('proovedor.Telefono', $sord); }
         else if($sidx == 'Empresa') { $this->db->order_by('proovedor.Empresa', $sord); }

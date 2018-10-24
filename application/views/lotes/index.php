@@ -138,7 +138,7 @@
 
             url: base_url + "lotes/fetchLotesDataFilteringPagination",
             datatype: "json",
-            search:true,
+            search: true,
             styleUI: "Bootstrap",
             // columns:[{cellClass: 'ui-grid-cell-contents-auto'}],
             colModel: [
@@ -147,7 +147,7 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    width: "100%",
+                    // width: "100%",
                     align: 'center',
                     searchoptions: {
                         // show search options
@@ -159,7 +159,7 @@
                     name: 'Serial',
                     index: 'Serial',
                     sorttype: 'text',
-                    width: "100%",
+                    // width: "100%",
                     search: true,
                     align: 'center',
                     searchoptions: {
@@ -172,7 +172,7 @@
                     label: 'Artículo',
                     name: 'Articulo',
                     index: 'Articulo',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -184,7 +184,7 @@
                     label: 'Entrada',
                     name: 'Entrada',
                     index: 'Entrada',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     align: 'center',
                     searchoptions: {
@@ -207,7 +207,7 @@
                     label: 'Descripción',
                     name: 'Descripcion',
                     index: 'Descripcion',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center'
@@ -215,7 +215,7 @@
                     label: 'Cantidad',
                     name: 'Cantidad',
                     index: 'Cantidad',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -237,7 +237,7 @@
                     label: 'Stock',
                     name: 'Stock',
                     index: 'Stock',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -246,37 +246,37 @@
                         sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
                     }
                 },
-                {
-                    label: 'Precio',
-                    name: 'Precio',
-                    index: 'Precio',
-                    width: "100%",
-                    sorttype: 'text',
-                    // formatter: 'number',
-                    align: 'center',
-                    searchoptions: {
-                        // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
-                    }
-                },
-                {
-                    label: 'Coste',
-                    name: 'Coste',
-                    index: 'Coste',
-                    width: "100%",
-                    sorttype: 'text',
-                    // formatter: 'number',
-                    align: 'center',
-                    searchoptions: {
-                        // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
-                    }
-                },
+                // {
+                //     label: 'Precio',
+                //     name: 'Precio',
+                //     index: 'Precio',
+                //     // width: "100%",
+                //     sorttype: 'text',
+                //     // formatter: 'number',
+                //     align: 'center',
+                //     searchoptions: {
+                //         // show search options
+                //         sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                //     }
+                // },
+                // {
+                //     label: 'Coste',
+                //     name: 'Coste',
+                //     index: 'Coste',
+                //     // width: "100%",
+                //     sorttype: 'text',
+                //     // formatter: 'number',
+                //     align: 'center',
+                //     searchoptions: {
+                //         // show search options
+                //         sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                //     }
+                // },
                 {
                     label: 'Almacen',
                     name: 'Almacen',
                     index: 'Almacen',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -289,7 +289,7 @@
                     label: 'Vendido',
                     name: 'Vendido',
                     index: 'Vendido',
-                    width: "100%",
+                    // width: "100%",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center',
@@ -307,21 +307,22 @@
                     // formatter: 'number',
                     align: 'center'
                 },
+                // {
+                //     label: 'Estado',
+                //     name: 'Pagado',
+                //     index: 'Pagado',
+                //     // width: "100%",
+                //     align: 'center',
+                //     stype: "select",
+                //     // searchoptions value - name values pairs for the dropdown - they will appear as options
+                //     searchoptions: { value: ":[All];1:Pagado;0:Por Pagar"}
+                // },
                 {
-                    label: 'Estado',
-                    name: 'Pagado',
-                    index: 'Pagado',
-                    width: "100%",
-                    align: 'center',
-                    stype: "select",
-                    // searchoptions value - name values pairs for the dropdown - they will appear as options
-                    searchoptions: { value: ":[All];1:Pagado;0:Por Pagar"}
-                }, {
                     label: 'Control',
                     name: 'Buttons',
                     search: false,
                     index: 'Control',
-                    width: "100%",
+                    // width: "100%",
                     align: 'center'
                 }
             ],
@@ -335,6 +336,7 @@
             pager: "#jqGridPager",
             caption: "Lotes",
             subGrid: true,
+            subGridWidth: "45%",
             subGridOptions: { "plusicon" : "fa fa-plus",
                 "minusicon" :"fa fa-minus",
                 "openicon" : "fa fa-angle-double-right",
@@ -464,15 +466,20 @@
                     subgrid.jqGrid('setCell',j,'Metros Lineales',ml+"   ml");
                     subgrid.jqGrid('setCell',j,'Metros Cuadrados',m2+"   m²");
                     subgrid.jqGrid('setCell',j,'Metros Cubicos',m3+"   m³   ");
-                } },200);
+                } },400);
 
 
             },
             loadComplete: function (data) {
 
+                // $("#jqGrid").jqGrid()[0].p.subGridWidth = $("#jqGrid_ID").width();
 
                 // $(".sgcollapsed").width($("#jqGrid_subgrid").width());
                 // $(".sgcollapsed").css("display","inline-block");
+                reSizeGrid();
+
+                $("#jqGrid_subgrid").width($(".sgcollapsed").width());
+
                 $(".fa-angle-double-right").css("margin-left","1.2em") ;
 
                 //Subgrrid Meter Values
@@ -500,37 +507,10 @@
 
         $("#jqGrid").jqGrid('filterToolbar', {stringResult: true, searchOnEnter: true,
             defaultSearch: 'cn', ignoreCase: true,searchOperators: true });
-        // $(".ui-search-toolbar").css("display","none");
+
+        $("#jqGrid").jqGrid()[0].p.subGridWidth = $("#jqGrid_ID").width();
 
 
-
-        // $("#jqGrid").bind("jqGridAfterLoadComplete", function () {
-        //     var $this = $(this), iCol, iRow, rows, row, cm, colWidth,
-        //         $cells = $this.find(">tbody>tr>td"),
-        //         $colHeaders = $(this.grid.hDiv).find(">.ui-jqgrid-hbox>.ui-jqgrid-htable>thead>.ui-jqgrid-labels>.ui-th-column>div"),
-        //         colModel = $this.jqGrid("getGridParam", "colModel"),
-        //         n = $.isArray(colModel) ? colModel.length : 0,
-        //         idColHeadPrexif = "jqgh_" + this.id + "_";
-        //
-        //     $cells.wrapInner("<span class='mywrapping'></span>");
-        //     $colHeaders.wrapInner("<span class='mywrapping'></span>");
-        //
-        //     for (iCol = 0; iCol < n; iCol++) {
-        //         cm = colModel[iCol];
-        //         colWidth = $("#" + idColHeadPrexif + $.jgrid.jqID(cm.name) + ">.mywrapping").outerWidth() + 25; // 25px for sorting icons
-        //         for (iRow = 0, rows = this.rows; iRow < rows.length; iRow++) {
-        //             row = rows[iRow];
-        //             if ($(row).hasClass("jqgrow")) {
-        //                 colWidth = Math.max(colWidth, $(row.cells[iCol]).find(".mywrapping").outerWidth());
-        //             }
-        //         }
-        //         $this.jqGrid("setColWidth", iCol, colWidth);
-        //     }
-        // });
-
-
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
         function ChangejQGridDesign(table, pager) {
@@ -581,31 +561,51 @@
 
 
             $(window).on("resize", function () {
-                var $grid = $(table),
-                    newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
-                $grid.jqGrid("setGridWidth", newWidth, true);
-
-                var objRows = $("#jqGrid tr").splice(1);
-                var objHeader = $("tr[class=ui-jqgrid-labels]");
-                var objFirstRowHeader = $(objHeader[1]).children("th");
-
-                for (i = 0; i < objRows.length; i++) {
-                    var objFirstRowColumns = $(objRows[i]).children("td");
-
-                    for (i = 0; i < objFirstRowColumns.length; i++) {
-                        $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-                    }
-                }
+                // var $grid = $(table),
+                //     newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
+                // $grid.jqGrid("setGridWidth", newWidth, true);
+                // // console.log(newWidth);
+                // var objRows = $("#jqGrid tr").splice(1);
+                // var objHeader = $("tr[class=ui-jqgrid-labels]");
+                // var objFirstRowHeader = $(objHeader[1]).children("th");
+                //
+                // for (i = 0; i < objRows.length; i++) {
+                //     var objFirstRowColumns = $(objRows[i]).children("td");
+                //
+                //     for (i = 0; i < objFirstRowColumns.length; i++) {
+                //        $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
+                //     }
+                // }
+                reSizeGrid();
+                $("#jqGrid_subgrid").width($(".sgcollapsed").width());
 
                 // $("#jqGrid_subgrid").width($(".sgcollapsed").width()+9);
 
             });
         }
-
-
+        // $(window).on("resize", function () {
+        //     $("#jqGrid_subgrid").width($(".sgcollapsed").width());
+        //
+        // });
     });
 
+    function reSizeGrid(){
+        var $grid = $("#jqGrid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
+        $grid.jqGrid("setGridWidth", newWidth, true);
+        // console.log(newWidth);
+        var objRows = $("#jqGrid tr").splice(1);
+        var objHeader = $("tr[class=ui-jqgrid-labels]");
+        var objFirstRowHeader = $(objHeader[1]).children("th");
 
+        for (i = 0; i < objRows.length; i++) {
+            var objFirstRowColumns = $(objRows[i]).children("td");
+
+            for (i = 0; i < objFirstRowColumns.length; i++) {
+                $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
+            }
+        }
+    }
 
     // $("#jqGrid").bind("jqGridAfterLoadComplete", function () {
         //     var $this = $(this), iCol, iRow, rows, row, cm, colWidth,

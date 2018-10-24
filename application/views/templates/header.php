@@ -22,7 +22,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/skins/_all-skins.min.css') ?>">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/bower_components/morris.js/morris.css') ?>">
+    <!--    <link rel="stylesheet" href="--><?php //echo base_url('assets/bower_components/morris.js/morris.css') ?><!--">-->
     <!-- jvectormap -->
     <link rel="stylesheet" href="<?php echo base_url('assets/bower_components/jvectormap/jquery-jvectormap.css') ?>">
     <!-- Date Picker -->
@@ -66,7 +66,7 @@
     <script src="<?php echo base_url('assets/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
     <!-- Morris.js charts -->
     <script src="<?php echo base_url('assets/bower_components/raphael/raphael.min.js') ?>"></script>
-    <script src="<?php echo base_url('assets/bower_components/morris.js/morris.min.js') ?>"></script>
+    <!--    <script src="--><?php //echo base_url('assets/bower_components/morris.js/morris.min.js') ?><!--"></script>-->
     <!-- Sparkline -->
     <script src="<?php echo base_url('assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') ?>"></script>
     <!-- jvectormap -->
@@ -78,8 +78,13 @@
     <script src="<?php echo base_url('assets/bower_components/moment/min/moment.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/bower_components/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
     <!-- datepicker -->
+    <script src="<?php echo base_url('assets/bower_components/moment/locale/es.js') ?>"></script>
     <script src="<?php echo base_url('assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') ?>"></script>
+
+    <script type="text/javascript" src="<?php echo base_url('assets/bower_components/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"') ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/bower_components/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"') ?>"></script>
+    <link rel="stylesheet" href="<?php echo base_url('assets/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"') ?>" />
 
     <!-- Bootstrap WYSIHTML5 -->
     <script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') ?>"></script>
@@ -98,24 +103,24 @@
     <script src="<?php echo base_url('assets/plugins/fileinput/fileinput.min.js') ?>"></script>
 
     <!-- ChartJS -->
-    <script src="<?php echo base_url('assets/bower_components/Chart.js/Chart.js') ?>"></script>
+    <!--    <script src="--><?php //echo base_url('assets/bower_components/Chart.js/Chart.js') ?><!--"></script>-->
 
     <!-- icheck -->
     <script src="<?php echo base_url('assets/plugins/iCheck/icheck.min.js') ?>"></script>
 
     <!-- DataTables -->
-<!--    <script src="--><?php //echo base_url('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') ?><!--"></script>-->
-<!--    <script src="--><?php //echo base_url('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?><!--"></script>-->
+    <!--    <script src="--><?php //echo base_url('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') ?><!--"></script>-->
+    <!--    <script src="--><?php //echo base_url('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?><!--"></script>-->
 
     <!-- DataTables jsGRID -->
-<!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid.min.css') ?><!--"/>-->
-<!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid-theme.min.css') ?><!--"/>-->
-<!--    <script src="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid.min.js') ?><!--"></script>-->
- <!-- DataTables jqGrid-->
+    <!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid.min.css') ?><!--"/>-->
+    <!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid-theme.min.css') ?><!--"/>-->
+    <!--    <script src="--><?php //echo base_url('assets/plugins/jsgrid-1.5.3/dist/jsgrid.min.js') ?><!--"></script>-->
+    <!-- DataTables jqGrid-->
     <link type="text/css" rel="stylesheet" href="<?php echo base_url('assets/plugins/jqGrid/css/ui.jqgrid.css') ?>"/>
     <link type="text/css" rel="stylesheet" href="<?php echo base_url('assets/plugins/jqGrid/css/theme-jqgrid.css') ?>"/>
-<!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jqGrid/css/ui-lightness/jquery-ui-1.7.1.custom.css') ?><!--"/>-->
-<!--    <script src="--><?php //echo base_url('assets/plugins/jqGrid/js/jquery-1.4.2.min.js') ?><!--"> type="text/javascript"></script>-->
+    <!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/plugins/jqGrid/css/ui-lightness/jquery-ui-1.7.1.custom.css') ?><!--"/>-->
+    <!--    <script src="--><?php //echo base_url('assets/plugins/jqGrid/js/jquery-1.4.2.min.js') ?><!--"> type="text/javascript"></script>-->
     <script src="<?php echo base_url('assets/plugins/jqGrid/js/i18n/grid.locale-es.js') ?>"></script>
     <script src="<?php echo base_url('assets/plugins/jqGrid/js/jquery.jqGrid.js') ?>"></script>
 
@@ -131,4 +136,3 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-  

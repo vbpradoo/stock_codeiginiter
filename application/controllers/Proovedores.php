@@ -60,11 +60,12 @@ class Proovedores extends Admin_Controller
                 'ID' => $value['ID'],
                 'image' => $img,
                 'Nombre' => $value['Nombre'],
+                'NIF' => $value['NIF'],
                 'Correo' => $value['Correo'],
                 'Telefono' => $value['Telefono'],
                 'Empresa' => $value['Empresa'],
-                'Cantidad' => $value['Cantidad'],
-                'Gastado' => $value['Gastado'],
+//                'Cantidad' => $value['Cantidad'],
+//                'Gastado' => $value['Gastado'],
                 'Buttons' => $buttons
             );
         } // /foreach
@@ -95,10 +96,11 @@ class Proovedores extends Admin_Controller
 
         $this->form_validation->set_rules('proovedor_nombre', 'Nombre', 'trim|required');
         $this->form_validation->set_rules('proovedor_empresa', 'Empresa', 'trim|required');
+        $this->form_validation->set_rules('proovedor_nif', 'NIF', 'trim|required');
         $this->form_validation->set_rules('proovedor_telefono', 'Telefono', 'trim|required');
         $this->form_validation->set_rules('proovedor_correo', 'Correo', 'trim|required');
-        $this->form_validation->set_rules('proovedor_cantidad', 'Cantidad', 'trim|required');
-        $this->form_validation->set_rules('proovedor_gastado', 'Gastado', 'trim|required');
+//        $this->form_validation->set_rules('proovedor_cantidad', 'Cantidad', 'trim|required');
+//        $this->form_validation->set_rules('proovedor_gastado', 'Gastado', 'trim|required');
 
 
         if ($this->form_validation->run() == TRUE) {
@@ -113,11 +115,12 @@ class Proovedores extends Admin_Controller
             $data = array(
                 'Nombre' => $this->input->post('proovedor_nombre'),
                 'Empresa' => $this->input->post('proovedor_empresa'),
+                'NIF' => $this->input->post('proovedor_nif'),
                 'Telefono' => $this->input->post('proovedor_telefono'),
                 'Correo' => $this->input->post('proovedor_correo'),
                 'image' => $upload_image,
-                'Cantidad' => $this->input->post('proovedor_cantidad'),
-                'Gastado' => $this->input->post('proovedor_gastado')
+//                'Cantidad' => $this->input->post('proovedor_cantidad'),
+//                'Gastado' => $this->input->post('proovedor_gastado')
 
             );
 
@@ -125,7 +128,7 @@ class Proovedores extends Admin_Controller
 
             if ($create == true) {
                 $response['success'] = true;
-                $response['messages'] = 'Proovedor creado';
+                $response['messages'] = 'Proveedor creado';
             } else {
                 $response['success'] = false;
                 $response['messages'] = 'Error!';
@@ -192,9 +195,10 @@ class Proovedores extends Admin_Controller
             $this->form_validation->set_rules('edit_proovedor_nombre', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_empresa', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_telefono', 'Telefono', 'trim|required');
+            $this->form_validation->set_rules('edit_proovedor_nif', 'NIF', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_correo', 'Correo', 'trim|required');
-            $this->form_validation->set_rules('edit_proovedor_cantidad', 'Cantidad', 'trim|required');
-            $this->form_validation->set_rules('edit_proovedor_gastado', 'Gastado', 'trim|required');
+//            $this->form_validation->set_rules('edit_proovedor_cantidad', 'Cantidad', 'trim|required');
+//            $this->form_validation->set_rules('edit_proovedor_gastado', 'Gastado', 'trim|required');
 
             if ($this->form_validation->run() == TRUE) {
                 // true case
@@ -202,6 +206,7 @@ class Proovedores extends Admin_Controller
                 $data = array(
                     'Nombre' => $this->input->post('edit_proovedor_nombre'),
                     'Empresa' => $this->input->post('edit_proovedor_empresa'),
+                    'NIF' => $this->input->post('edit_proovedor_nif'),
                     'Telefono' => $this->input->post('edit_proovedor_telefono'),
                     'Correo' => $this->input->post('edit_proovedor_correo'),
                     'Cantidad' => $this->input->post('edit_proovedor_cantidad'),

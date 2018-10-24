@@ -66,6 +66,17 @@ class Model_lotes extends CI_Model
 //        $query = $this->db->query($sql);
 //        return $query->result_array();
     }
+    public function LoteExists($nombre)
+    {
+        // if($nombre) {
+        $sql = "SELECT * FROM lote where Serial = ?";
+        $query = $this->db->query($sql, array($nombre));
+        $count = $query->num_rows();
+
+        return ($count > 0) ? true : false;
+
+    }
+
     public function create($data)
     {
         if($data) {
@@ -147,6 +158,8 @@ class Model_lotes extends CI_Model
             $this->getSearch($search_strings);
 
         }
+//        echo $start .'\n';
+//        echo $limit .'\n';
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         $result=$query->result();
@@ -226,22 +239,22 @@ class Model_lotes extends CI_Model
                     else
                         $this->db->where('Lote.Stock', $value->data);
                     break;
-                case 'Precio':
-                    if ($value->op == 'ge')
-                        $this->db->where('Lote.Precio >=', $value->data);
-                    else if ($value->op == 'le')
-                        $this->db->where('Lote.Precio <=', $value->data);
-                    else
-                        $this->db->where('Lote.Precio', $value->data);
-                    break;
-                case 'Coste':
-                    if ($value->op == 'ge')
-                        $this->db->where('Lote.Coste >=', $value->data);
-                    else if ($value->op == 'le')
-                        $this->db->where('Lote.Coste <=', $value->data);
-                    else
-                        $this->db->where('Lote.Coste', $value->data);
-                    break;
+//                case 'Precio':
+//                    if ($value->op == 'ge')
+//                        $this->db->where('Lote.Precio >=', $value->data);
+//                    else if ($value->op == 'le')
+//                        $this->db->where('Lote.Precio <=', $value->data);
+//                    else
+//                        $this->db->where('Lote.Precio', $value->data);
+//                    break;
+//                case 'Coste':
+//                    if ($value->op == 'ge')
+//                        $this->db->where('Lote.Coste >=', $value->data);
+//                    else if ($value->op == 'le')
+//                        $this->db->where('Lote.Coste <=', $value->data);
+//                    else
+//                        $this->db->where('Lote.Coste', $value->data);
+//                    break;
                 case 'Almacen':
                     $this->db->like('Almacen', $value->data);
                     break;

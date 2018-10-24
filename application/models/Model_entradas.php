@@ -37,7 +37,10 @@ class Model_entradas extends CI_Model
         if($data) {
             $insert = $this->db->insert('entrada', $data);
 //            return ($insert == true) ? true : false;
-            return $this->db->insert_id();
+            if($insert)
+                return $this->db->insert_id();
+            else
+                return false;
         }
     }
 

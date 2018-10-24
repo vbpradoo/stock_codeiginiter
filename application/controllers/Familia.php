@@ -91,7 +91,7 @@ class Familia extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $response = array();
+            $response = array();
 
         $this->form_validation->set_rules('familia_nombre', 'Nombre artículo', 'trim|required');
         $this->form_validation->set_rules('familia_descripcion', 'Descripción', 'trim');

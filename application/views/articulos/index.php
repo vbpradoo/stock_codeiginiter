@@ -103,7 +103,12 @@
                       id="createArticuloForm">
 
                     <div class="modal-body">
-
+                        <div class="form-group">
+                            <label for="articulo_serial">Código de artículo</label>
+                            <input type="text" class="form-control" id="articulo_serial"
+                                   name="articulo_serial"
+                                   placeholder="Introduzca código de artículo" autocomplete="off">
+                        </div>
                         <div class="form-group">
                             <label for="articulo_nombre">Nombre de artículo</label>
                             <input type="text" class="form-control" id="articulo_nombre" name="articulo_nombre"
@@ -163,7 +168,12 @@
                     <div class="modal-body">
 
                         <div id="messages"></div>
-
+                        <div class="form-group">
+                            <label for="edit_articulo_serial">Código de artículo</label>
+                            <input type="text" class="form-control" id="edit_articulo_serial"
+                                   name="edit_articulo_serial"
+                                   placeholder="Introduzca código de artículo" autocomplete="off">
+                        </div>
                         <div class="form-group">
                             <label for="edit_articulo_nombre">Nombre de artículo</label>
                             <input type="text" class="form-control" id="edit_articulo_nombre"
@@ -388,6 +398,14 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
+                    // width: "1px",
+                    align: 'center'
+                    // formatter: formatTitle
+                },{
+                    label: 'Código',
+                    name: 'Serial',
+                    index: 'Serial',
+                    sorttype: 'text',
                     // width: "1px",
                     align: 'center'
                     // formatter: formatTitle
@@ -688,6 +706,7 @@
             success: function (response) {
                 console.log(response);
                 $("#edit_articulo_nombre").val(response.Nombre);
+                $("#edit_articulo_serial").val(response.Serial);
                 $("#edit_articulo_descripcion").val(response.Descripcion);
                 // $("#edit_articulo_familia> [value=" + response.Familia + "]").attr("selected", "true");
                 $(".edit_articulo_familia").val(response.Familia);

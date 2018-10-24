@@ -4,11 +4,11 @@
     <section class="content-header">
         <h1>
             Control
-            <small>Proovedores</small>
+            <small>Proveedores</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Principal</a></li>
-            <li class="active">Proovedores</li>
+            <li class="active">Proveedores</li>
         </ol>
     </section>
 
@@ -42,7 +42,7 @@
 
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Control de Proovedores</h3>
+                        <h3 class="box-title">Control de Proveedores</h3>
                     </div>
                     <!-- /.box-header -->
                     <table id="jqGrid" class="box-body"></table>
@@ -92,14 +92,19 @@
                             <!--                                </div>-->
                         </div>
                         <div class="form-group">
-                            <label for="proovedor_nombre">Nombre Proovedor</label>
+                            <label for="proovedor_nombre">Nombre Proveedor</label>
                             <input type="text" class="form-control" id="proovedor_nombre" name="proovedor_nombre"
-                                   placeholder="Introduzca nombre de proovedor" autocomplete="off">
+                                   placeholder="Introduzca nombre de proveedor" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="proovedor_empresa">Empresa</label>
                             <input type="text" class="form-control" id="proovedor_empresa" name="proovedor_empresa"
                                    placeholder="Introduzca nombre de empresa" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="proovedor_nif">NIF</label>
+                            <input type="text" class="form-control" id="proovedor_nif" name="proovedor_nif"
+                                   placeholder="Introduzca el NIF" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="proovedor_telefono">Teléfono</label>
@@ -112,17 +117,17 @@
                             <input type="text" class="form-control" id="proovedor_correo" name="proovedor_correo"
                                    placeholder="Introduzca correo" autocomplete="off">
                         </div>
-                        <div class="form-group">
-                            <label for="proovedor_cantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="proovedor_cantidad"
-                                   name="proovedor_cantidad"
-                                   placeholder="Introduzca cantidad" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="proovedor_gastado">Gastado</label>
-                            <input type="text" class="form-control" id="proovedor_gastado" name="proovedor_gastado"
-                                   placeholder="Introduzca lo que lleva gastado" autocomplete="off">
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="proovedor_cantidad">Cantidad</label>-->
+<!--                            <input type="text" class="form-control" id="proovedor_cantidad"-->
+<!--                                   name="proovedor_cantidad"-->
+<!--                                   placeholder="Introduzca cantidad" autocomplete="off">-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="proovedor_gastado">Gastado</label>-->
+<!--                            <input type="text" class="form-control" id="proovedor_gastado" name="proovedor_gastado"-->
+<!--                                   placeholder="Introduzca lo que lleva gastado" autocomplete="off">-->
+<!--                        </div>-->
                     </div>
 
                     <div class="modal-footer">
@@ -146,7 +151,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Editar Proovedor</h4>
+                    <h4 class="modal-title">Editar Proveedor</h4>
                 </div>
 
                 <form role="form" action="<?php echo base_url('proovedores/update') ?>" method="post" id="updateForm"
@@ -166,16 +171,21 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="edit_proovedor_nombre">Nombre Proovedor</label>
+                                <label for="edit_proovedor_nombre">Nombre Proveedor</label>
                                 <input type="text" class="form-control" id="edit_proovedor_nombre"
                                        name="edit_proovedor_nombre"
-                                       placeholder="Introduzca nombre de proovedor" autocomplete="off">
+                                       placeholder="Introduzca nombre de proveedor" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="edit_proovedor_empresa">Empresa</label>
                                 <input type="text" class="form-control" id="edit_proovedor_empresa"
                                        name="edit_proovedor_empresa"
                                        placeholder="Introduzca nombre de empresa" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_proovedor_nif">NIF</label>
+                                <input type="text" class="form-control" id="edit_proovedor_nif" name="edit_proovedor_nif"
+                                       placeholder="Introduzca el NIF" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="edit_proovedor_telefono">Teléfono</label>
@@ -189,18 +199,18 @@
                                        name="edit_proovedor_correo"
                                        placeholder="Introduzca correo" autocomplete="off">
                             </div>
-                            <div class="form-group">
-                                <label for="edit_proovedor_cantidad">Cantidad</label>
-                                <input type="text" class="form-control" id="edit_proovedor_cantidad"
-                                       name="edit_proovedor_cantidad"
-                                       placeholder="Introduzca cantidad" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_proovedor_gastado">Gastado</label>
-                                <input type="text" class="form-control" id="edit_proovedor_gastado"
-                                       name="edit_proovedor_gastado"
-                                       placeholder="Introduzca lo que lleva gastado" autocomplete="off">
-                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label for="edit_proovedor_cantidad">Cantidad</label>-->
+<!--                                <input type="text" class="form-control" id="edit_proovedor_cantidad"-->
+<!--                                       name="edit_proovedor_cantidad"-->
+<!--                                       placeholder="Introduzca cantidad" autocomplete="off">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="edit_proovedor_gastado">Gastado</label>-->
+<!--                                <input type="text" class="form-control" id="edit_proovedor_gastado"-->
+<!--                                       name="edit_proovedor_gastado"-->
+<!--                                       placeholder="Introduzca lo que lleva gastado" autocomplete="off">-->
+<!--                            </div>-->
 
                         </div>
 
@@ -225,12 +235,12 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Eliminar proovedor</h4>
+                    <h4 class="modal-title">Eliminar proveedor</h4>
                 </div>
 
                 <form role="form" action="<?php echo base_url('proovedores/remove') ?>" method="post" id="removeForm">
                     <div class="modal-body">
-                        <p>Está seguro de que desea eliminar este proovedor?</p>
+                        <p>Está seguro de que desea eliminar este proveedor?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -304,21 +314,31 @@
                     // width: "3px",
                     sorttype: 'text',
                     align: 'center'
-                }, {
-                    label: 'Cantidad',
-                    name: 'Cantidad',
-                    index: 'Cantidad',
+                },
+                {
+                    label: 'NIF',
+                    name: 'NIF',
+                    index: 'NIF',
                     // width: "3px",
                     sorttype: 'text',
                     align: 'center'
-                }, {
-                    label: 'Gastado',
-                    name: 'Gastado',
-                    index: 'Gastado',
-                    // width: "3px",
-                    sorttype: 'text',
-                    align: 'center'
-                }, {
+                },
+                // {
+                //     label: 'Cantidad',
+                //     name: 'Cantidad',
+                //     index: 'Cantidad',
+                //     // width: "3px",
+                //     sorttype: 'text',
+                //     align: 'center'
+                // }, {
+                //     label: 'Gastado',
+                //     name: 'Gastado',
+                //     index: 'Gastado',
+                //     // width: "3px",
+                //     sorttype: 'text',
+                //     align: 'center'
+                // },
+                {
                     label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
@@ -334,7 +354,7 @@
             rowList : [10, 20, 50, 100],
             autowidth: true,
             pager: "#jqGridPager",
-            caption: "Proovedores",
+            caption: "Provedores",
 
             loadComplete: function () {
                 // var objRows = $("#jqGrid tr").splice(1);
@@ -557,8 +577,8 @@
                 $("#edit_proovedor_empresa").val(response.Empresa);
                 $("#edit_proovedor_telefono").val(response.Telefono);
                 $("#edit_proovedor_correo").val(response.Correo);
-                $("#edit_proovedor_cantidad").val(response.Cantidad);
-                $("#edit_proovedor_gastado").val(response.Gastado);
+                // $("#edit_proovedor_cantidad").val(response.Cantidad);
+                // $("#edit_proovedor_gastado").val(response.Gastado);
 
                 // submit the edit from
                 $("#updateForm").unbind('submit').bind('submit', function () {

@@ -39,10 +39,10 @@
 
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Añador Salida</h3>
+                        <h3 class="box-title">Añadir Salida</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form role="form" action="<?php base_url('orders/create') ?>" method="post" class="form-horizontal">
+                    <form role="form" method="post" class="form-horizontal" id="createForm">
                         <div class="box-body">
 
                             <?php echo validation_errors(); ?>
@@ -61,7 +61,8 @@
                                 <div class="form-group">
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Cliente</label>
                                     <div class="col-sm-7">
-                                        <select class="form-control select_cliente" id="cliente_nombre" name="cliente_nombre"
+                                        <select class="form-control select_cliente" id="cliente_nombre"
+                                                name="cliente_nombre"
                                                 style="width:100%;" required>
                                             <option value="">Seleccione nombre de cliente</option>
                                             <?php foreach ($clientes as $k => $v): ?>
@@ -73,14 +74,21 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;" >Empresa</label>
+                                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Empresa</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="cliente_empresa"
                                                name="cliente_empresa" placeholder="Introduzca empresa"
                                                autocomplete="off" disabled>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">NIF</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="cliente_nif"
+                                               name="cliente_nif" placeholder="Introduzca NIF"
+                                               autocomplete="off" disabled>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Teléfono</label>
                                     <div class="col-sm-7">
@@ -126,7 +134,14 @@
                                                 required>
                                             <option value=""></option>
                                             <?php foreach ($articulos as $k => $v): ?>
-                                                <option value="<?php echo $v['ID'] ?>"> <?php echo $v['Nombre'] ?> </option>
+                                                <option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>
+                                            <?php endforeach ?>
+                                        </select>
+                                        <select class="form-control" data-row-id="row_1" id="articulo_hidden_1"
+                                                name="articulo_hidden[]" style="width:100%; visibility: hidden;">
+                                            <option value=""></option>
+                                            <?php foreach ($articulos as $k => $v): ?>
+                                                <option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>
                                             <?php endforeach ?>
                                         </select>
                                     </td>
@@ -139,18 +154,24 @@
                                     </td>
                                     <td>
                                         <input type="number" name="cantidad[]" id="cantidad_1" class="form-control"
-                                               onkeyup="getTotal(1)" disabled required>
+                                               onchange="getTotal(1)" disabled required>
                                     </td>
                                     <td>
                                         <input type="text" name="stock[]" id="stock_1" class="form-control" disabled
                                                autocomplete="off">
-<!--                                        <input type="hidden" name="stock_value[]" id="stock_value" class="form-control"-->
-<!--                                               autocomplete="off">-->
+                                        <input type="hidden" name="stock_hidden[]" id="stock_hidden_1"
+                                               class="form-control"
+                                               autocomplete="off">
+                                        <input type="hidden" name="division_largo[]" id="division_largo_1"
+                                               class="form-control"
+                                               autocomplete="off">
+                                        <input type="hidden" name="division_alto[]" id="division_alto_1"
+                                               class="form-control"
+                                               autocomplete="off">
+                                        <input type="hidden" name="division_espesor[]" id="division_espesor_1"
+                                               class="form-control"
+                                               autocomplete="off">
                                     </td>
-                                    <!--                        <td>-->
-                                    <!--                          <input type="text" name="amount[]" id="amount_1" class="form-control" disabled autocomplete="off">-->
-                                    <!--                          <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">-->
-                                    <!--                        </td>-->
                                     <td>
                                         <button type="button" class="btn btn-default" onclick="removeRow('1')"><i
                                                     class="fa fa-close"></i></button>
@@ -168,54 +189,20 @@
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="cantidad_total"
                                                name="cantidad_total" disabled autocomplete="off">
-                                        <!--                      <input type="hidden" class="form-control" id="gross_amount_value" name="gross_amount_value" autocomplete="off">-->
+                                        <input type="hidden" name="cantidad_total_hidden" id="cantidad_total_hidden"
+                                               class="form-control"
+                                               autocomplete="off">
                                     </div>
                                 </div>
-                                <!--                  --><?php //if($is_service_enabled == true): ?>
-                                <!--                  <div class="form-group">-->
-                                <!--                    <label for="service_charge" class="col-sm-5 control-label">S-Charge -->
-                                <?php //echo $company_data['service_charge_value'] ?><!-- %</label>-->
-                                <!--                    <div class="col-sm-7">-->
-                                <!--                      <input type="text" class="form-control" id="service_charge" name="service_charge" disabled autocomplete="off">-->
-                                <!--                      <input type="hidden" class="form-control" id="service_charge_value" name="service_charge_value" autocomplete="off">-->
-                                <!--                    </div>-->
-                                <!--                  </div>-->
-                                <!--                  --><?php //endif; ?>
-                                <!--                  --><?php //if($is_vat_enabled == true): ?>
-                                <!--                  <div class="form-group">-->
-                                <!--                    <label for="vat_charge" class="col-sm-5 control-label">Vat -->
-                                <?php //echo $company_data['vat_charge_value'] ?><!-- %</label>-->
-                                <!--                    <div class="col-sm-7">-->
-                                <!--                      <input type="text" class="form-control" id="vat_charge" name="vat_charge" disabled autocomplete="off">-->
-                                <!--                      <input type="hidden" class="form-control" id="vat_charge_value" name="vat_charge_value" autocomplete="off">-->
-                                <!--                    </div>-->
-                                <!--                  </div>-->
-                                <!--                  --><?php //endif; ?>
-                                <!--                  <div class="form-group">-->
-                                <!--                    <label for="discount" class="col-sm-5 control-label">Discount</label>-->
-                                <!--                    <div class="col-sm-7">-->
-                                <!--                      <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" onkeyup="subAmount()" autocomplete="off">-->
-                                <!--                    </div>-->
-                                <!--                  </div>-->
-                                <!--                  <div class="form-group">-->
-                                <!--                    <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>-->
-                                <!--                    <div class="col-sm-7">-->
-                                <!--                      <input type="text" class="form-control" id="net_amount" name="net_amount" disabled autocomplete="off">-->
-                                <!--                      <input type="hidden" class="form-control" id="net_amount_value" name="net_amount_value" autocomplete="off">-->
-                                <!--                    </div>-->
-                                <!--                  </div>-->
 
                             </div>
                         </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <!--                <input type="hidden" name="service_charge_rate" value="-->
-                            <?php //echo $company_data['service_charge_value'] ?><!--" autocomplete="off">-->
-                            <!--                <input type="hidden" name="vat_charge_rate" value="-->
-                            <?php //echo $company_data['vat_charge_value'] ?><!--" autocomplete="off">-->
-                            <button type="submit" class="btn btn-primary">Efectuar Salida</button>
-                            <a href="<?php echo base_url('orders/') ?>" class="btn btn-warning">Volver</a>
+                            <a target="__blank" type="button" id="imp_presupuesto" class="btn btn-success" style="display: none;">Imprimir Presupuesto</a>
+                            <button type="submit" id="env_salida" class="btn btn-primary">Efectuar Salida</button>
+                            <a href="<?php echo base_url('salidas/index') ?>" class="btn btn-warning">Volver</a>
                         </div>
                     </form>
                     <!-- /.box-body -->
@@ -235,6 +222,10 @@
 <script type="text/javascript">
     var base_url = "<?php echo base_url(); ?>";
     var option = true;
+    var cantidad_total = new Map();
+    var divisiones_selected = new Map();
+    var table_index = 1;
+
     $(document).ready(function () {
         $(".select_lote").select2();
         // $(".select_cliente").select2();
@@ -242,8 +233,8 @@
         $(".select_division").select2();
         // $("#description").wysihtml5();
 
-        $("#mainOrdersNav").addClass('active');
-        $("#addOrderNav").addClass('active');
+        $("#mainSalidasNav").addClass('active');
+        $("#addSalidaNav").addClass('active');
 
         var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
             'onclick="alert(\'Call your custom code here.\')">' +
@@ -253,9 +244,11 @@
         // Add new row in the table
         $("#add_row").unbind('click').bind('click', function () {
             //We initialize the switch
-            option=true;
+            option = true;
             var table = $("#salida_table");
-            var count_table_tbody_tr = $("#salida_table tbody tr").length;
+            // var count_table_tbody_tr = $("#salida_table tbody tr").length;
+            var count_table_tbody_tr = table_index;
+            table_index++;
             var row_id = count_table_tbody_tr + 1;
 
             // $.ajax({
@@ -264,52 +257,62 @@
             //     dataType: 'json',
             //     success: function (response) {
 
-                    // console.log(reponse.x);
+            // console.log(reponse.x);
 
-                    var html ='<tr id="row_' + row_id + '">' +
-                        '<td>' +
-                        '<select class="form-control"  data-row-id="' + row_id + '" id="lote_'+ row_id + '" name="lote[]" style="width:100%;" onchange="getLoteData('+row_id+')">'+
-                        '<option value=""></option>'+
-                        <?php foreach ($lotes as $k => $v): ?>
-                        '<option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>'+
-                        <?php endforeach ?>
-                        '</select>'+
-                        '</td>';
-                    html += '<td>'+
-                        '<select class="form-control select_articulo" data-row-id="row_'+ row_id + '" id="articulo_'+ row_id + '" name="articulo[]" onchange="getLoteFromArticulo('+ row_id + ')" style="width:100%;" required>'+
-                        '<option value=""></option>'+
-                        <?php foreach ($articulos as $k => $v): ?>
-                        '<option value="<?php echo $v['ID'] ?>"> <?php echo $v['Nombre'] ?> </option>'+
-                        <?php endforeach ?>
-                        '</select>'+
-                        '</td>'+
-                        '<td>'+
-                        '<select class="form-control select_division" data-row-id="row_'+row_id+'" id="division_'+row_id+'" name="division[]" style="width:100%;" onchange="enCantidadStock('+row_id+')"required>'+
-                        '<option value=""></option>'+
-                        '</select>'+
-                        '</td>'+
-                        '<td>'+
-                        '<input type="number" name="cantidad[]" id="cantidad_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" disabled required>'+
-                        '</td>'+
-                        '<td>'+
-                        '<input type="text" name="stock[]" id="stock_'+row_id+'" class="form-control" disabled autocomplete="off">'+
-                        '</td>'+
-                        '<td><button type="button" class="btn btn-default" onclick="removeRow(' + row_id + ')"><i class="fa fa-close"></i></button></td>' +
-                        '</tr>';
+            var html = '<tr id="row_' + row_id + '">' +
+                '<td>' +
+                '<select class="form-control"  data-row-id="' + row_id + '" id="lote_' + row_id + '" name="lote[]" style="width:100%;" onchange="getLoteData(' + row_id + ')">' +
+                '<option value=""></option>' +
+                <?php foreach ($lotes as $k => $v): ?>
+                '<option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>' +
+                <?php endforeach ?>
+                '</select>' +
+                '</td>';
+            html += '<td>' +
+                '<select class="form-control select_articulo" data-row-id="row_' + row_id + '" id="articulo_' + row_id + '" name="articulo[]" onchange="getLoteFromArticulo(' + row_id + ')" style="width:100%;" required>' +
+                '<option value=""></option>' +
+                <?php foreach ($articulos as $k => $v): ?>
+                '<option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>' +
+                <?php endforeach ?>
+                '</select>' +
+                '<select type="hidden" class="form-control" data-row-id="row_' + row_id + '" id="articulo_hidden_' + row_id + '" name="articulo_hidden[]"  style="width:100%; visibility: hidden;">' +
+                '<option value=""></option>' +
+                <?php foreach ($articulos as $k => $v): ?>
+                '<option value="<?php echo $v['ID'] ?>"> <?php echo $v['Serial'] ?> </option>' +
+                <?php endforeach ?>
+                '</select>' +
+                '</td>' +
+                '<td>' +
+                '<select class="form-control select_division" data-row-id="row_' + row_id + '" id="division_' + row_id + '" name="division[]" style="width:100%;" onchange="enCantidadStock(' + row_id + ')"required>' +
+                '<option value=""></option>' +
+                '</select>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" name="cantidad[]" id="cantidad_' + row_id + '" class="form-control" onchange="getTotal(' + row_id + ')" disabled required>' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" name="stock[]" id="stock_' + row_id + '" class="form-control" disabled autocomplete="off">' +
+                '<input type="hidden" name="stock_hidden[]" id="stock_hidden_' + row_id + '" class="form-control"  autocomplete="off">' +
+                '<input type="hidden" name="division_largo[]" id="division_largo_' + row_id + '" class="form-control" autocomplete="off">' +
+                '<input type="hidden" name="division_alto[]" id="division_alto_' + row_id + '" class="form-control" autocomplete="off">' +
+                '<input type="hidden" name="division_espesor[]" id="division_espesor_' + row_id + '" class="form-control" autocomplete="off">' +
+                '</td>' +
+                '<td><button type="button" class="btn btn-default" onclick="removeRow(' + row_id + ')"><i class="fa fa-close"></i></button></td>' +
+                '</tr>';
 
-                    if (count_table_tbody_tr >= 1) {
-                        $("#salida_table tbody tr:last").after(html);
-                    }
-                    else {
-                        $("#salida_table tbody").html(html);
-                    }
-                    $("#lote_"+row_id).select2();
-                    $("#articulo_"+row_id).select2();
-                    $("#division_"+row_id).select2();
+            if (count_table_tbody_tr >= 1) {
+                $("#salida_table tbody tr:last").after(html);
+            }
+            else {
+                $("#salida_table tbody").html(html);
+            }
+            $("#lote_" + row_id).select2();
+            $("#articulo_" + row_id).select2();
+            $("#division_" + row_id).select2();
 
-                    // $(".product").select2();
+            // $(".product").select2();
 
-                // }
+            // }
             // });
 
             return false;
@@ -319,12 +322,14 @@
         $("#cliente_nombre").unbind().change(function () {
             if ($("#cliente_nombre").val() === "") {
                 $("#cliente_empresa").val("");
+                $("#cliente_nif").val("");
                 $("#cliente_telefono").val("");
             } else {
                 <?php foreach ($clientes as $k => $v):
-                    ?>
+                ?>
                 if ($("#cliente_nombre").val() === "<?php echo $v['ID'] ?>") {
                     $("#cliente_empresa").val("<?php echo($v['Empresa'])?>");
+                    $("#cliente_nif").val("<?php echo($v['NIF'])?>");
                     $("#cliente_telefono").val("<?php echo($v['Telefono'])?>");
                 }
                 <?php endforeach ?>
@@ -338,18 +343,37 @@
     }); // /document
 
     function getTotal(row = null) {
+        // console.log("ENTRA 1");
+
         if (row) {
-            var total = Number($("#stock_value" + row).val()) * Number($("#cantidad_" + row).val());
-            total = total.toFixed(2);
-            //
-            // $("#amount_" + row).val(total);
-            // $("#amount_value_" + row).val(total);
+            console.log("ENTRA TOTAL");
+            var piezas = $("#cantidad_" + row).val();
+            var espesor = $("#division_espesor_" + row).val();
+            var largo = $("#division_largo_" + row).val();
+            var alto = $("#division_alto_" + row).val();
 
-            // subAmount();
+            var data_lineal = piezas * largo;
+            var data_area = piezas * (largo * alto);
+            var data_vol = piezas * (largo * alto * espesor);
 
+            var total = {"Lineal": data_lineal, "Area": data_area, "Volumen": data_vol};
+            cantidad_total.set(row, total);
+            refreshTotal();
         } else {
-            alert('no row !! please refresh the page');
+            alert('No hay fila !! Por favor, recargue la página!');
         }
+    }
+
+    function refreshTotal() {
+        var lineal = 0, area = 0, volumen = 0;
+        for (const cantidad of cantidad_total.values()) {
+            lineal += cantidad.Lineal;
+            area += cantidad.Area;
+            volumen += cantidad.Volumen;
+        }
+
+        $("#cantidad_total").prop('value', "Lineal T: " + lineal + "m" + "\tÁrea T: " + area + "m²" + "\tVolumen T: " + volumen + "m³");
+        $("#cantidad_total_hidden").prop('value', "Lineal T: " + lineal + "m" + "\tÁrea T: " + area + "m²" + "\tVolumen T: " + volumen + "m³");
     }
 
     // get the product information from the server
@@ -378,6 +402,7 @@
                     // setting the rate value into the rate input field
 
                     $("#articulo_" + row_id).val(response.Articulo).trigger('change.select2');
+                    $("#articulo_hidden_" + row_id).val(response.Articulo).trigger('change.select2');
                     $("#articulo_" + row_id).select2({disabled: true});
 
                     $("#division_" + row_id).empty();
@@ -403,6 +428,11 @@
                                     "text": "Largo:" + element.Largo + "m ,Alto/Ancho:" + element.Alto + "m ,Espesor:" + element.Espesor + "m"
                                 }
                             )
+                            for (const division of divisiones_selected.values()) {
+                                if (parseInt(element.ID) === division) {
+
+                                }
+                            }
                             console.log(results[i])
                         });
 
@@ -413,6 +443,7 @@
                             allowClear: true,
                             containerCssClass: "margin-bottom-1",
                         });
+
 
                     });
                     // $("#division_"+row_id).val(response.Division);
@@ -438,6 +469,8 @@
             console.log("ENTRA POR ARTICULO");
 
             var articulo_id = $("#articulo_" + row_id).val();
+            $("#articulo_hidden_" + row_id).val($("#articulo_" + row_id).val());
+
             if (articulo_id === "") {
 
                 // $("#lote_" + row_id).val("");
@@ -482,9 +515,29 @@
 
     function enCantidadStock(row_id) {
 
+        var division_id = $("#division_" + row_id).val();
+
+        for (const division of divisiones_selected.values()) {
+            if (division_id === division) {
+                alert("Ya tiene selecionado este elemento en otra fila!!");
+                $('#cantidad_' + row_id).prop('disabled', true);
+                $('#stock_' + row_id).prop('value', "");
+                $('#stock_hidden' + row_id).prop('value', "");
+                return;
+            }
+        }
+        //We add the division to a map in order to not repeat item
+        divisiones_selected.set(row_id, division_id);
+
+        //Significa que ha cambiado de div
+        if (cantidad_total.has(row_id)) {
+            cantidad_total.delete(row_id);
+            refreshTotal();
+        }
         $('#cantidad_' + row_id).prop('disabled', false);
         $('#cantidad_' + row_id).empty();
-        var division_id = $("#division_" + row_id).val();
+        $('#cantidad_' + row_id).val("");
+
         $.ajax({
             url: base_url + "lotes/getDivisionDataById/" + division_id,
             type: 'GET',
@@ -492,6 +545,7 @@
         }).done(function (response) {
             console.log(JSON.parse(response));
             var stock = JSON.parse(response).Piezas_Stock;
+            var division = JSON.parse(response);
 
             $("#cantidad_" + row_id).attr({
                 "max": stock,        // substitute your own
@@ -499,67 +553,101 @@
             });
 
             $('#stock_' + row_id).prop('value', stock);
+            $('#stock_hidden_' + row_id).prop('value', stock);
+            $('#division_largo_' + row_id).prop('value', division.Largo);
+            $('#division_alto_' + row_id).prop('value', division.Alto);
+            $('#division_espesor_' + row_id).prop('value', division.Espesor);
 
         });
     }
 
-    // calculate the total amount of the order
-    //function subAmount() {
-    //  var service_charge = <?php //echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>//;
-    //  var vat_charge = <?php //echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>//;
-    //
-    //  var tableProductLength = $("#salida_table tbody tr").length;
-    //  var totalSubAmount = 0;
-    //  for(x = 0; x < tableProductLength; x++) {
-    //    var tr = $("#salida_table tbody tr")[x];
-    //    var count = $(tr).attr('id');
-    //    count = count.substring(4);
-    //
-    //    totalSubAmount = Number(totalSubAmount) + Number($("#amount_"+count).val());
-    //  } // /for
-    //
-    //  totalSubAmount = totalSubAmount.toFixed(2);
-    //
-    //  // sub total
-    //  $("#gross_amount").val(totalSubAmount);
-    //  $("#gross_amount_value").val(totalSubAmount);
-    //
-    //  // vat
-    //  var vat = (Number($("#gross_amount").val())/100) * vat_charge;
-    //  vat = vat.toFixed(2);
-    //  $("#vat_charge").val(vat);
-    //  $("#vat_charge_value").val(vat);
-    //
-    //  // service
-    //  var service = (Number($("#gross_amount").val())/100) * service_charge;
-    //  service = service.toFixed(2);
-    //  $("#service_charge").val(service);
-    //  $("#service_charge_value").val(service);
-    //
-    //  // total amount
-    //  var totalAmount = (Number(totalSubAmount) + Number(vat) + Number(service));
-    //  totalAmount = totalAmount.toFixed(2);
-    //  // $("#net_amount").val(totalAmount);
-    //  // $("#totalAmountValue").val(totalAmount);
-    //
-    //  var discount = $("#discount").val();
-    //  if(discount) {
-    //    var grandTotal = Number(totalAmount) - Number(discount);
-    //    grandTotal = grandTotal.toFixed(2);
-    //    $("#net_amount").val(grandTotal);
-    //    $("#net_amount_value").val(grandTotal);
-    //  } else {
-    //    $("#net_amount").val(totalAmount);
-    //    $("#net_amount_value").val(totalAmount);
-    //
-    //  } // /else discount
-    //
-    //} // /sub total amount
 
     function removeRow(tr_id) {
         $("#salida_table tbody tr#row_" + tr_id).remove();
+        cantidad_total.delete(parseInt(tr_id));
+        divisiones_selected.delete(parseInt(tr_id));
+        refreshTotal();
         // subAmount();
     }
 
+    // submit the create from
+    $("#createForm").unbind('submit').on('submit', function () {
+        var form = $(this);
+        //We place the action for the add Division Form
+        form.attr('action', base_url + 'salidas/create');
+
+        $(".text-danger").remove();
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(), // /converting the form data into array and sending it to server
+            dataType: 'json',
+        }).done(function (response) {
+
+                console.log(response);
+                // response = JSON.parse(response);
+                // console.log(response)
+                // $.each(response, function () {
+
+                    if (response.success === true) {
+
+                        $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.message +
+                            '</div>');
+
+                        // console.log(response.checkSold);
+
+                        response.checkSold.forEach(function(lote) {
+                            console.log(lote);
+                            if(lote.success_lote) {
+                                $("#messages").append('<div class="alert alert-success alert-dismissible" role="alert">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                    '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + lote.messages +
+                                    '</div>');
+                            }
+                            else{
+                                $("#messages").append('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                    '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + lote.messages +
+                                    '</div>');
+                            }
+                        });
+                        // Mostramos el boton de imprimir//
+                        if(response.hasOwnProperty("sal_id")) {
+                            $("#imp_presupuesto").show(100);
+                            $("#imp_presupuesto").attr("href", base_url + "salidas/printDiv/" +response.sal_id);
+                            $("#env_salida").hide(100);
+                        }
+                       //$("#createForm")[0].reset();
+                        $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
+
+                    } else {
+
+                        if (response.messages instanceof Object) {
+                            $.each(response.messages, function (index, value) {
+                                var id = $("#" + index);
+
+                                id.closest('.form-group')
+                                    .removeClass('has-error')
+                                    .removeClass('has-success')
+                                    .addClass(value.length > 0 ? 'has-error' : 'has-success');
+
+                                id.after(value);
+
+                            });
+                        } else {
+                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.message +
+                                '</div>');
+                        }
+                    }
+                // });
+            });
+
+        return false;
+    });
 
 </script>

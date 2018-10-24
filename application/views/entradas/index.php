@@ -35,7 +35,8 @@
                 <?php endif; ?>
 
                 <?php if (in_array('createProduct', $user_permission)): ?>
-                    <a class="btn btn-primary" href="<?php echo base_url('entradas/createEntrada') ?>">Añadir Entrada</a>
+                    <a class="btn btn-primary" href="<?php echo base_url('entradas/createEntrada') ?>">Añadir
+                        Entrada</a>
                     <br/> <br/>
                 <?php endif; ?>
 
@@ -116,32 +117,31 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Editar Entrada</h4>
                 </div>
-
-                <form role="form" action="<?php echo base_url('entradas/update') ?>" method="post" id="updateForm">
+                <form role="form" method="post"   action="<?php echo base_url('entradas/update') ?>" id="updateForm">
 
                     <div class="modal-body">
                         <div id="messages"></div>
 
-<!--                        <div class="form-group">-->
-<!--                            <label for="edit_proovedor">Proovedor</label>-->
-<!--                            <input type="text" class="form-control" id="edit_proovedor" name="edit_proovedor"-->
-<!--                                   placeholder="" autocomplete="off">-->
-<!--                        </div>-->
+                        <!--                        <div class="form-group">-->
+                        <!--                            <label for="edit_proovedor">Proovedor</label>-->
+                        <!--                            <input type="text" class="form-control" id="edit_proovedor" name="edit_proovedor"-->
+                        <!--                                   placeholder="" autocomplete="off">-->
+                        <!--                        </div>-->
                         <div class="form-group">
                             <label for="edit_fecha">Fecha</label>
                             <input type="text" class="form-control" id="edit_fecha" name="edit_fecha"
                                    placeholder="Introduzca fecha" autocomplete="off">
                         </div>
-<!--                        <div class="form-group">-->
-<!--                            <label for="edit_cantidad">Cantidad</label>-->
-<!--                            <input type="text" class="form-control" id="edit_cantidad" name="edit_cantidad"-->
-<!--                                   placeholder="Introduzca cantidad" autocomplete="off">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="edit_descripcion">Descripción</label>-->
-<!--                            <input type="text" class="form-control" id="edit_descripcion" name="edit_descripcion"-->
-<!--                                   placeholder="Introduzca descripción" autocomplete="off">-->
-<!--                        </div>-->
+                        <!--                        <div class="form-group">-->
+                        <!--                            <label for="edit_cantidad">Cantidad</label>-->
+                        <!--                            <input type="text" class="form-control" id="edit_cantidad" name="edit_cantidad"-->
+                        <!--                                   placeholder="Introduzca cantidad" autocomplete="off">-->
+                        <!--                        </div>-->
+                        <!--                        <div class="form-group">-->
+                        <!--                            <label for="edit_descripcion">Descripción</label>-->
+                        <!--                            <input type="text" class="form-control" id="edit_descripcion" name="edit_descripcion"-->
+                        <!--                                   placeholder="Introduzca descripción" autocomplete="off">-->
+                        <!--                        </div>-->
                         <div class="form-group">
                             <label for="edit_active">Estado</label>
                             <select class="form-control select_group" id="edit_active" name="edit_active">
@@ -200,25 +200,34 @@
 
         $("#storeNav").addClass('active');
         $(".select_group").select2({width: 'resolve'});
+        $("#edit_fecha").datetimepicker({
+            date: moment(),
+            minDate: new Date(2018, 1, 1),
+            // maxDate: new Date(2030, 0, 1),
+            // showOn: 'focus',
+            locale: 'es',
+        });
+
+
 
         $("#jqGrid").jqGrid({
 
             url: base_url + "entradas/fetchEntradasDataFilteringPagination",
-            datatype:"json",
-            styleUI:"Bootstrap",
+            datatype: "json",
+            styleUI: "Bootstrap",
             colModel: [
                 {
                     label: 'ID',
                     name: 'ID',
-                    index:'ID',
+                    index: 'ID',
                     sorttype: 'number',
                     // width: "1px",
                     align: 'center'
                     // formatter: formatTitle
-                },{
+                }, {
                     label: 'Lote',
                     name: 'Serial',
-                    index:'Serial',
+                    index: 'Serial',
                     sorttype: 'text',
                     // width: "2px",
                     align: 'center'
@@ -227,7 +236,7 @@
                 {
                     label: 'Proovedor',
                     name: 'Proovedor',
-                    index:'Proovedor',
+                    index: 'Proovedor',
                     sorttype: 'text',
                     // width: "2px",
                     align: 'center'
@@ -236,36 +245,36 @@
                 {
                     label: 'Fecha',
                     name: 'Fecha',
-                    index:'Fecha',
+                    index: 'Fecha',
                     // width: "3px",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center'
-                },{
+                }, {
                     label: 'Cantidad',
                     name: 'Cantidad',
-                    index:'Cantidad',
+                    index: 'Cantidad',
                     // width: "3px",
                     sorttype: 'text',
                     align: 'center'
-                },{
+                }, {
                     label: 'Descripción',
                     name: 'Descripcion',
-                    index:'Descripcion',
+                    index: 'Descripcion',
                     // width: "3px",
                     sorttype: 'text',
                     // formatter: 'number',
                     align: 'center'
-                },{
+                }, {
                     label: 'Estado',
                     name: 'Pagado',
-                    index:'Pagado',
+                    index: 'Pagado',
                     // width: "3px",
                     align: 'center'
-                },{
+                }, {
                     label: 'Control',
                     name: 'Buttons',
-                    index:'Control',
+                    index: 'Control',
                     // width: "3px",
                     align: 'center'
                 }
@@ -275,8 +284,8 @@
             width: "auto",
             height: "auto",
             rowNum: 10,
-            rowList : [10, 20, 50, 100],
-            autowidth:true,
+            rowList: [10, 20, 50, 100],
+            autowidth: true,
             pager: "#jqGridPager",
             caption: "Almacenes",
 
@@ -339,8 +348,8 @@
             });
 
             // enableTooltips
-            $('.navtable .ui-pg-button').tooltip({ container: 'body' });
-            $(table).find('.ui-pg-div').tooltip({ container: 'body' });
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
 
             var $grid = $(table),
                 newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
@@ -376,6 +385,7 @@
                 }
             });
         }
+
         // fetchGridData();
 
         // function fetchGridData() {
@@ -478,138 +488,154 @@
 
 
         // submit the create from
-        $("#createForm").unbind('submit').on('submit', function () {
-            var form = $(this);
-
-            // remove the text-danger
-            $(".text-danger").remove();
-
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(), // /converting the form data into array and sending it to server
-                dataType: 'json',
-                success: function (response) {
-
-                    $('#jqGrid').trigger( 'reloadGrid' );
-
-                    if (response.success === true) {
-                        $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                            '</div>');
-
-
-                        // hide the modal
-                        $("#addModal").modal('hide');
-
-                        // reset the form
-                        $("#createForm")[0].reset();
-                        $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                    } else {
-
-                        if (response.messages instanceof Object) {
-                            $.each(response.messages, function (index, value) {
-                                var id = $("#" + index);
-
-                                id.closest('.form-group')
-                                    .removeClass('has-error')
-                                    .removeClass('has-success')
-                                    .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                id.after(value);
-
-                            });
-                        } else {
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                '</div>');
-                        }
-                    }
-                }
-            });
-
-            return false;
-        });
-
+        //     $("#createForm").unbind('submit').on('submit', function () {
+        //         var form = $(this);
+        //
+        //         // remove the text-danger
+        //         $(".text-danger").remove();
+        //
+        //         $.ajax({
+        //             url: form.attr('action'),
+        //             type: form.attr('method'),
+        //             data: form.serialize(), // /converting the form data into array and sending it to server
+        //             dataType: 'json',
+        //             success: function (response) {
+        //
+        //                 $('#jqGrid').trigger( 'reloadGrid' );
+        //
+        //                 if (response.success === true) {
+        //                     $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
+        //                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        //                         '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
+        //                         '</div>');
+        //
+        //
+        //                     // hide the modal
+        //                     $("#addModal").modal('hide');
+        //
+        //                     // reset the form
+        //                     $("#createForm")[0].reset();
+        //                     $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
+        //
+        //                 } else {
+        //
+        //                     if (response.messages instanceof Object) {
+        //                         $.each(response.messages, function (index, value) {
+        //                             var id = $("#" + index);
+        //
+        //                             id.closest('.form-group')
+        //                                 .removeClass('has-error')
+        //                                 .removeClass('has-success')
+        //                                 .addClass(value.length > 0 ? 'has-error' : 'has-success');
+        //
+        //                             id.after(value);
+        //
+        //                         });
+        //                     } else {
+        //                         $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+        //                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        //                             '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
+        //                             '</div>');
+        //                     }
+        //                 }
+        //             }
+        //         });
+        //
+        //         return false;
+        //     });
+        //
     });
 
     // edit function
     function editFunc(id) {
-        $.ajax({
-            url: 'getEntradasDataById/' + id,
-            type: 'post',
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
 
-                // $("#edit_proovedor").val(response.Proovedor);
-                $("#edit_fecha").val(response.Fecha);
-                // $("#edit_cantidad").val(response.Cantidad);
-                // $("#edit_descripcion").val(response.Descripcion);
+        if (id) {
+            $.ajax({
+                url: 'getEntradasDataById/' + id,
+                type: 'post',
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response);
+                    console.log(response.Fecha);
 
-                $("#edit_active").val(response.Pagado);
-                $("#edit_active").trigger('change.select2');
+                    // $("#edit_proovedor").val(response.Proovedor);
+                    // $("#edit_fecha").val(response.Fecha);
+                    $('#edit_fecha').data("DateTimePicker").date(moment(response.Fecha));
 
-                // submit the edit from
-                $("#updateForm").unbind('submit').bind('submit', function () {
-                    var form = $(this);
+                    // $("#edit_cantidad").val(response.Cantidad);
+                    // $("#edit_descripcion").val(response.Descripcion);
 
-                    // remove the text-danger
-                    $(".text-danger").remove();
+                    $("#edit_active").val(response.Pagado);
+                    $("#edit_active").trigger('change.select2');
 
-                    $.ajax({
-                        url: form.attr('action') + '/' + id,
-                        type: form.attr('method'),
-                        data: form.serialize(), // /converting the form data into array and sending it to server
-                        dataType: 'json',
-                        success: function (response) {
+                    // submit the edit from
+                    $("#updateForm").unbind('submit').bind('submit', function () {
+                        var form = $(this);
 
-                            $('#jqGrid').trigger( 'reloadGrid');
-                            console.log("ENTRA");
-                            if (response.success === true) {
-                                $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                    '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                                    '</div>');
+                        // remove the text-danger + id+'?'+form.serialize()
+                        // $(".text-danger").remove();
+                        console.log(form.serialize());
+                        console.log(id);
+                        // console.log(typeof $("#edit_fecha").val());
+                        if($("#edit_fecha").val().includes('/'))
+                            convertTime($("#edit_fecha"));
+                            // var serialize= JSON.parse(form.serialize());
+                        // serialize.edit_  fecha = $("#edit_fecha").val();
+                        // var data = JSON.stringify(serialize);
+                        var url = form.attr('action')+'/'+id;
+                        console.log(url);
+                        // $("#edit_fecha").val($("#edit_fecha").val());
+                        $.ajax({
+                            url: url,
+                            type: form.attr('method'),
+                            data: form.serialize(), // /converting the form data into array and sending it to server
+                            dataType: 'json',
+                            success: function (response) {
 
-
-                                // hide the modal
-                                $("#editModal").modal('hide');
-                                // reset the form
-                                $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                            } else {
-
-                                if (response.messages instanceof Object) {
-                                    $.each(response.messages, function (index, value) {
-                                        var id = $("#" + index);
-
-                                        id.closest('.form-group')
-                                            .removeClass('has-error')
-                                            .removeClass('has-success')
-                                            .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                        id.after(value);
-
-                                    });
-                                } else {
-                                    $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                $('#jqGrid').trigger('reloadGrid');
+                                console.log("ENTRA");
+                                if (response.success === true) {
+                                    $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
                                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                        '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
+                                        '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
                                         '</div>');
+
+
+                                    // hide the modal
+                                    $("#editModal").modal('hide');
+                                    // reset the form
+                                    $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
+
+                                } else {
+
+                                    if (response.messages instanceof Object) {
+                                        $.each(response.messages, function (index, value) {
+                                            var id = $("#" + index);
+
+                                            id.closest('.form-group')
+                                                .removeClass('has-error')
+                                                .removeClass('has-success')
+                                                .addClass(value.length > 0 ? 'has-error' : 'has-success');
+
+                                            id.after(value);
+
+                                        });
+                                    } else {
+                                        $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                            '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
+                                            '</div>');
+                                    }
                                 }
                             }
-                        }
+                        });
+
+                        return false;
                     });
 
-                    return false;
-                });
-
-            }
-        });
+                }
+            });
+        }
     }
 
     // remove functions
@@ -629,7 +655,7 @@
                     dataType: 'json',
                     success: function (response) {
 
-                        $('#jqGrid').trigger( 'reloadGrid' );
+                        $('#jqGrid').trigger('reloadGrid');
 
                         if (response.success === true) {
                             $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
@@ -653,6 +679,17 @@
                 return false;
             });
         }
+    }
+
+    function convertTime($) {
+        var date = $.val();
+        date = date.split('/');
+        var año = date[2].split(' ')[0];
+        var time = date[2].split(' ')[1];
+        console.log(año+"-"+date[1]+"-"+date[0] +" "+ time);
+        var converted=año+"-"+date[1]+"-"+date[0] +" "+ time;
+        $.val(converted);
+
     }
 
 

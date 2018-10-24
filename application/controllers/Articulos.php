@@ -70,6 +70,7 @@ class Articulos extends Admin_Controller
 
             $result['rows'][$key] = array(
                 'ID'=>$value['ID'],
+                'Serial'=>$value['Serial'],
                 'Nombre'=>$value['Nombre'],
                 'Descripcion'=>$value['Descripcion'],
                 'Familia'=>$value['Familia'],
@@ -101,14 +102,14 @@ class Articulos extends Admin_Controller
         return false;
     }
 
-    public function fetchArticuloNombre(){
+    public function fetchArticuloSerial(){
 
         $result = array();
 
         $data = $this->model_articulos->getArticuloData();
 
         foreach ($data as $key => $value) {
-            $result['rows'][$key] = array('Nombre'=>$value['Nombre'], 'ID'=>$value['ID']);
+            $result['rows'][$key] = array('Serial'=>$value['Serial'], 'ID'=>$value['ID']);
 
         }
 
@@ -131,6 +132,7 @@ class Articulos extends Admin_Controller
         $response = array();
 
         $this->form_validation->set_rules('articulo_nombre', 'Nombre artículo', 'trim|required');
+        $this->form_validation->set_rules('articulo_serial', 'Código artículo', 'trim|required');
         $this->form_validation->set_rules('articulo_descripcion', 'Descripción', 'trim');
         $this->form_validation->set_rules('articulo_familia', 'Familia', 'trim|required');
         $this->form_validation->set_rules('articulo_active', 'Activo', 'trim|required');
@@ -140,6 +142,7 @@ class Articulos extends Admin_Controller
         if ($this->form_validation->run() == TRUE) {
             $data = array(
                 'Nombre' => $this->input->post('articulo_nombre'),
+                'Serial' => $this->input->post('articulo_serial'),
                 'Descripcion' => $this->input->post('articulo_descripcion'),
                 'Familia' => $this->input->post('articulo_familia'),
                 'Activo' => $this->input->post('articulo_active'),
@@ -180,6 +183,7 @@ class Articulos extends Admin_Controller
 
         if($id) {
             $this->form_validation->set_rules('edit_articulo_nombre', 'Nombre artículo', 'trim|required');
+            $this->form_validation->set_rules('edit_articulo_serial', 'Código artículo', 'trim|required');
             $this->form_validation->set_rules('edit_articulo_descripcion', 'Descripción', 'trim');
             $this->form_validation->set_rules('edit_articulo_familia', 'Familia', 'trim|required');
             $this->form_validation->set_rules('edit_articulo_active', 'Activo', 'trim|required');
@@ -189,6 +193,7 @@ class Articulos extends Admin_Controller
             if ($this->form_validation->run() == TRUE) {
                 $data = array(
                     'Nombre' => $this->input->post('edit_articulo_nombre'),
+                    'Serial' => $this->input->post('edit_articulo_serial'),
                     'Descripcion' => $this->input->post('edit_articulo_descripcion'),
                     'Familia' => $this->input->post('edit_articulo_familia'),
                     'Activo' => $this->input->post('edit_articulo_active'),

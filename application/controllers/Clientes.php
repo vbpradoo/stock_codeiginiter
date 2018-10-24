@@ -10,7 +10,7 @@ class Clientes extends Admin_Controller
 
         $this->not_logged_in();
 
-        $this->data['page_title'] = 'Proovedores';
+        $this->data['page_title'] = 'Clientes';
 
         $this->load->model('model_clientes');
 
@@ -60,11 +60,12 @@ class Clientes extends Admin_Controller
                 'ID' => $value['ID'],
                 'image' => $img,
                 'Nombre' => $value['Nombre'],
+                'NIF' => $value['NIF'],
                 'Correo' => $value['Correo'],
                 'Telefono' => $value['Telefono'],
                 'Empresa' => $value['Empresa'],
-                'Cantidad' => $value['Cantidad'],
-                'Gastado' => $value['Gastado'],
+//                'Cantidad' => $value['Cantidad'],
+//                'Gastado' => $value['Gastado'],
                 'Buttons' => $buttons
             );
         } // /foreach
@@ -102,10 +103,11 @@ class Clientes extends Admin_Controller
 
         $this->form_validation->set_rules('cliente_nombre', 'Nombre', 'trim|required');
         $this->form_validation->set_rules('cliente_empresa', 'Empresa', 'trim|required');
+        $this->form_validation->set_rules('cliente_nif', 'NIF', 'trim|required');
         $this->form_validation->set_rules('cliente_telefono', 'Telefono', 'trim|required');
         $this->form_validation->set_rules('cliente_correo', 'Correo', 'trim|required');
-        $this->form_validation->set_rules('cliente_cantidad', 'Cantidad', 'trim|required');
-        $this->form_validation->set_rules('cliente_gastado', 'Gastado', 'trim|required');
+//        $this->form_validation->set_rules('cliente_cantidad', 'Cantidad', 'trim|required');
+//        $this->form_validation->set_rules('cliente_gastado', 'Gastado', 'trim|required');
 
 
         if ($this->form_validation->run() == TRUE) {
@@ -120,11 +122,12 @@ class Clientes extends Admin_Controller
             $data = array(
                 'Nombre' => $this->input->post('cliente_nombre'),
                 'Empresa' => $this->input->post('cliente_empresa'),
+                'NIF' => $this->input->post('cliente_nif'),
                 'Telefono' => $this->input->post('cliente_telefono'),
                 'Correo' => $this->input->post('cliente_correo'),
                 'image' => $upload_image,
-                'Cantidad' => $this->input->post('cliente_cantidad'),
-                'Gastado' => $this->input->post('cliente_gastado')
+//                'Cantidad' => $this->input->post('cliente_cantidad'),
+//                'Gastado' => $this->input->post('cliente_gastado')
 
             );
 
@@ -198,10 +201,11 @@ class Clientes extends Admin_Controller
 
             $this->form_validation->set_rules('edit_cliente_nombre', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_cliente_empresa', 'Empresa', 'trim|required');
+            $this->form_validation->set_rules('edit_cliente_nif', 'NIF', 'trim|required');
             $this->form_validation->set_rules('edit_cliente_telefono', 'Telefono', 'trim|required');
             $this->form_validation->set_rules('edit_cliente_correo', 'Correo', 'trim|required');
-            $this->form_validation->set_rules('edit_cliente_cantidad', 'Cantidad', 'trim|required');
-            $this->form_validation->set_rules('edit_cliente_gastado', 'Gastado', 'trim|required');
+//            $this->form_validation->set_rules('edit_cliente_cantidad', 'Cantidad', 'trim|required');
+//            $this->form_validation->set_rules('edit_cliente_gastado', 'Gastado', 'trim|required');
 
             if ($this->form_validation->run() == TRUE) {
                 // true case
@@ -209,10 +213,11 @@ class Clientes extends Admin_Controller
                 $data = array(
                     'Nombre' => $this->input->post('edit_cliente_nombre'),
                     'Empresa' => $this->input->post('edit_cliente_empresa'),
+                    'NIF' => $this->input->post('edit_cliente_nif'),
                     'Telefono' => $this->input->post('edit_cliente_telefono'),
                     'Correo' => $this->input->post('edit_cliente_correo'),
-                    'Cantidad' => $this->input->post('edit_cliente_cantidad'),
-                    'Gastado' => $this->input->post('edit_cliente_gastado'),
+//                    'Cantidad' => $this->input->post('edit_cliente_cantidad'),
+//                    'Gastado' => $this->input->post('edit_cliente_gastado'),
                 );
 
 

@@ -65,7 +65,7 @@
                 <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
                     <li id="proovedorNav">
                         <a href="<?php echo base_url('proovedores/') ?>">
-                            <i class="fa fa-address-book"></i> <span>Proovedores</span>
+                            <i class="fa fa-address-book"></i> <span>Proveedores</span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -122,7 +122,7 @@
 
 
                 <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                    <li class="treeview" id="mainOrdersNav">
+                    <li class="treeview" id="mainSalidasNav">
                         <a href="#">
                             <i class="fa fa-dollar"></i>
                             <span>Salidas</span>
@@ -132,10 +132,10 @@
                         </a>
                         <ul class="treeview-menu">
                             <?php if(in_array('createOrder', $user_permission)): ?>
-                                <li id="addOrderNav"><a href="<?php echo base_url('salidas/createSalida') ?>"><i class="fa fa-circle-o"></i> Añadir Salida</a></li>
+                                <li id="addSalidaNav"><a href="<?php echo base_url('salidas/createSalida') ?>"><i class="fa fa-circle-o"></i> Añadir Salida</a></li>
                             <?php endif; ?>
                             <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                                <li id="manageOrdersNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Control de Salidas</a></li>
+                                <li id="manageSalidaNav"><a href="<?php echo base_url('salidas/index') ?>"><i class="fa fa-circle-o"></i> Control de Salidas</a></li>
                             <?php endif; ?>
                         </ul>
                     </li>

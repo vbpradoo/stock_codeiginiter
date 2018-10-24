@@ -69,13 +69,14 @@ class Model_articulos extends CI_Model
     public function getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string)
     {
 //        $this->db->select('lote.ID, lote.Serial, lote.Articulo, lote.Entrada, lote.Descripcion, lote.Cantidad, lote.Stock, lote.Precio, lote.Coste, lote.Almacen, lote.Vendido');
-        $this->db->select('Articulo.ID, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo as Activo,Articulo.Descripcion');
+        $this->db->select('Articulo.ID,Articulo.Serial, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo as Activo,Articulo.Descripcion');
 
         $this->db->from('articulo Articulo');
         $this->db->join('familia fam','fam.ID = Articulo.Familia','left');
 
         if($sidx == 'ID') { $this->db->order_by('Articulo.ID', $sord); }
         else if($sidx == 'Nombre') { $this->db->order_by('Articulo.Nombre', $sord); }
+        else if($sidx == 'Codigo') { $this->db->order_by('Articulo.Serial', $sord); }
         else if($sidx == 'Familia') { $this->db->order_by('Familia', $sord); }
         else if($sidx == 'Estado') { $this->db->order_by('Articulo.Activo', $sord); }
         else if($sidx == 'Descripcion') { $this->db->order_by('Articulo.Descripcion', $sord); }
@@ -92,7 +93,7 @@ class Model_articulos extends CI_Model
 
     public function countTotal($search_field, $search_string)
     {
-        $this->db->select('Articulo.ID, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo,Articulo.Descripcion');
+        $this->db->select('Articulo.ID, Articulo.Serial, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo,Articulo.Descripcion');
 
         $this->db->from('articulo  Articulo');
 

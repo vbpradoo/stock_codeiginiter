@@ -102,6 +102,11 @@
                                    placeholder="Introduzca nombre de empresa" autocomplete="off">
                         </div>
                         <div class="form-group">
+                            <label for="cliente_nif">NIF</label>
+                            <input type="text" class="form-control" id="cliente_nif" name="cliente_nif"
+                                   placeholder="Introduzca el NIF" autocomplete="off">
+                        </div>
+                        <div class="form-group">
                             <label for="cliente_telefono">Teléfono</label>
                             <input type="text" class="form-control" id="cliente_telefono"
                                    name="cliente_telefono"
@@ -112,17 +117,17 @@
                             <input type="text" class="form-control" id="cliente_correo" name="cliente_correo"
                                    placeholder="Introduzca correo" autocomplete="off">
                         </div>
-                        <div class="form-group">
-                            <label for="cliente_cantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="cliente_cantidad"
-                                   name="cliente_cantidad"
-                                   placeholder="Introduzca cantidad" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="cliente_gastado">Gastado</label>
-                            <input type="text" class="form-control" id="cliente_gastado" name="cliente_gastado"
-                                   placeholder="Introduzca lo que lleva gastado" autocomplete="off">
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="cliente_cantidad">Cantidad</label>-->
+<!--                            <input type="text" class="form-control" id="cliente_cantidad"-->
+<!--                                   name="cliente_cantidad"-->
+<!--                                   placeholder="Introduzca cantidad" autocomplete="off">-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="cliente_gastado">Gastado</label>-->
+<!--                            <input type="text" class="form-control" id="cliente_gastado" name="cliente_gastado"-->
+<!--                                   placeholder="Introduzca lo que lleva gastado" autocomplete="off">-->
+<!--                        </div>-->
                     </div>
 
                     <div class="modal-footer">
@@ -178,6 +183,11 @@
                                        placeholder="Introduzca nombre de empresa" autocomplete="off">
                             </div>
                             <div class="form-group">
+                                <label for="edit_cliente_nif">NIF</label>
+                                <input type="text" class="form-control" id="edit_cliente_nif" name="edit_cliente_nif"
+                                       placeholder="Introduzca el NIF" autocomplete="off">
+                            </div>
+                            <div class="form-group">
                                 <label for="edit_cliente_telefono">Teléfono</label>
                                 <input type="text" class="form-control" id="edit_cliente_telefono"
                                        name="edit_cliente_telefono"
@@ -189,18 +199,18 @@
                                        name="edit_cliente_correo"
                                        placeholder="Introduzca correo" autocomplete="off">
                             </div>
-                            <div class="form-group">
-                                <label for="edit_cliente_cantidad">Cantidad</label>
-                                <input type="text" class="form-control" id="edit_cliente_cantidad"
-                                       name="edit_cliente_cantidad"
-                                       placeholder="Introduzca cantidad" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_cliente_gastado">Gastado</label>
-                                <input type="text" class="form-control" id="edit_cliente_gastado"
-                                       name="edit_cliente_gastado"
-                                       placeholder="Introduzca lo que lleva gastado" autocomplete="off">
-                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label for="edit_cliente_cantidad">Cantidad</label>-->
+<!--                                <input type="text" class="form-control" id="edit_cliente_cantidad"-->
+<!--                                       name="edit_cliente_cantidad"-->
+<!--                                       placeholder="Introduzca cantidad" autocomplete="off">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="edit_cliente_gastado">Gastado</label>-->
+<!--                                <input type="text" class="form-control" id="edit_cliente_gastado"-->
+<!--                                       name="edit_cliente_gastado"-->
+<!--                                       placeholder="Introduzca lo que lleva gastado" autocomplete="off">-->
+<!--                            </div>-->
 
                         </div>
 
@@ -304,22 +314,31 @@
                     // width: "3px",
                     sorttype: 'text',
                     align: 'center'
-                }, {
-                    label: 'Cantidad',
-                    name: 'Cantidad',
-                    index: 'Cantidad',
+                },
+                    // }, {
+                //     label: 'Cantidad',
+                //     name: 'Cantidad',
+                //     index: 'Cantidad',
+                //     // width: "3px",
+                //     sorttype: 'text',
+                //     align: 'center'
+                // }, {
+                //     label: 'Gastado',
+                //     name: 'Gastado',
+                //     index: 'Gastado',
+                //     // width: "3px",
+                //     sorttype: 'text',
+                //     align: 'center'
+                // }, {
+                {
+                    label: 'NIF',
+                    name: 'NIF',
+                    index: 'NIF',
                     // width: "3px",
                     sorttype: 'text',
                     align: 'center'
-                }, {
-                    label: 'Gastado',
-                    name: 'Gastado',
-                    index: 'Gastado',
-                    // width: "3px",
-                    sorttype: 'text',
-                    align: 'center'
-                }, {
-                    label: 'Control',
+                },
+                {  label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
                     // width: "3px",

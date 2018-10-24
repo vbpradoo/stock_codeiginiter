@@ -45,7 +45,7 @@ class Entradas extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $this->render_template('entradas/create', $this->data);
+        $this->render_template('entradas/create_new', $this->data);
     }
 
     /*
@@ -215,9 +215,11 @@ class Entradas extends Admin_Controller
         if (!in_array('updateProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
-
-
+//        echo json_encode($_POST);
+//        $entrada_id = $_GET['id'];
+//        $edit_fecha = $_GET['edit_fecha'];
         $response = array();
+//        echo $edit_fecha;
 
         if ($entrada_id) {
 
@@ -228,7 +230,6 @@ class Entradas extends Admin_Controller
             $this->form_validation->set_rules('edit_active', 'Estado', 'trim|required');
             $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
-//        echo "HOLA";
 
             if ($this->form_validation->run() == TRUE) {
                 // true case
@@ -241,7 +242,7 @@ class Entradas extends Admin_Controller
                     'Pagado' => $this->input->post('edit_active'),
 //                    'Descripcion' => $this->input->post('edit_descripcion'),
                 );
-
+//                echo json_encode($data);
 
                 $update = $this->model_entradas->update($data, $entrada_id);
 
@@ -327,9 +328,9 @@ class Entradas extends Admin_Controller
         foreach ($entradasdata as $key => $value) {
             $buttons = '';
 
-            if (in_array('deleteProduct', $this->permission)) {
-                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
-            }
+//            if (in_array('deleteProduct', $this->permission)) {
+//                $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc(' . $value->ID . ')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+//            }
             if (in_array('updateProduct', $this->permission)) {
                 $buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value->ID.')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
             }

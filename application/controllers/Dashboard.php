@@ -11,7 +11,7 @@ class Dashboard extends Admin_Controller
 		$this->data['page_title'] = 'Dashboard';
 		
 		$this->load->model('model_lotes');
-		$this->load->model('model_orders');
+		$this->load->model('model_salidas');
 		$this->load->model('model_users');
 		$this->load->model('model_almacenes');
 	}
@@ -24,7 +24,7 @@ class Dashboard extends Admin_Controller
 	public function index()
 	{
 		$this->data['total_lotes'] = $this->model_lotes->countTotalLotes();
-		$this->data['total_paid_orders'] = $this->model_orders->countTotalPaidOrders();
+		$this->data['total_salidas'] = $this->model_salidas->countTotalSalidas();
 		$this->data['total_users'] = $this->model_users->countTotalUsers();
 		$this->data['total_almacenes'] = $this->model_almacenes->countTotalAlmacenes();
 
