@@ -15,7 +15,7 @@ class Model_lotes extends CI_Model
 
     public function getLoteData($id = null)
     {
-        if($id) {
+        if ($id) {
             $sql = "SELECT * FROM lote where ID = ?";
             $query = $this->db->query($sql, array($id));
             return $query->row_array();
@@ -28,8 +28,18 @@ class Model_lotes extends CI_Model
 
     public function getDivLoteDataById($id = null)
     {
-        if($id) {
+        if ($id) {
             $sql = "SELECT division FROM lote where ID = ?";
+            $query = $this->db->query($sql, array($id));
+            return $query->row_array();
+        }
+
+    }
+
+    public function getLoteByEntrada($id = null)
+    {
+        if ($id) {
+            $sql = "SELECT Serial FROM Lote where Entrada = ?";
             $query = $this->db->query($sql, array($id));
             return $query->row_array();
         }
@@ -38,7 +48,7 @@ class Model_lotes extends CI_Model
 
     public function getLoteDataByArticulo($id = null)
     {
-        if($id) {
+        if ($id) {
             $sql = "SELECT * FROM lote where Articulo = ?";
             $query = $this->db->query($sql, array($id));
             return $query->result_array();
@@ -56,16 +66,17 @@ class Model_lotes extends CI_Model
 //    }
     public function getMyLoteByName($nombre)
     {
-       // if($nombre) {
-            $sql = "SELECT * FROM lote where Serial = ?";
-            $query = $this->db->query($sql, array($nombre));
-            return $query->row_array();
+        // if($nombre) {
+        $sql = "SELECT * FROM lote where Serial = ?";
+        $query = $this->db->query($sql, array($nombre));
+        return $query->row_array();
 //        }
 //
 //        $sql = "SELECT * FROM lote where Serial= $nombre ORDER BY ID DESC";
 //        $query = $this->db->query($sql);
 //        return $query->result_array();
     }
+
     public function LoteExists($nombre)
     {
         // if($nombre) {
@@ -79,7 +90,7 @@ class Model_lotes extends CI_Model
 
     public function create($data)
     {
-        if($data) {
+        if ($data) {
             $insert = $this->db->insert('lote', $data);
             return ($insert == true) ? true : false;
         }
@@ -87,8 +98,17 @@ class Model_lotes extends CI_Model
 
     public function update($data, $id)
     {
-        if($data && $id) {
+        if ($data && $id) {
             $this->db->where('ID', $id);
+            $update = $this->db->update('lote', $data);
+            return ($update == true) ? true : false;
+        }
+    }
+
+    public function updatebySerial($data, $id)
+    {
+        if ($data && $id) {
+            $this->db->where('Serial', $id);
             $update = $this->db->update('lote', $data);
             return ($update == true) ? true : false;
         }
@@ -96,7 +116,7 @@ class Model_lotes extends CI_Model
 
     public function remove($id)
     {
-        if($id) {
+        if ($id) {
             $this->db->where('ID', $id);
             $delete = $this->db->delete('lote');
             return ($delete == true) ? true : false;
@@ -105,7 +125,7 @@ class Model_lotes extends CI_Model
 
     public function removeBySerial($serial)
     {
-        if($serial) {
+        if ($serial) {
             $this->db->where('Serial', $serial);
             $delete = $this->db->delete('lote');
             return ($delete == true) ? true : false;
@@ -121,39 +141,56 @@ class Model_lotes extends CI_Model
 
     public function createSerial($data)
     {
-        if($data) {
+        if ($data) {
             $insert = $this->db->insert('lote', $data);
-            if($insert)
+            if ($insert)
                 return $this->db->insert_id();
             else
                 return false;
         }
     }
+
     public function getLoteDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings)
     {
 //        $this->db->select('lote.ID, lote.Serial, lote.Articulo, lote.Entrada, lote.Descripcion, lote.Cantidad, lote.Stock, lote.Precio, lote.Coste, lote.Almacen, lote.Vendido');
-        $this->db->select('Lote.ID, Lote.Serial, art.Nombre as Articulo, entr.Fecha as Entrada, Lote.Entrada  as Ent_ID, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, Lote.Precio, Lote.Coste, alm.Nombre as Almacen, Lote.Vendido');
+//        $this->db->select('Lote.ID, Lote.Serial, art.Nombre as Articulo, entr.Fecha as Entrada, Lote.Entrada  as Ent_ID, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, Lote.Precio, Lote.Coste, alm.Nombre as Almacen, Lote.Vendido');
+        $this->db->select('Lote.ID, Lote.Serial, art.Serial as Articulo,fam.Nombre as Familia, fam.Unidades as Unidades, entr.Fecha as Entrada, Lote.Entrada  as Ent_ID, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, alm.Nombre as Almacen, Lote.Vendido');
         $this->db->from('lote Lote');
 
-        $this->db->join('articulo art','art.ID = Lote.Articulo','left');
-        $this->db->join('entrada entr','entr.ID = Lote.Entrada','left');
-        $this->db->join('almacen alm','alm.ID = Lote.Almacen','left');
+        $this->db->join('articulo art', 'art.ID = Lote.Articulo', 'left');
+        $this->db->join('familia fam', 'fam.ID = art.Familia', 'left');
+        $this->db->join('entrada entr', 'entr.ID = Lote.Entrada', 'left');
+        $this->db->join('almacen alm', 'alm.ID = Lote.Almacen', 'left');
 
-        if($sidx == 'ID') { $this->db->order_by('Lote.ID', $sord); }
-        else if($sidx == 'Serial') { $this->db->order_by('Lote.Serial', $sord); }
-        else if($sidx == 'Articulo') { $this->db->order_by('Articulo', $sord); }
-        else if($sidx == 'Fecha') { $this->db->order_by('Entrada', $sord); }
-        else if($sidx == 'Descripcion') { $this->db->order_by('Lote.Descripcion', $sord); }
-        else if($sidx == 'Cantidad') { $this->db->order_by('Lote.Cantidad', $sord); }
-        else if($sidx == 'Stock') { $this->db->order_by('Lote.Stock', $sord); }
-        else if($sidx == 'Precio') { $this->db->order_by('Lote.Precio', $sord); }
-        else if($sidx == 'Coste') { $this->db->order_by('Lote.Coste', $sord); }
-        else if($sidx == 'Almacen') { $this->db->order_by('Almacen', $sord); }
-        else if($sidx == 'Vendido') { $this->db->order_by('Lote.Vendido', $sord); }
-        else { $this->db->order_by('Lote.Entrada', $sord); }
+        if ($sidx == 'ID') {
+            $this->db->order_by('Lote.ID', $sord);
+        } else if ($sidx == 'Serial') {
+            $this->db->order_by('Lote.Serial', $sord);
+        } else if ($sidx == 'Articulo') {
+            $this->db->order_by('Articulo', $sord);
+        } else if ($sidx == 'Familia') {
+            $this->db->order_by('Familia', $sord);
+        } else if ($sidx == 'Fecha') {
+            $this->db->order_by('Entrada', $sord);
+        } else if ($sidx == 'Descripcion') {
+            $this->db->order_by('Lote.Descripcion', $sord);
+        } else if ($sidx == 'Cantidad') {
+            $this->db->order_by('Lote.Cantidad', $sord);
+        } else if ($sidx == 'Stock') {
+            $this->db->order_by('Lote.Stock', $sord);
+        }
+//        else if($sidx == 'Precio') { $this->db->order_by('Lote.Precio', $sord); }
+//        else if($sidx == 'Coste') { $this->db->order_by('Lote.Coste', $sord); }
+        else if ($sidx == 'Almacen') {
+            $this->db->order_by('Almacen', $sord);
+        } else if ($sidx == 'Vendido') {
+            $this->db->order_by('Lote.Vendido', $sord);
+        } else {
+            $this->db->order_by('Lote.Entrada', $sord);
+        }
 //        if($search_field == 'ID') { $this->db->like('Lote.ID', $search_string); }
 //        if($search_field == 'Serial') { $this->db->like('Lote.Serial', $search_string); }
-        if($search_strings) {
+        if ($search_strings) {
 //            echo "ENTRA";
             $this->getSearch($search_strings);
 
@@ -162,14 +199,16 @@ class Model_lotes extends CI_Model
 //        echo $limit .'\n';
         $this->db->limit($limit, $start);
         $query = $this->db->get();
-        $result=$query->result();
-
+        $result = $query->result();
         return $result;
+
+
     }
 
-    public function countTotal($search_field, $search_string)
+    public function countTotal($search_strings)
     {
-        $this->db->select('Lote.ID, Lote.Serial, art.Nombre as Articulo, entr.Fecha as Entrada, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, Lote.Precio, Lote.Coste, alm.Nombre as Almacen, Lote.Vendido');
+//        $this->db->select('Lote.ID, Lote.Serial, art.Nombre as Articulo, entr.Fecha as Entrada, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, Lote.Precio, Lote.Coste, alm.Nombre as Almacen, Lote.Vendido');
+        $this->db->select('Lote.ID, Lote.Serial, art.Serial as Articulo,fam.Nombre as Familia, fam.Unidades as Unidades, entr.Fecha as Entrada, Lote.Entrada  as Ent_ID, Lote.Descripcion,Lote.Division, Lote.Cantidad, Lote.Stock, alm.Nombre as Almacen, Lote.Vendido');
 
         $this->db->from('lote Lote');
 //        $this->db->from('articulo');
@@ -177,11 +216,18 @@ class Model_lotes extends CI_Model
 //        $this->db->from('almacen');
 
         $this->db->join('articulo art', 'art.ID = Lote.Articulo', 'left');
+        $this->db->join('familia fam', 'fam.ID = art.Familia', 'left');
         $this->db->join('entrada entr', 'entr.ID = Lote.Entrada', 'left');
         $this->db->join('almacen alm', 'alm.ID = Lote.Almacen', 'left');
+
 //        if($search_field == 'ID') { $this->db->like('lote.ID', $search_string); }
 //        if($search_field == 'Serial') { $this->db->like('lote.Serial', $search_string); }
 
+        if ($search_strings) {
+//            echo "ENTRA";
+            $this->getSearch($search_strings);
+
+        }
         $query = $this->db->get();
         return count($query->result());
     }
@@ -208,20 +254,28 @@ class Model_lotes extends CI_Model
                     break;
                 case 'Articulo':
                     if ($value->op == 'cn')
-                        $this->db->like('art.Nombre', $value->data);
+                        $this->db->like('art.Serial', $value->data);
                     else
-                        $this->db->where('art.Nombre', $value->data);
+                        $this->db->where('art.Serial', $value->data);
+                    break;
+                case 'Familia':
+                    if ($value->op == 'cn')
+                        $this->db->like('fam.Nombre', $value->data);
+                    else
+                        $this->db->where('fam.Nombre', $value->data);
                     break;
                 case 'Entrada':
+                    $date = explode("/", $value->data);
+                    $date_f = $date[2].'-'.$date[1].'-'.$date[0];
                     if ($value->op == 'ge')
-                        $this->db->where('entr.Fecha >=', $value->data);
+                        $this->db->where('entr.Fecha >=', $date_f);
                     else if ($value->op == 'le')
-                        $this->db->where('entr.Fecha <=', $value->data);
+                        $this->db->where('entr.Fecha <=', $date_f);
                     else
-                        $this->db->where('entr.Fecha', $value->data);
+                        $this->db->like('entr.Fecha', $date_f);
                     break;
                 case 'Descripcion':
-                    echo "i es igual a 2";
+                    $this->db->like('Lote.Descripcion', $value->data);
                     break;
                 case 'Cantidad':
                     if ($value->op == 'ge')
@@ -256,7 +310,7 @@ class Model_lotes extends CI_Model
 //                        $this->db->where('Lote.Coste', $value->data);
 //                    break;
                 case 'Almacen':
-                    $this->db->like('Almacen', $value->data);
+                    $this->db->like('alm.Nombre', $value->data);
                     break;
                 case 'Vendido':
                     $this->db->like('Lote.Vendido', $value->data);

@@ -66,7 +66,7 @@ class Model_articulos extends CI_Model
     }
 
 
-    public function getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string)
+    public function getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string, $search_strings)
     {
 //        $this->db->select('lote.ID, lote.Serial, lote.Articulo, lote.Entrada, lote.Descripcion, lote.Cantidad, lote.Stock, lote.Precio, lote.Coste, lote.Almacen, lote.Vendido');
         $this->db->select('Articulo.ID,Articulo.Serial, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo as Activo,Articulo.Descripcion');
@@ -76,14 +76,20 @@ class Model_articulos extends CI_Model
 
         if($sidx == 'ID') { $this->db->order_by('Articulo.ID', $sord); }
         else if($sidx == 'Nombre') { $this->db->order_by('Articulo.Nombre', $sord); }
-        else if($sidx == 'Codigo') { $this->db->order_by('Articulo.Serial', $sord); }
+        else if($sidx == 'Serial') { $this->db->order_by('Articulo.Serial', $sord); }
         else if($sidx == 'Familia') { $this->db->order_by('Familia', $sord); }
         else if($sidx == 'Estado') { $this->db->order_by('Articulo.Activo', $sord); }
         else if($sidx == 'Descripcion') { $this->db->order_by('Articulo.Descripcion', $sord); }
+        else if($sidx == 'Activo') { $this->db->order_by('Articulo.Activo', $sord); }
         else { $this->db->order_by('Articulo.ID', $sord); }
-        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
-        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+//        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+//        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
 
+        if ($search_strings) {
+//            echo "ENTRA";
+            $this->getSearch($search_strings);
+
+        }
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         $result=$query->result();
@@ -91,20 +97,63 @@ class Model_articulos extends CI_Model
         return $result;
     }
 
-    public function countTotal($search_field, $search_string)
+    public function countTotal($search_strings)
     {
-        $this->db->select('Articulo.ID, Articulo.Serial, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo,Articulo.Descripcion');
+        $this->db->select('Articulo.ID, Articulo.Serial, Articulo.Nombre, fam.Nombre as Familia, Articulo.Activo as Activo,Articulo.Descripcion');
 
         $this->db->from('articulo  Articulo');
-
-
         $this->db->join('familia fam','fam.ID = Articulo.Familia','left');
 
-        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
-        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+//        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
+//        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+
+        if ($search_strings) {
+//            echo "ENTRA";
+            $this->getSearch($search_strings);
+
+        }
 
         $query = $this->db->get();
         return count($query->result());
     }
+    public function getSearch($search_strings)
+    {
+        foreach ($search_strings->rules as $key => $value) {
 
+//                echo $value->field;
+            switch ($value->field) {
+                case 'ID':
+                    if ($value->op == 'cn')
+                        $this->db->like('Articulo.ID', $value->data);
+                    else
+                        $this->db->where('Articulo.ID', $value->data);
+                    break;
+                case 'Serial':
+                    if ($value->op == 'cn')
+                        $this->db->like('Articulo.Serial', $value->data);
+                    else
+                        $this->db->where('Articulo.Serial', $value->data);
+                    break;
+                case 'Nombre':
+                    if ($value->op == 'cn')
+                        $this->db->like('Articulo.Nombre', $value->data);
+                    else
+                        $this->db->where('Articulo.Nombre', $value->data);
+                    break;
+                case 'Familia':
+                    if ($value->op == 'cn')
+                        $this->db->like('fam.Nombre', $value->data);
+                    else
+                        $this->db->where('fam.Nombre', $value->data);
+                    break;
+                case 'Descripcion':
+                    $this->db->like('Articulo.Descripcion', $value->data);
+                    break;
+                case 'Activo':
+                    $this->db->where('Articulo.Activo', $value->data);
+                    break;
+            }
+
+        }
+    }
 }

@@ -1960,3 +1960,89 @@ div[id="gbox_familiaGrid"]{
     font-size: 15px;
 }
 
+/*SALIDAS INDEX CSS */
+
+/*.ui-jqgrid[id="salidas_jqGrid"] .ui-jqgrid-bdiv[id="salidas_jqGrid"] {*/
+    /*overflow-x: auto;*/
+    /*max-width: border-box;*/
+/*}*/
+
+/*.ui-jqgrid-btable[id="salidas_jqGrid"] tr {*/
+    /*display: block;*/
+/*/overflow: hidden;!**/
+/*}*/
+/*.ui-jqgrid-btable[id="lotes_jqGrid"] tr {*/
+    /*display: block;*/
+
+/*}*/
+
+/*.ui-subgrid {*/
+ /*/display: block !important;!* /!*overflow: hidden;!*!*!*!*/
+    /*/}*!*!*/
+
+/*.ui-jqgrid-btable[id="salidas_jqGrid"] tr.jqgrow td {*/
+    /*white-space: normal !important;*/
+    /*height: auto;*/
+    /*overflow-x: auto;*/
+/*}*/
+
+/*.ui-jqgrid-btable[id="lotes_jqGrid"] tr.jqgrow td {*/
+    /*white-space: normal !important;*/
+    /*text-overflow: clip;*/
+    /*height: auto;*/
+    /*overflow-x: auto;*/
+/*}*/
+
+
+/*.ui-jqgrid-btable[id="salidas_jqGrid"] tr.ui-row-ltr td, .ui-jqgrid-btable[id="salidas_jqGrid"] tr.ui-row-rtl td {*/
+    /*border-bottom: 1px solid #E1E1E1;*/
+    /*padding: 0 2px 0 2px;*/
+    /*padding-top: 0px;*/
+    /*padding-right: 2px;*/
+    /*padding-bottom: 0px;*/
+    /*padding-left: 2px;*/
+    /*border-color: #E1E1E1;*/
+/*}*/
+
+/*.ui-jqgrid-btable[id="lotes_jqGrid"] tr.ui-row-ltr td, .ui-jqgrid-btable[id="lotes_jqGrid"] tr.ui-row-rtl td {*/
+    /*border-bottom: 1px solid #E1E1E1;*/
+    /*padding: 0 2px 0 2px;*/
+    /*padding-top: 0px;*/
+    /*padding-right: 2px;*/
+    /*padding-bottom: 0px;*/
+    /*padding-left: 2px;*/
+    /*border-color: #E1E1E1;*/
+/*}*/
+
+@media (max-width: 1024px) {
+    .ui-jqgrid,.ui-jqgrid-bdiv{
+        overflow-x: auto !important;
+    }
+}
+
+.mycollapsed {
+    /*display: block !important;*/
+    width: 2px;
+    vertical-align: inherit;
+    max-width: 10px;
+}
+table {
+    font-size: small;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    white-space: normal;
+}
+
+.ui-pager-table{
+    width: 100% !important;
+    white-space: pre;
+}
+/*.ui-pg-table{*/
+    /*width: 100% !important;*/
+/*}*/
+
+td[id="input_jqGridPager"]{
+    width: auto;
+    display: -webkit-inline-box;
+}

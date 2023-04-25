@@ -1,13 +1,13 @@
-<script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.17/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
+<!--<script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/1.10.17/js/dataTables.bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/es.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/es.js"></script>-->
 
-<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>-->
 
 
 <!-- Content Wrapper. Contains page content -->
@@ -83,13 +83,13 @@
                                     <?php endforeach ?>
                                 </select>
                             </div>
-                            <div id="Pagado" class="form-group" style="display: none;">
-                                <label for="pagado">Estado</label>
-                                <select class="form-control select_group" id="pagado" name="pagado">
-                                    <option value="0">Sin pagar</option>
-                                    <option value="1">Pagado</option>
-                                </select>
-                            </div>
+<!--                            <div id="Pagado" class="form-group" style="display: none;">-->
+<!--                                <label for="pagado">Estado</label>-->
+<!--                                <select class="form-control select_group" id="pagado" name="pagado">-->
+<!--                                    <option value="0">Sin pagar</option>-->
+<!--                                    <option value="1">Pagado</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
 
                             <div id="Fecha" class="form-group" style="display: none;">
                                 <label for="fecha">Fecha</label>
@@ -115,19 +115,19 @@
                                        placeholder="Introduzca cantidad" autocomplete="off"/>
                             </div>
 
-                            <div id="Precio" class="form-group" style="display: none;">
-                                <label for="precio">Precio</label>
-                                <input type="text" class="form-control" id="precio" name="precio"
-                                       placeholder="Introduzca precio" autocomplete="off"/>
-                            </div>
-                            <div id="Coste" class="form-group" style="display: none;">
-                                <label for="coste">Coste</label>
-                                <input type="text" class="form-control" id="coste" name="coste"
-                                       placeholder="Introduzca coste" autocomplete="off"/>
-                            </div>
+<!--                            <div id="Precio" class="form-group" style="display: none;">-->
+<!--                                <label for="precio">Precio</label>-->
+<!--                                <input type="text" class="form-control" id="precio" name="precio"-->
+<!--                                       placeholder="Introduzca precio" autocomplete="off"/>-->
+<!--                            </div>-->
+<!--                            <div id="Coste" class="form-group" style="display: none;">-->
+<!--                                <label for="coste">Coste</label>-->
+<!--                                <input type="text" class="form-control" id="coste" name="coste"-->
+<!--                                       placeholder="Introduzca coste" autocomplete="off"/>-->
+<!--                            </div>-->
                             <div id="Almacen" class="form-group" style="display: none;">
                                 <label for="almacen">Almacén</label>
-                                <select class="form-control select_group" id="almacen" name="almacen">
+                                <select class="form-control select_group" id="almacen" name="almacen" style="width: 100% !important;">
                                     <?php foreach ($almacenes as $k => $v): ?>
                                         <option id="<?php echo $v['ID'] ?>"
                                                 value="<?php echo $v['ID'] ?>"><?php echo $v['Nombre'] ?></option>
@@ -145,7 +145,7 @@
 
                             <div class="box-footer" id="Footer" style="display: none;">
                                 <button id="Enviar" type="submit" class="btn btn-primary">Guardar entrada</button>
-                                <a href="javascript:volverFunc();" class="btn btn-warning">Volver</a>
+                                <a href="<?php echo base_url('entradas') ?>" class="btn btn-warning">Volver</a>
                             </div>
                         </form>
                     </div>
@@ -182,9 +182,9 @@
                         <div id="messages"></div>
 
                         <div class="form-group">
-                            <label for="create_piezas">Piezas</label>
+                            <label for="create_piezas">Cantidad</label>
                             <input type="text" class="form-control" id="create_piezas" name="create_piezas"
-                                   placeholder="Introduzca piezas" autocomplete="off">
+                                   placeholder="Introduzca cantidad" autocomplete="off">
                         </div>
 
                         <div class="form-group">
@@ -194,9 +194,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="create_alto">Alto</label>
+                            <label for="create_alto">Alto/Ancho</label>
                             <input type="text" class="form-control" id="create_alto" name="create_alto"
-                                   placeholder="Introduzca alto" autocomplete="off">
+                                   placeholder="Introduzca alto/ancho" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="create_espesor">Espesor</label>
@@ -234,9 +234,9 @@
                         <div id="messages"></div>
 
                         <div class="form-group">
-                            <label for="edit_piezas">Piezas</label>
+                            <label for="edit_piezas">Cantidad</label>
                             <input type="text" class="form-control" id="edit_piezas" name="edit_piezas"
-                                   placeholder="Introduzca piezas" autocomplete="off">
+                                   placeholder="Introduzca cantidad" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="edit_largo">Largo</label>
@@ -246,7 +246,7 @@
                         <div class="form-group">
                             <label for="edit_alto">Alto/Ancho</label>
                             <input type="text" class="form-control" id="edit_alto" name="edit_alto"
-                                   placeholder="Introduzca alto" autocomplete="off">
+                                   placeholder="Introduzca alto/ancho" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="edit_espesor">Espesor</label>
@@ -294,6 +294,44 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 <?php endif; ?>
+
+<?php if (in_array('createProduct', $user_permission)): ?>
+    <!-- remove brand modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="anexoModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Añadir Anexo:</h4>
+                </div>
+
+                <?php echo form_open_multipart("lotes/updateAnexo"); ?>
+                <div class="form-group" style="margin-left: 2%;">
+                    <label for="lote_anexo">Anexo: </label>
+                    <div class="kv-avatar" style="margin-left: 2%;">
+                        <div class="file-loading">
+                            <input id="lote_anexo" name="lote_anexo" type="file">
+                        </div>
+                    </div>
+
+                </div>
+                <div class ="form-group">
+                    <!--                                <label for="lote_anexo">Anexo: </label>-->
+                    <input id="lote_id" class="form-control" name="lote_id" type="text" style="visibility: hidden;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+                <?php echo form_close();?>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<?php endif; ?>
+
 
 
 <script type="text/javascript">
@@ -414,6 +452,39 @@
                         });
 
 
+                        /***************  LLAMADA A ANEXO ******************/
+                        if(confirm("Quiere incluir algun documento¿?")){
+                            // window.location.href = base_url+"entradas/anexoLote/id="+ id_serial;
+                            // console.log(id_serial)
+                            $('#lote_id').val($("#lote_serial").val());
+                            var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
+                                    'onclick="alert(\'Call your custom code here.\')">' +
+                                    '<i class="glyphicon glyphicon-tag"></i>' +
+                                    '</button>';
+
+                                $("#lote_anexo").fileinput({
+                                    overwriteInitial: true,
+                                    maxFileSize: 2500,
+                                    showClose: false,
+                                    showCaption: false,
+                                    browseLabel: '',
+                                    removeLabel: '',
+                                    browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
+                                    removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+                                    removeTitle: 'Cancel or reset changes',
+                                    elErrorContainer: '#kv-avatar-errors-1',
+                                    msgErrorClass: 'alert alert-block alert-danger',
+                                    // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
+                                    // layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
+                                    layoutTemplates: {main2: '{preview} {remove} {browse}'},
+                                    allowedFileExtensions: ["jpg", "jpeg", "pdf","png"]
+                                });
+
+                            $("#anexoModal").modal('show');
+
+                        }
+
+
                         // reset the form and our global parameters
                         $("#initForm")[0].reset();
                         $("#initForm .form-group").removeClass('has-error').removeClass('has-success');
@@ -422,7 +493,6 @@
 
                         closeAll();
                         $("#jqGrid").jqGrid("clearGridData");
-
 
                     } else {
 
@@ -516,7 +586,7 @@
     function viewAll() {
         $("#Articulo").show(100);
         $("#Proovedor").show(100);
-        $("#Pagado").show(100);
+        // $("#Pagado").show(100);
         //Load todays date
         moment.locale('es');
         $("#fecha").val(moment().format('DD/MM/YYYY'));
@@ -524,8 +594,8 @@
         $("#Division").show(200);
         $("#Cantidad").show(200);
         // $("#cantidad").prop("disabled", true);
-        $("#Precio").show(300);
-        $("#Coste").show(400);
+        // $("#Precio").show(300);
+        // $("#Coste").show(400);
         $("#Almacen").show(500);
         $("#Descripcion").show(500);
         $("#Footer").show(600);
@@ -534,13 +604,13 @@
     function closeAll() {
         $("#Articulo").hide(100);
         $("#Proovedor").hide(100);
-        $("#Pagado").hide(100);
+        // $("#Pagado").hide(100);
         $("#Fecha").hide(100);
         $("#Division").hide(200);
         $("#Cantidad").hide(200);
         // $("#cantidad").prop("disabled", true);
-        $("#Precio").hide(300);
-        $("#Coste").hide(400);
+        // $("#Precio").hide(300);
+        // $("#Coste").hide(400);
         $("#Almacen").hide(500);
         $("#Descripcion").hide(500);
         $("#Footer").hide(600);
@@ -599,6 +669,7 @@
                     label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
+                    sortable: false,
                     // width: "3px",
                     align: 'center'
                 }
@@ -711,7 +782,7 @@
 
 
                     var data = {
-                        'Piezas': parseInt($("#create_piezas").val()),
+                        'Piezas': parseFloat($("#create_piezas").val()),
                         'Largo': parseFloat($("#create_largo").val()),
                         'Alto': parseFloat($("#create_alto").val()),
                         'Espesor': parseFloat($("#create_espesor").val()),
@@ -804,8 +875,8 @@
 
 
                             var data = {
-                                'Piezas': parseInt($("#edit_piezas").val()),
-                                'Piezas_Stock': parseInt($("#edit_piezas").val()),
+                                'Piezas': parseFloat($("#edit_piezas").val()),
+                                'Piezas_Stock': parseFloat($("#edit_piezas").val()),
                                 'Largo': parseFloat($("#edit_largo").val()),
                                 'Alto': parseFloat($("#edit_alto").val()),
                                 'Espesor': parseFloat($("#edit_espesor").val()),
@@ -895,25 +966,30 @@
     }
 
     function getCantidad() {
-        console.log("ENTRA");
-        var alto = 0, largo = 0, piezas = 0, espesor = 0;
+        // console.log("ENTRA");
         var data_lineal=0, data_area=0, data_vol=0;
         for (const value of map.values()) {
 
-            // alto += value.Alto;
-            // largo += value.Largo;
-            // piezas += value.Piezas;
-            // espesor += value.Espesor;
             data_lineal += value.Piezas * value.Largo;
             data_area += value.Piezas * value.Largo* value.Alto;
             data_vol += value.Piezas * value.Largo * value.Alto * value.Espesor;
-
         }
-
-
-        $("#cantidad").val("Lineal T: " + data_lineal + "m" + "\tÁrea T: " + data_area + "m²" + "\tVolumen T: " + data_vol + "m³");
-
+        $("#cantidad").val("Lineal T: " + round(data_lineal) + "m" + "\tÁrea T: " + round(data_area) + "m²" + "\tVolumen T: " + round(data_vol) + "m³");
     }
+
+    function round(num, decimales = 3) {
+        var signo = (num >= 0 ? 1 : -1);
+        num = num * signo;
+        if (decimales === 0) //con 0 decimales
+            return signo * Math.round(num);
+        // round(x * 10 ^ decimales)
+        num = num.toString().split('e');
+        num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+        // x * 10 ^ (-decimales)
+        num = num.toString().split('e');
+        return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+    }
+
 
     ///VALIDATE DATA,
 

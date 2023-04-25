@@ -2500,9 +2500,16 @@ $.fn.jqGrid = function( pin ) {
 		}
 		for(i=0;i<this.p.colNames.length;i++){
 			var tooltip = ts.p.headertitles ? (" title=\""+$.jgrid.stripHtml(ts.p.colNames[i])+"\"") :"";
+
 			thead += "<th id='"+ts.p.id+"_"+ts.p.colModel[i].name+"' role='columnheader' class='ui-state-default ui-th-column ui-th-"+dir+"'"+ tooltip+">";
 			idn = ts.p.colModel[i].index || ts.p.colModel[i].name;
 			thead += "<div id='jqgh_"+ts.p.id+"_"+ts.p.colModel[i].name+"' "+tdc+">"+ts.p.colNames[i];
+            if(ts.p.colModel[i].name === 'subgrid'){
+                ts.p.colModel[i].colmenu = true;
+                ts.p.colModel[i].fixed = false;
+                ts.p.colModel[i].width = 100;
+            }
+            console.log(ts.p.colModel[i]);
 			if(!ts.p.colModel[i].width)  { ts.p.colModel[i].width = 150; }
 			else { ts.p.colModel[i].width = parseInt(ts.p.colModel[i].width,10); }
 			if(typeof ts.p.colModel[i].title !== "boolean") { ts.p.colModel[i].title = true; }
@@ -2510,6 +2517,7 @@ $.fn.jqGrid = function( pin ) {
 			if (idn === ts.p.sortname) {
 				ts.p.lastsort = i;
 			}
+			// console.log("DENTRO");
 			if(ts.p.multiSort) {
 				sotmp = $.inArray(idn,sortarr);
 				if( sotmp !== -1 ) {

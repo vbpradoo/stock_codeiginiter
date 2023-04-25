@@ -8,10 +8,13 @@ class Model_salidas extends CI_Model
     }
 
     /* get the orders data */
-    public function getSalidasData($id = null)
+    public function getSalidasData($id = null,$edit=null)
     {
         if($id) {
-            $sql = "SELECT * FROM salida WHERE ID = ?";
+            if($edit)
+                $sql = "SELECT ID,AlbaranID,Fecha FROM salida WHERE ID = ?";
+            else
+                $sql = "SELECT * FROM salida WHERE ID = ?";
             $query = $this->db->query($sql, array($id));
             return $query->row_array();
         }
@@ -54,18 +57,20 @@ class Model_salidas extends CI_Model
             array_push($ventas,$venta);
         }
 
-
+        $date = explode(" ",  $this->input->post('fecha_alb'));
+        $date_a = explode("/",  $date[0]);
+        $date = $date_a[2].'-'.$date_a[1].'-'.$date_a[0].' '.$date[1];
         $data = array(
             'Bill_no' => $bill_no,
+            'AlbaranID' => $this->input->post('num_albaran'),
             'Cliente' => $this->input->post('cliente_nombre'),
-//            'Fecha' => strtotime(date('d-m-Y h:i:s a')),
+            'Fecha' => $date,
             'Venta' => json_encode($ventas),
             'Cantidad_Total' => $this->input->post('cantidad_total_hidden'),
             'User_id' => $user_id
         );
 
 //        echo json_encode($data);
-
 
         $insert = $this->db->insert('salida', $data);
 
@@ -80,11 +85,13 @@ class Model_salidas extends CI_Model
 //          echo $division['Piezas_Stock'].":\t".($division['Piezas_Stock']-($this->input->post('cantidad')[$y]))."\n";
                 $update_division = array('Piezas_Stock' => ($division['Piezas_Stock'] - ($this->input->post('cantidad')[$y])));
                 $this->model_divisiones->update($update_division, $this->input->post('division')[$y]);
-                // Llamamos a la fución de chekeo de vendido
+                // Llamamos a la función de chekeo de vendido
                 array_push($sal_info['checkSold'], $this->checkSold($this->input->post('lote')[$y], $sal_id));
 
             }
         }
+//        die();
+
         if($insert){
             $sal_info['success']=true;
             $sal_info['message']="Salida creada con exito!";
@@ -99,85 +106,6 @@ class Model_salidas extends CI_Model
         return $sal_info;
     }
 
-//    public function countOrderItem($order_id)
-//    {
-//        if($order_id) {
-//            $sql = "SELECT * FROM orders_item WHERE order_id = ?";
-//            $query = $this->db->query($sql, array($order_id));
-//            return $query->num_rows();
-//        }
-//    }
-
-    public function update($id)
-    {
-        if($id) {
-            $user_id = $this->session->userdata('id');
-            // fetch the order data
-
-            $data = array(
-                'customer_name' => $this->input->post('customer_name'),
-                'customer_address' => $this->input->post('customer_address'),
-                'customer_phone' => $this->input->post('customer_phone'),
-                'gross_amount' => $this->input->post('gross_amount_value'),
-                'service_charge_rate' => $this->input->post('service_charge_rate'),
-                'service_charge' => ($this->input->post('service_charge_value') > 0) ? $this->input->post('service_charge_value'):0,
-                'vat_charge_rate' => $this->input->post('vat_charge_rate'),
-                'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-                'net_amount' => $this->input->post('net_amount_value'),
-                'discount' => $this->input->post('discount'),
-                'paid_status' => $this->input->post('paid_status'),
-                'user_id' => $user_id
-            );
-
-            $this->db->where('id', $id);
-            $update = $this->db->update('orders', $data);
-
-            // now the order item
-            // first we will replace the product qty to original and subtract the qty again
-            $this->load->model('model_products');
-            $get_order_item = $this->getOrdersItemData($id);
-            foreach ($get_order_item as $k => $v) {
-                $product_id = $v['product_id'];
-                $qty = $v['qty'];
-                // get the product
-                $product_data = $this->model_products->getProductData($product_id);
-                $update_qty = $qty + $product_data['qty'];
-                $update_product_data = array('qty' => $update_qty);
-
-                // update the product qty
-                $this->model_products->update($update_product_data, $product_id);
-            }
-
-            // now remove the order item data
-            $this->db->where('order_id', $id);
-            $this->db->delete('orders_item');
-
-            // now decrease the product qty
-            $count_product = count($this->input->post('product'));
-            for($x = 0; $x < $count_product; $x++) {
-                $items = array(
-                    'order_id' => $id,
-                    'product_id' => $this->input->post('product')[$x],
-                    'qty' => $this->input->post('qty')[$x],
-                    'rate' => $this->input->post('rate_value')[$x],
-                    'amount' => $this->input->post('amount_value')[$x],
-                );
-                $this->db->insert('orders_item', $items);
-
-                // now decrease the stock from the product
-                $product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
-                $qty = (int) $product_data['qty'] - (int) $this->input->post('qty')[$x];
-
-                $update_product = array('qty' => $qty);
-                $this->model_products->update($update_product, $this->input->post('product')[$x]);
-            }
-
-            return true;
-        }
-    }
-
-
-
     public function remove($id)
     {
         if($id) {
@@ -187,6 +115,15 @@ class Model_salidas extends CI_Model
 //            $this->db->where('order_id', $id);
 //            $delete_item = $this->db->delete('orders_item');
             return ($delete == true ) ? true : false;
+        }
+    }
+
+    public function update($data, $id)
+    {
+        if($data && $id) {
+            $this->db->where('ID', $id);
+            $update = $this->db->update('salida', $data);
+            return ($update == true) ? true : false;
         }
     }
 
@@ -217,7 +154,8 @@ class Model_salidas extends CI_Model
             else
                 $vendido=1;
             //AÑADO DALIDA ID A LA LISTA DE SALIDAS DE LOTE//{"id":[2,3,4]}
-            $id=(array) json_decode($lote['Salida']);
+            $id['id'] =array();
+            $id['id']=(array) json_decode($lote['Salida']);
 //            echo gettype($id);
 
             if($id==false || $id==null) {
@@ -228,8 +166,9 @@ class Model_salidas extends CI_Model
             }
 //            echo "ES".json_encode($id);
 //            die();
-            $update_vendido = array('Vendido'=>$vendido,'Salida'=>json_encode($id));
-            $update=$this->model_lotes->update($update_vendido, $lote_id);
+            $stock = $this->countStock($lote_id);
+            $update_vendido = array('Vendido'=>$vendido,'Salida'=>json_encode($id),'Stock'=>$stock);
+            $update = $this->model_lotes->update($update_vendido, $lote_id);
 
             if($update){
                 $response['success_lote']=$update;
@@ -245,24 +184,29 @@ class Model_salidas extends CI_Model
         return $response;
     }
 
-    public function getSalidasDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string)
+    public function getSalidasDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings)
     {
 //        $this->db->select('lote.ID, lote.Serial, lote.Articulo, lote.Entrada, lote.Descripcion, lote.Cantidad, lote.Stock, lote.Precio, lote.Coste, lote.Almacen, lote.Vendido');
-        $this->db->select('Salida.ID,Salida.Bill_no, cli.Nombre as Cliente, Salida.Fecha as Fecha, Salida.Descripcion, Salida.Cantidad_Total');
+        $this->db->select('Salida.ID,Salida.Bill_no,Salida.AlbaranID, cli.Nombre as Cliente, Salida.Fecha as Fecha, Salida.Descripcion, Salida.Cantidad_Total');
 
         $this->db->from('salida Salida');
         $this->db->join('cliente cli','cli.ID = Salida.Cliente','left');
 
         if($sidx == 'ID') { $this->db->order_by('Salida.ID', $sord); }
         else if($sidx == 'Bill_no') { $this->db->order_by('Salida.Bill_no', $sord); }
+        else if($sidx == 'AlbaranID') { $this->db->order_by('Salida.AlbaranID', $sord); }
         else if($sidx == 'Cliente') { $this->db->order_by('cli.Nombre', $sord); }
         else if($sidx == 'Fecha') { $this->db->order_by('Fecha', $sord); }
         else if($sidx == 'Descripcion') { $this->db->order_by('Salida.Descripcion', $sord); }
         else if($sidx == 'Cantidad_Total') { $this->db->order_by('Salida.Cantidad_Total', $sord); }
-        else { $this->db->order_by('Salida.ID', $sord); }
+        else { $this->db->order_by('Salida.Fecha', 'desc');}
 //        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
 //        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+        if ($search_strings) {
+//            echo "ENTRA";
+            $this->getSearch($search_strings);
 
+        }
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         $result=$query->result();
@@ -270,18 +214,104 @@ class Model_salidas extends CI_Model
         return $result;
     }
 
-    public function countTotal($search_field, $search_string)
+    public function countTotal($search_field, $search_strings)
     {
-        $this->db->select('Salida.ID,Salida.Bill_no, cli.Nombre as Cliente, Salida.Fecha as Fecha, Salida.Descripcion, Salida.Cantidad_Total');
+        $this->db->select('Salida.ID,Salida.Bill_no,Salida.AlbaranID, cli.Nombre as Cliente, Salida.Fecha as Fecha, Salida.Descripcion, Salida.Cantidad_Total');
 
         $this->db->from('salida Salida');
         $this->db->join('cliente cli','cli.ID = Salida.Cliente','left');
 //
 //        if($search_field == 'ID') { $this->db->like('Articulo.ID', $search_string); }
 //        if($search_field == 'Nombre') { $this->db->like('Articulo.Nombre', $search_string); }
+        if ($search_strings) {
+//            echo "ENTRA";
+            $this->getSearch($search_strings);
+        }
 
         $query = $this->db->get();
         return count($query->result());
     }
 
+    public function getSearch($search_strings)
+    {
+        foreach ($search_strings->rules as $key => $value) {
+
+//                echo $value->field;
+            switch ($value->field) {
+                case 'ID':
+                    if ($value->op == 'cn')
+                        $this->db->like('Salida.ID', $value->data);
+                    else
+                        $this->db->where('Salida.ID', $value->data);
+                    break;
+                case 'Bill_no':
+                    if ($value->op == 'cn')
+                        $this->db->like('Salida.Bill_no', $value->data);
+                    else
+                        $this->db->where('Salida.Bill_no', $value->data);
+                    break;
+                case 'AlbaranID':
+                    if ($value->op == 'cn')
+                        $this->db->like('Salida.AlbaranID', $value->data);
+                    else
+                        $this->db->where('Salida.AlbaranID', $value->data);
+                    break;
+                case 'Cliente':
+                    if ($value->op == 'cn')
+                        $this->db->like('cli.Nombre', $value->data);
+                    else
+                        $this->db->where('cli.Nombre', $value->data);
+                    break;
+                case 'Fecha':
+                    $date = explode("/", $value->data);
+                    $date_f = $date[2].'-'.$date[1].'-'.$date[0];
+                    if ($value->op == 'ge')
+                        $this->db->where('Salida.Fecha >=', $date_f);
+                    else if ($value->op == 'le')
+                        $this->db->where('Salida.Fecha <=', $date_f);
+                    else
+                        $this->db->like('Salida.Fecha', $date_f);
+                    break;
+                case 'Descripcion':
+                    $this->db->like('Salida.Descripcion', $value->data);
+                    break;
+//                case 'Cantidad Total':
+//                    if ($value->op == 'ge')
+//                        $this->db->where('Lote.Cantidad >=', $value->data);
+//                    else if ($value->op == 'le')
+//                        $this->db->where('Lote.Cantidad <=', $value->data);
+//                    else
+//                        $this->db->where('Lote.Cantidad', $value->data);
+//                    break;
+                case 'Cantidad Total':
+                    if ($value->op == 'cn')
+                        $this->db->like('Salida.Cantidad_Total', $value->data);
+                    else
+                        $this->db->where('Salida.Cantidad_Total', $value->data);
+                    break;
+            }
+
+
+        }
+    }
+
+
+    public function countStock($id){
+        $divisiones =  $this->model_divisiones->getDivisionDataByLote($id);
+        $data_lineal=0;
+        $data_area=0;
+        $data_vol = 0;
+        foreach ($divisiones as $k => $v) {
+            $stock = floatval($v['Piezas_Stock']);
+            $alto = floatval($v['Alto']);
+            $largo = floatval($v['Largo']);
+            $espesor = floatval($v['Espesor']);
+
+            $data_lineal += ($stock * $largo);
+            $data_area += $stock * $largo * $alto;
+            $data_vol += $stock * $largo * $alto * $espesor;
+        }
+
+        return "Lineal T: ".round($data_lineal,3)."m" ."\tÁrea T: ".round($data_area,3 )."m²"."\tVolumen T: ". round($data_vol,3) ."m³";
+    }
 }

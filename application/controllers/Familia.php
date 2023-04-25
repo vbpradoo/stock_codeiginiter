@@ -95,6 +95,7 @@ class Familia extends Admin_Controller
 
         $this->form_validation->set_rules('familia_nombre', 'Nombre artículo', 'trim|required');
         $this->form_validation->set_rules('familia_descripcion', 'Descripción', 'trim');
+        $this->form_validation->set_rules('familia_unidades', 'Unidades', 'trim|required');
 
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
@@ -103,6 +104,7 @@ class Familia extends Admin_Controller
             $data = array(
                 'Nombre' => $this->input->post('familia_nombre'),
                 'Descripcion' => $this->input->post('familia_descripcion'),
+                'Unidades' => $this->input->post('familia_unidades'),
 
             );
 
@@ -141,6 +143,7 @@ class Familia extends Admin_Controller
         if ($id) {
             $this->form_validation->set_rules('edit_familia_nombre', 'Nombre familia', 'trim|required');
             $this->form_validation->set_rules('edit_familia_descripcion', 'Descripción', 'trim');
+            $this->form_validation->set_rules('edit_familia_unidades', 'Unidades', 'trim|required');
 
             $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
@@ -148,6 +151,7 @@ class Familia extends Admin_Controller
                 $data = array(
                     'Nombre' => $this->input->post('edit_familia_nombre'),
                     'Descripcion' => $this->input->post('edit_familia_descripcion'),
+                    'Unidades' => $this->input->post('edit_familia_unidades'),
 
                 );
 
@@ -231,6 +235,15 @@ class Familia extends Admin_Controller
             $buttons = '';
             $nombreFamilia='';
 //            echo $x['ID'];
+            if($value->Unidades == 'm3')
+                $value->Unidades = '<span class="label label-primary">Metros Cúbicos (m³)</span>';
+            elseif ($value->Unidades == 'm2')
+                $value->Unidades = '<span class="label label-success">Metros Cuadrados (m²)</span>';
+            elseif ($value->Unidades == 'm')
+                $value->Unidades = '<span class="label label-info">Unidades Lineales (m)</span>';
+            else
+                $value->Unidades = '<span class="label label-danger">Error</span>';
+
             if (in_array('deleteProduct', $this->permission)) {
                 $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFamilia(' . $value->ID . ')" data-toggle="modal" data-target="#removeFamiliaModal"><i class="fa fa-trash"></i></button>';
             }

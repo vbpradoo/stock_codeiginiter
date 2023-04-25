@@ -1,13 +1,13 @@
-<script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.17/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
+<!--<script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/1.10.17/js/dataTables.bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/es.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/es.js"></script>-->
 
-<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>-->
 
 
 <!-- Content Wrapper. Contains page content -->
@@ -86,11 +86,6 @@
                                 </select>
                             </div>
 
-                            <!-- Guardo el valor para poder madarlo en el form-->
-                            <!--                            <div id="articulo_value" class="form-group" style="visibility: hidden;"> -->
-                            <!--                            </div> -->
-
-
                             <div id="Proovedor" class="form-group" style="display: none;">
                                 <label for="proovedor">Proveedor</label>
                                 <select class="form-control select_group" id="proovedor" name="proovedor"
@@ -101,13 +96,13 @@
                                     <?php endforeach ?>
                                 </select>
                             </div>
-                            <div id="Pagado" class="form-group" style="display: none;">
-                                <label for="pagado">Estado</label>
-                                <select class="form-control select_group" id="pagado" name="pagado">
-                                    <option value="0">Sin pagar</option>
-                                    <option value="1">Pagado</option>
-                                </select>
-                            </div>
+<!--                            <div id="Pagado" class="form-group" style="display: none;">-->
+<!--                                <label for="pagado">Estado</label>-->
+<!--                                <select class="form-control select_group" id="pagado" name="pagado">-->
+<!--                                    <option value="0">Sin pagar</option>-->
+<!--                                    <option value="1">Pagado</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
                             <div id="Fecha" class="form-group" style="display: none;">
                                 <label for="fecha">Fecha</label>
                                 <input type="text" class="form-control" id="fecha" name="fecha"
@@ -132,19 +127,19 @@
                                        placeholder="Introduzca cantidad" autocomplete="off"/>
                             </div>
 
-                            <div id="Precio" class="form-group" style="display: none;">
-                                <label for="precio">Precio</label>
-                                <input type="text" class="form-control" id="precio" name="precio"
-                                       placeholder="Introduzca precio" autocomplete="off"/>
-                            </div>
-                            <div id="Coste" class="form-group" style="display: none;">
-                                <label for="coste">Coste</label>
-                                <input type="text" class="form-control" id="coste" name="coste"
-                                       placeholder="Introduzca coste" autocomplete="off"/>
-                            </div>
+<!--                            <div id="Precio" class="form-group" style="display: none;">-->
+<!--                                <label for="precio">Precio</label>-->
+<!--                                <input type="text" class="form-control" id="precio" name="precio"-->
+<!--                                       placeholder="Introduzca precio" autocomplete="off"/>-->
+<!--                            </div>-->
+<!--                            <div id="Coste" class="form-group" style="display: none;">-->
+<!--                                <label for="coste">Coste</label>-->
+<!--                                <input type="text" class="form-control" id="coste" name="coste"-->
+<!--                                       placeholder="Introduzca coste" autocomplete="off"/>-->
+<!--                            </div>-->
                             <div id="Almacen" class="form-group" style="display: none;">
                                 <label for="almacen">Almacén</label>
-                                <select class="form-control select_group" id="almacen" name="almacen">
+                                <select class="form-control select_group" id="almacen" name="almacen" style="width: 100% !important;">
                                     <?php foreach ($almacenes as $k => $v): ?>
                                         <option id="<?php echo $v['ID'] ?>"
                                                 value="<?php echo $v['ID'] ?>"><?php echo $v['Nombre'] ?></option>
@@ -352,7 +347,6 @@
 
             $("#lote_serial").val(index_serial);
             $("#lote_serial").trigger('change.select2');
-            // $("#lote_serial").change();
 
         }
 
@@ -364,9 +358,12 @@
 
         //I add for display
         $("#lote_serial").unbind().change(function (evt) {
+            //WE ERASE PREVIOUS INFO
+            // $("#editLoteForm")[0].reset();
+            // $("#editLoteForm .form-group").removeClass('has-error').removeClass('has-success');
+            map =new Map();
 
             //WE PLACE HERE OUR ALGORITHM TO DETECT FORMAT SERIAL
-
             var serial = 'serial=' + $("#lote_serial option:selected").text().trim().toString();
             console.log(serial);
             $.ajax({
@@ -390,18 +387,23 @@
 
                     //Create array query
                     console.log(lote.Division);
-                    var obj = JSON.parse(lote.Division);
-                    // console.log("EOHH");
-                    var string = "?";
-                    for (var i = 0; i < obj.id.length; i++) {
-                        if (i === obj.id.length - 1)
-                            string += "id[]=" + obj.id[i];
-                        else
-                            string += "id[]=" + obj.id[i] + "&";
-                    }
+                    try {
+                        var obj = JSON.parse(lote.Division);
+                        var string = "?";
+                        for (var i = 0; i < obj.id.length; i++) {
+                            if (i === obj.id.length - 1)
+                                string += "id[]=" + obj.id[i];
+                            else
+                                string += "id[]=" + obj.id[i] + "&";
+                        }
 
-                    // console.log(lote.ID);
-                    string = "id=" + lote.ID;
+                        // console.log(lote.ID);
+                        string = "id=" + lote.ID;
+                    }catch(e){
+                        console.log("Campo Division sin inicializar a : { 'id':[]}")
+                    }
+                        // console.log("EOHH");
+                    console.log(lote.Division)
                     //We reset the grid
                     $("#jqGrid").jqGrid("clearGridData");
                     console.log("PROCECESOA" + string);
@@ -410,25 +412,34 @@
                     $("#articulo").val(lote.Articulo).change();
                     $("#entrada").val(lote.Entrada);
                     $("#proovedor").val(entrada.Proovedor).change();
-                    $("#pagado").val(entrada.Pagado).change();
+                    // $("#pagado").val(entrada.Pagado).change();
                     $("#fecha").val(entrada.Fecha);
                     // console.log("Proovedor:" + $("#proovedor").val() + "\tOri:" + lote.Proovedor);
                     $("#cantidad").val(lote.Cantidad);
-                    $("#precio").val(lote.Precio);
-                    $("#coste").val(lote.Coste);
+                    // $("#precio").val(lote.Precio);
+                    // $("#coste").val(lote.Coste);
                     $("#almacen").val(lote.Almacen).change();
-                    $('#descripcion').data("wysihtml5").editor.setValue(lote.Descripcion);
-
+                    console.log("MI DESCRIPCION ES:");
+                    console.log(lote.Descripcion);
+                    if(lote.Descripcion !== "")
+                        $('#descripcion').data("wysihtml5").editor.setValue(lote.Descripcion);
+                    else {
+                        try {
+                            $('#descripcion').data("wysihtml5").editor.setValue(" ");
+                        }catch (e) {
+                            console.log("SHIT");
+                        }
+                    }
                     // $("#lote_serial").select2({ disabled : true });
 
                     $("#Articulo").show(100);
                     $("#Proovedor").show(100);
-                    $("#Pagado").show(100);
+                    // $("#Pagado").show(100);
                     $("#Fecha").show(100);
                     $("#Division").show(200);
                     $("#Cantidad").show(200);
-                    $("#Precio").show(300);
-                    $("#Coste").show(400);
+                    // $("#Precio").show(300);
+                    // $("#Coste").show(400);
                     $("#Almacen").show(500);
                     $("#Descripcion").show(500);
                     $("#Footer").show(600);
@@ -461,6 +472,8 @@
             console.log(form.attr("action"));
             // console.log(form.serialize());
             $("#lote_serial").select2({disabled: false});
+            console.log("INTEREEEEEEEEEEEEEES:");
+            console.log(JSON.stringify(strMapToObj(map)));
             var data = form.serialize() + "&entrada=" + lote.Entrada + "&division="+JSON.stringify(strMapToObj(map)) ;;
             if (path)
                 data += "&articulo=" + $("#articulo").prop("value");
@@ -505,7 +518,7 @@
 
 
                         // reset the form
-                        map=new Map();
+                        map = new Map();
                         row_id=0;
 
                         $("#editLoteForm")[0].reset();
@@ -514,15 +527,15 @@
                         $("#Serial").hide(100);
                         $("#Articulo").hide(100);
                         $("#Proovedor").hide(100);
-                        $("#Pagado").hide(100);
+                        // $("#Pagado").hide(100);
                         $("#Fecha").hide(100);
                         $("#Division").hide(200);
                         $("#Cantidad").hide(200);
-                        $("#Precio").hide(300);
-                        $("#Coste").hide(400);
+                        // $("#Precio").hide(300);
+                        // $("#Coste").hide(400);
                         $("#Almacen").hide(500);
                         $("#Descripcion").hide(500);
-                        $("#descripcion").remove();
+                        $('#descripcion').data("wysihtml5").editor.setValue("");
                         $("#Footer").hide(600);
                         $("#xSerial").show(600);
                         $("#xArticulo").show(600);
@@ -560,9 +573,15 @@
 
 
         $("#xSerial").unbind().click(function () {
+            //We delete the alerts
+            $(".alert ").remove();
+            // $("#editLoteForm")[0].reset();
+            // $("#editLoteForm .form-group").removeClass('has-error').removeClass('has-success');
+
             path = false;
             //RESET THE DIV MAP
             map = new Map();
+            console.log(map);
             $("#Serial").show(100);
             $("#xSerial").hide(100);
             $("#xArticulo").hide(100);
@@ -599,6 +618,14 @@
         });
 
         $("#xArticulo").unbind().click(function () {
+            //We delete the alerts
+            $(".alert ").remove();
+            // $("#editLoteForm")[0].reset();
+            // $("#editLoteForm .form-group").removeClass('has-error').removeClass('has-success');
+
+            //RESET THE DIV MAP
+            map = new Map();
+
             path = true;
             $("#Articulo").show(100);
             $("#xSerial").hide(100);
@@ -617,7 +644,7 @@
                     results.push(
                         {
                             "id": element.ID,
-                            "text": element.Serial
+                                "text": element.Serial
                         }
                     )
                 });
@@ -688,14 +715,6 @@
         });
     });
 
-    // function changeJqGrid(string){
-    //     //We reset the grid
-    //     $("#jqGrid").jqGrid("clearGridData");
-    //     console.log("PROCECESOA");
-    //     $("#jqGrid").jqGrid().setGridParam({url : "getDivisionDataByLote?"+string}).trigger("reloadGrid");
-    //
-    // }
-
     function initJqGrid() {
         var lastsel;
         // console.log("initJqGrid             "+ string);
@@ -712,42 +731,33 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "1px",
                     align: 'center'
-                    // formatter: formatTitle
                 },
                 {
                     label: 'Piezas',
                     name: 'Piezas',
                     index: 'Piezas',
                     sorttype: 'text',
-                    // width: "2px",
                     align: 'center'
-                    // formatter: formatLink
                 }, {
                     label: 'Stock',
                     name: 'Piezas_Stock',
                     index: 'Piezas_Stock',
                     sorttype: 'text',
                     hidden: true,
-                    // width: "2px",
                     align: 'center'
-                    // formatter: formatLink
                 },
                 {
                     label: 'Largo',
                     name: 'Largo',
                     index: 'Largo',
-                    // width: "3px",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center'
                 }, {
                     label: 'Alto/Ancho',
                     name: 'Alto',
                     index: 'Alto',
                     sorttype: 'text',
-                    // width: "3px",
                     align: 'center'
                 },
                 {
@@ -755,14 +765,13 @@
                     name: 'Espesor',
                     index: 'Espesor',
                     sorttype: 'text',
-                    // width: "3px",
                     align: 'center'
                 }, {
                     label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
-                    // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    sortable: false,
                 }
             ],
 
@@ -1051,7 +1060,7 @@
             $(".text-danger").remove();
             console.log(id);
             var response = $('#jqGrid').jqGrid("delRowData", id);
-            $('#jqGrid').trigger('reloadGrid');
+            // $('#jqGrid').trigger('reloadGrid');
             console.log(response);
 
 
@@ -1085,15 +1094,10 @@
 
 
     function getCantidad() {
-        console.log("ENTRA");
-        var alto = 0, largo = 0, piezas = 0, espesor = 0;
+        // console.log("ENTRA");
         var data_lineal = 0, data_area = 0, data_vol = 0;
         for (const value of map.values()) {
 
-            // alto += value.Alto;
-            // largo += value.Largo;
-            // piezas += value.Piezas;
-            // espesor += value.Espesor;
             data_lineal += value.Piezas * value.Largo;
             data_area += value.Piezas * value.Largo * value.Alto;
             data_vol += value.Piezas * value.Largo * value.Alto * value.Espesor;
@@ -1101,7 +1105,7 @@
         }
 
 
-        $("#cantidad").val("Lineal T: " + data_lineal + "m" + "\tÁrea T: " + data_area + "m²" + "\tVolumen T: " + data_vol + "m³");
+        $("#cantidad").val("Lineal T: " + round(data_lineal) + "m" + "\tÁrea T: " + round(data_area) + "m²" + "\tVolumen T: " + round(data_vol) + "m³");
 
     }
 
@@ -1157,5 +1161,18 @@
 
             }
         });
+    }
+
+    function round(num, decimales = 3) {
+        var signo = (num >= 0 ? 1 : -1);
+        num = num * signo;
+        if (decimales === 0) //con 0 decimales
+            return signo * Math.round(num);
+        // round(x * 10 ^ decimales)
+        num = num.toString().split('e');
+        num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+        // x * 10 ^ (-decimales)
+        num = num.toString().split('e');
+        return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
     }
 </script>

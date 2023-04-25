@@ -45,18 +45,6 @@
                     </div>
                     <!-- /.box-header -->
                     <table id="jqGrid" class="box-body"></table>
-                    <!--            <table id="manageTable" class="table table-bordered table-striped">-->
-                    <!--              <thead>-->
-                    <!--              <tr>-->
-                    <!--                <th>Nombre </th>-->
-                    <!--                <th>Status</th>-->
-                    <!--                --><?php //if(in_array('updateStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
-                    <!--                  <th>Action</th>-->
-                    <!--                --><?php //endif; ?>
-                    <!--              </tr>-->
-                    <!--              </thead>-->
-
-                    <!-- /.box-body -->
                     <div id="jqGridPager"></div>
                 </div>
                 <!-- /.box -->
@@ -213,39 +201,36 @@
                     name: 'ID',
                     index:'ID',
                     sorttype: 'number',
-                    // width: "1px",
-                    align: 'center'
-                    // formatter: formatTitle
+                    align: 'center',
+                    sortable:false,
                 },
                 {
                     label: 'Nombre',
                     name: 'Nombre',
                     index:'Nombre',
                     sorttype: 'text',
-                    // width: "2px",
-                    align: 'center'
-                    // formatter: formatLink
+                    align: 'center',
+                    sortable:false,
                 },
                 {
                     label: 'Localización',
                     name: 'Localizacion',
                     index:'Localizacion',
-                    // width: "3px",
                     sorttype: 'text',
-                    // formatter: 'number',
-                    align: 'center'
+                    align: 'center',
+                    sortable:false,
                 },{
                     label: 'Estado',
                     name: 'Activo',
                     index:'Activo',
-                    // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    sortable:false,
                 },{
                     label: 'Control',
                     name: 'Buttons',
                     index:'Control',
-                    // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    sortable:false
                 }
             ],
 
@@ -258,22 +243,9 @@
             caption: "Almacenes",
 
             loadComplete: function () {
-                // var objRows = $("#jqGrid tr").splice(1);
-                // var objHeader = $("tr[class=ui-jqgrid-labels]");
-                // var objFirstRowHeader = $(objHeader[1]).children("th");
-                //
-                // for (i = 0; i < objRows.length; i++) {
-                //     var objFirstRowColumns = $(objRows[i]).children("td");
-                //
-                //     for (i = 0; i < objFirstRowColumns.length; i++) {
-                //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-                //     }
-                // }
             },
         });
 
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
 
@@ -323,18 +295,6 @@
                 newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
             $grid.jqGrid("setGridWidth", newWidth, true);
 
-            // var objRows = $("#jqGrid tr").splice(1);
-            // var objHeader = $("tr[class=ui-jqgrid-labels]");
-            // var objFirstRowHeader = $(objHeader[1]).children("th");
-            //
-            // for (i = 0; i < objRows.length; i++) {
-            //     var objFirstRowColumns = $(objRows[i]).children("td");
-            //
-            //     for (i = 0; i < objFirstRowColumns.length; i++) {
-            //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-            //     }
-            // }
-
             $(window).on("resize", function () {
                 var $grid = $(table),
                     newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
@@ -353,107 +313,8 @@
                 }
             });
         }
-        // fetchGridData();
 
-        // function fetchGridData() {
-        //
-        //     var gridArrayData = [];
-        //     // show loading message
-        //     $("#jqGrid")[0].grid.beginReq();
-        //     $.ajax({
-        //
-        //         type: "GET",
-        //         url: base_url + "almacenes/getAlmacenesData",
-        //
-        //         success: function (result) {
-        //             console.log(typeof result);
-        //             for (var i = 0; i < result.length; i++) {
-        //                 var item = result.items[i];
-        //                 gridArrayData.push({
-        //                     ID: item.ID,
-        //                     Nombre: item.Nombre,
-        //                     Localizacion: item.Localizacion,
-        //                     Activo: item.Activo,
-        //                     // AnswerC: item.answer_count
-        //                 });
-        //             }
-        //             // set the new data
-        //             $("#jqGrid").jqGrid('setGridParam', {data: gridArrayData});
-        //             // hide the show message
-        //             $("#jqGrid")[0].grid.endReq();
-        //             // refresh the grid
-        //             $("#jqGrid").trigger('reloadGrid');
-        //         }
-        //     });
-        // }
-
-        function formatTitle(cellValue, options, rowObject) {
-            return cellValue.substring(0, 50) + "...";
-        };
-
-        function formatLink(cellValue, options, rowObject) {
-            return "<a href='" + cellValue + "'>" + cellValue.substring(0, 25) + "..." + "</a>";
-        };
-
-
-        // initialize the datatable
-        // manageTable = $('#manageTable').DataTable({
-        //     'ajax': 'fetchStoresData',
-        //     'order': []
-        // });
-
-        // $("#jsGrid").jsGrid({
-        //     width: "80%",
-        //     height: "auto",
-        //
-        //     inserting: true,
-        //     editing: true,
-        //     sorting: true,
-        //     paging: true,
-        //     autoload:true,
-        //
-        //     deleteConfirm: function(item) {
-        //         return "The client \"" + item.Name + "\" will be removed. Are you sure?";
-        //     },
-        //     rowClick: function(args) {
-        //        // showDetailsDialog("Edit", args.item);
-        //     },
-        //
-        //     controller: {
-        //         loadData: function() {
-        //             var d = $.Deferred();
-        //             console.log(base_url);
-        //             $.ajax({
-        //                 url: base_url+"almacenes/getAlmacenesData",
-        //                 dataType: "json"
-        //                 // data: filter,
-        //
-        //             }).done(function(response) {
-        //                 var data=[];
-        //
-        //                 $.each(response,function (i, almacen) {
-        //                    console.log(almacen);
-        //                     data.push(almacen);
-        //                 });
-        //                 console.log(data);
-        //                 //data=[{"ID":1,"Nombre":"Goulla","Localizacion":"DEsc"}];
-        //                 d.resolve(data);
-        //             });
-        //
-        //             return d.promise();
-        //         }
-        //     },
-        //
-        //     fields: [
-        //         {name: "ID",title:"ID", type: "number", width: "20%"},
-        //         {name: "Nombre", title:"Nombre", type: "text", width: "20%", validate: "required"},
-        //         {name: "Localizacion",title:"Localización", type: "text", width: "20%"},
-        //         {name: "Activo",title:"Activo", type: "number", width: "20%"},
-        //         {type: "control"}
-        //     ]
-        // });
-
-
+    /********** FORMULARIOS *********************/
         // submit the create from
         $("#createForm").unbind('submit').on('submit', function () {
             var form = $(this);

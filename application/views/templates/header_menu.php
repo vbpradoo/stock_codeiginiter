@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="http://stoneandmaterials.com/" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>VDP</b></span>
+      <span class="logo-mini"><b>[APP NAME]</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Ventos de Pedra</b></span>
+      <span class="logo-lg"><b>[APP NAME]</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">

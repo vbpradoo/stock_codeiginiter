@@ -190,6 +190,13 @@ class Articulos extends Admin_Controller
 
             $this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
+//            foreach ($_POST as $key => $value) {
+//                $response['messages'][$key] = form_error($key);
+//            }
+//            var_dump($_POST);
+//            echo json_encode($response);
+//            die();
+
             if ($this->form_validation->run() == TRUE) {
                 $data = array(
                     'Nombre' => $this->input->post('edit_articulo_nombre'),
@@ -208,8 +215,7 @@ class Articulos extends Admin_Controller
                     $response['success'] = false;
                     $response['messages'] = 'Error al actualizar';
                 }
-            }
-            else {
+            } else {
                 $response['success'] = false;
                 foreach ($_POST as $key => $value) {
                     $response['messages'][$key] = form_error($key);
@@ -270,19 +276,26 @@ class Articulos extends Admin_Controller
 
 
         $search_field = $this->input->get('searchField'); // search field name
+        $search_strings = $this->input->get('searchString'); // search string
         $search_string = $this->input->get('searchString'); // search string
         $page = $this->input->get('page'); //page number
         $limit = $this->input->get('rows'); // number of rows fetch per page
         $sidx = $this->input->get('sidx'); // field name which you want to sort
         $sord = $this->input->get('sord'); // field data which you want to soft
         if(!$sidx) { $sidx = 1; } // if its empty set to 1
-        $count = $this->model_articulos->countTotal($search_field, $search_string);
+
+        if ($this->input->get('_search') && $this->input->get('filters')) {
+
+            $search_strings = json_decode($this->input->get('filters'));
+        }
+
+        $count = $this->model_articulos->countTotal($search_strings);
         $total_pages = 0;
         if($count > 0) { $total_pages = ceil($count/$limit); }
         if($page > $total_pages) { $page = $total_pages; }
         $start = ($limit * $page) - $limit;
 
-        $articulodata=($this->model_articulos->getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+        $articulodata=($this->model_articulos->getArticuloDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string,$search_strings));
 //        $famdata = $this->model_familia->getFamiliaData();
 
 

@@ -1,6 +1,5 @@
 
-
-  <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -83,10 +82,60 @@
         </div>
         <!-- /.row -->
       <?php endif; ?>
-      
-
     </section>
-    <!-- /.content -->
+
+    <section>
+      <canvas id="myChart" width="auto" height="auto"></canvas>
+    </section>
+
+      <script>
+          // var ctx = document.getElementById("myChart").getContext('2d');
+          // var f_month = moment().format('M');
+          // var months = moment()._locale.months();
+
+          // // for (var i = 0, len = months.length; i<len; i++)
+          // //     console.log(months.slice(i,i-1).concat(months.slice(0, Math.max(i+1-len, 0)).join(",")));
+          // //
+          // // console.log(months);
+          // // console.log(f_month);
+          // var myChart = new Chart(ctx, {
+          //     type: 'bar',
+          //     data: {
+          //         labels: months,
+          //         datasets: [{
+          //             label: '# de Salida',
+          //             data: [12, 19, 3, 5, 2, 3],
+          //             backgroundColor: [
+          //                 'rgba(255, 99, 132, 0.2)',
+          //                 'rgba(54, 162, 235, 0.2)',
+          //                 'rgba(255, 206, 86, 0.2)',
+          //                 'rgba(75, 192, 192, 0.2)',
+          //                 'rgba(153, 102, 255, 0.2)',
+          //                 'rgba(255, 159, 64, 0.2)'
+          //             ],
+          //             borderColor: [
+          //                 'rgba(255,99,132,1)',
+          //                 'rgba(54, 162, 235, 1)',
+          //                 'rgba(255, 206, 86, 1)',
+          //                 'rgba(75, 192, 192, 1)',
+          //                 'rgba(153, 102, 255, 1)',
+          //                 'rgba(255, 159, 64, 1)'
+          //             ],
+          //             borderWidth: 1
+          //         }]
+          //     },
+          //     options: {
+          //         scales: {
+          //             yAxes: [{
+          //                 ticks: {
+          //                     beginAtZero:true
+          //                 }
+          //             }]
+          //         }
+          //     }
+          // });
+      </script>
+        <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 

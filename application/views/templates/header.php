@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
 <head>
     <meta charset="utf-8">
@@ -34,8 +34,8 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet"
           href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') ?>">
-    <link rel="stylesheet"
-          href="<?php echo base_url('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
+<!--    <link rel="stylesheet"-->
+<!--          href="--><?php //echo base_url('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?><!--">-->
     <!-- Select2 -->
     <link rel="stylesheet" href="<?php echo base_url('assets/bower_components/select2/dist/css/select2.min.css') ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/fileinput/fileinput.min.css') ?>">
@@ -65,7 +65,7 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="<?php echo base_url('assets/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
     <!-- Morris.js charts -->
-    <script src="<?php echo base_url('assets/bower_components/raphael/raphael.min.js') ?>"></script>
+<!--    <script src="--><?php //echo base_url('assets/bower_components/raphael/raphael.min.js') ?><!--"></script>-->
     <!--    <script src="--><?php //echo base_url('assets/bower_components/morris.js/morris.min.js') ?><!--"></script>-->
     <!-- Sparkline -->
     <script src="<?php echo base_url('assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') ?>"></script>
@@ -75,7 +75,10 @@
     <!-- jQuery Knob Chart -->
     <script src="<?php echo base_url('assets/bower_components/jquery-knob/dist/jquery.knob.min.js') ?>"></script>
     <!-- daterangepicker -->
-    <script src="<?php echo base_url('assets/bower_components/moment/min/moment.min.js') ?>"></script>
+<!--    <script src="--><?php //echo base_url('assets/bower_components/moment/min/moment.min.js') ?><!--"></script>-->
+    <script src="<?php echo base_url('assets/bower_components/moment2/moment.min.js') ?>"></script>
+    <script>moment.updateLocale('es',null)</script>
+
     <script src="<?php echo base_url('assets/bower_components/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
     <!-- datepicker -->
     <script src="<?php echo base_url('assets/bower_components/moment/locale/es.js') ?>"></script>
@@ -103,7 +106,7 @@
     <script src="<?php echo base_url('assets/plugins/fileinput/fileinput.min.js') ?>"></script>
 
     <!-- ChartJS -->
-    <!--    <script src="--><?php //echo base_url('assets/bower_components/Chart.js/Chart.js') ?><!--"></script>-->
+        <script src="<?php echo base_url('assets/bower_components/chart.js/Chart.min.js') ?>"></script>
 
     <!-- icheck -->
     <script src="<?php echo base_url('assets/plugins/iCheck/icheck.min.js') ?>"></script>
@@ -125,9 +128,22 @@
     <script src="<?php echo base_url('assets/plugins/jqGrid/js/jquery.jqGrid.js') ?>"></script>
 
     <!--Dropzone-->
-    <script src="<?php echo base_url('assets/bower_components/dropzone/dropzone.min.js') ?>"></script>
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url('assets/bower_components/dropzone/dropzone.min.css') ?>"/>
+<!--    <script src="--><?php //echo base_url('assets/bower_components/dropzone/dropzone.min.js') ?><!--"></script>-->
+<!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url('assets/bower_components/dropzone/dropzone.min.css') ?><!--"/>-->
 
+    <link rel="apple-touch-icon" sizes="57x57" href="<?php echo base_url('assets/favicon/apple-touch-icon-57x57.png')?>" >
+    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo base_url('assets/favicon/apple-touch-icon-114x114.png')?>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url('assets/favicon/apple-touch-icon-72x72.png')?>">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?php echo base_url('assets/favicon/apple-touch-icon-144x144.png')?>">
+    <link rel="apple-touch-icon" sizes="60x60" href="<?php echo base_url('assets/favicon/apple-touch-icon-60x60.png')?>">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo base_url('assets/favicon/apple-touch-icon-120x120.png')?>">
+    <link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url('assets/favicon/apple-touch-icon-76x76.png')?>">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo base_url('assets/favicon/apple-touch-icon-152x152.png')?>">
+<!--    <link rel="icon" type="image/png" href="--><?php //echo base_url('assets/favicon/favicon-196x196.png')?><!--" sizes="196x196">-->
+<!--    <link rel="icon" type="image/png" href="--><?php //echo base_url('assets/favicon/favicon-160x160.png')?><!--" sizes="160x160">-->
+    <link rel="icon" type="image/png" href="<?php echo base_url('assets/favicon/favicon-96x96.png')?>" sizes="96x96">
+    <link rel="icon" type="image/png" href="<?php echo base_url('assets/favicon/favicon-16x16.png')?>" sizes="16x16">
+    <link rel="icon" type="image/png" href="<?php echo base_url('assets/favicon/favicon-32x32.png')?>" sizes="32x32">
 
 
 

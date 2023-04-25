@@ -188,7 +188,7 @@
                         </div>
                         <div class="form-group">
                             <label for="edit_articulo_familia">Familia</label>
-                            <select class="form-control edit_articulo_familia" id="edit_articulo_familia" name="edit_articulo_familia"
+                            <select type="text" class="form-control edit_articulo_familia" id="edit_articulo_familia" name="edit_articulo_familia"
                                     style="width: 100% !important;">
                                 <option></option>
                             </select>
@@ -272,7 +272,16 @@
                                    name="familia_descripcion" placeholder="Introduzca descripción de familia"
                                    autocomplete="off">
                         </div>
-
+                        <div class="form-group">
+                            <label for="familia_unidades">Unidades</label>
+                            <select type="text" class="form-control familia_unidades" id="familia_unidades" name="familia_unidades"
+                                    style="margin-top:1%;">
+                                <option></option>
+                                <option value="m">Unidades Lineales (m)</option>
+                                <option value="m2">Metros Cuadrados (m²)</option>
+                                <option  value="m3">Metros Cúbicos (m³)</option>
+                            </select>
+                        </div>
                     </div>
 
 
@@ -316,7 +325,16 @@
                                    name="edit_familia_descripcion" placeholder="Introduzca descripción de familia"
                                    autocomplete="off">
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="edit_familia_unidades">Unidades</label>
+                            <select type="text" class="form-control familia_unidades" id="edit_familia_unidades" name="edit_familia_unidades"
+                                    style="margin-top:1%;">
+                                <option value="m">Unidades Lineales (m)</option>
+                                <option value="m2">Metros Cuadrados (m²)</option>
+                                <option  value="m3">Metros Cúbicos (m³)</option>
+                            </select>
+                        </div>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -360,12 +378,17 @@
 
 <script type="text/javascript">
     var base_url = "<?php echo base_url(); ?>";
+    $('.familia_unidades').select2({
+        width: '100%',
+        placeholder: 'Seleccione unidades',
+        allowClear: true,
+        containerCssClass: "margin-bottom-1",
+    });
 
     $(document).ready(function () {
 
         $("#articuloNav").addClass('active');
-        // $(".edit_articulo_familia").select2();
-        //init select
+
         initselect();
 
         $("#verFamiliaModal").click(function () {
@@ -398,17 +421,22 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "1px",
-                    align: 'center'
-                    // formatter: formatTitle
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 },{
                     label: 'Código',
                     name: 'Serial',
                     index: 'Serial',
                     sorttype: 'text',
                     // width: "1px",
-                    align: 'center'
-                    // formatter: formatTitle
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 },
                 {
                     label: 'Nombre',
@@ -416,35 +444,42 @@
                     index: 'Nombre',
                     sorttype: 'text',
                     // width: "2px",
-                    align: 'center'
-                    // formatter: formatLink
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 },
                 {
                     label: 'Descripción',
                     name: 'Descripcion',
                     index: 'Descripción',
-                    // width: "3px",
                     sorttype: 'text',
                     align: 'center'
                 }, {
                     label: 'Familia',
                     name: 'Familia',
                     index: 'Familia',
-                    // width: "3px",
                     sorttype: 'text',
-                    align: 'center'
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 }, {
                     label: 'Estado',
                     name: 'Activo',
                     index: 'Activo',
-                    // width: "3px",
+                    stype: "select",
+                    // searchoptions value - name values pairs for the dropdown - they will appear as options
+                    searchoptions: {value: ":[All];1:Activo;0:Inactivo"},
                     align: 'center'
                 }, {
                     label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
-                    // width: "3px",
                     align: 'center',
+                    search: false,
                     sortable:false,
                 }
             ],
@@ -461,12 +496,19 @@
             loadComplete: function () {
 
             },
+            loadError : function(xhr,st,err) {
+                alert("La búsqueda que desea realizar no encuentra nada. Cambie los campos de búsqueda.");
+                $("#jqGrid").jqGrid("clearGridData", true);
+
+            }
         });
 
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
+        $("#jqGrid").jqGrid('filterToolbar', {
+            stringResult: true, searchOnEnter: true,
+            defaultSearch: 'cn', ignoreCase: true, searchOperators: true
+        });
 
         function ChangejQGridDesign(table, pager) {
             jQuery(table).jqGrid('navGrid', pager, {
@@ -533,32 +575,35 @@
                         name: 'ID',
                         index: 'ID',
                         sorttype: 'number',
-                        // width: "1px",
                         align: 'center'
-                        // formatter: formatTitle
                     },
                     {
                         label: 'Nombre',
                         name: 'Nombre',
                         index: 'Nombre',
                         sorttype: 'text',
-                        // width: "2px",
                         align: 'center'
-                        // formatter: formatLink
                     },
                     {
                         label: 'Descripción',
                         name: 'Descripcion',
                         index: 'Descripción',
-                        // width: "3px",
                         sorttype: 'text',
                         align: 'center'
-                    }, {
+                    },
+                    {
+                        label: 'Unidades',
+                        name: 'Unidades',
+                        index: 'Unidades',
+                        sorttype: 'text',
+                        align: 'center'
+                    },
+                    {
                         label: 'Control',
                         name: 'Buttons',
                         index: 'Control',
-                        // width: "3px",
-                        align: 'center'
+                        align: 'center',
+                        sortable:false,
                     }
                 ],
 
@@ -855,9 +900,6 @@
                     $("#createFamiliaForm")[0].reset();
                     $("#createFamiliaForm .form-group").removeClass('has-error').removeClass('has-success');
 
-                    // if(confirm("Necesita recargar la página para operar con las nuevsa entradas. Si no desea seguir introduciendo más familias, pulse OK!!"))
-                    //     location.reload();
-
                 } else {
 
                     if (response.messages instanceof Object) {
@@ -897,7 +939,8 @@
                 console.log(response);
                 $("#edit_familia_nombre").val(response.Nombre);
                 $("#edit_familia_descripcion").val(response.Descripcion);
-
+                $("#edit_familia_unidades").val(response.Unidades);
+                $("#edit_familia_unidades").trigger('change.select2');
                 // submit the edit from
                 $("#updateFamiliaForm").unbind('submit').bind('submit', function () {
                     var form = $(this);
@@ -1021,8 +1064,6 @@
             console.log(response);
 
             $.each(response, function (i, element) {
-                // console.log(element);
-                // console.log(i);
                 results.push(
                     {
                         "id": element.ID,
@@ -1035,19 +1076,14 @@
                 width: '100%',
                 placeholder: 'Seleccione famiilia',
                 data: results,
-                // multiple: false,
-                // maximumSelectionLength: 1,
                 allowClear: true,
                 containerCssClass: "margin-bottom-1",
             });
 
-            console.log("ENTRA");
             $('.edit_articulo_familia').select2({
                 width: '100%',
                 placeholder: 'Seleccione famiilia',
                 data: results,
-                // multiple: false,
-                // maximumSelectionLength: 1,
                 allowClear: true,
                 containerCssClass: "margin-bottom-1",
             });

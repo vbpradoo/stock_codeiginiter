@@ -48,6 +48,24 @@ class Entradas extends Admin_Controller
         $this->render_template('entradas/create_new', $this->data);
     }
 
+//    public function anexoLote()
+//    {
+//        // echo "PUTO";
+//        if (!in_array('updateProduct', $this->permission)) {
+//            redirect('dashboard', 'refresh');
+//        }
+////        $id =  ;
+////        echo $this->uri->segment(4);
+////        $this->data['lote_id'] = $this->model_lotes->getMyLoteByName($this->uri->segment(4));
+//        $this->data['lote_id'] = $_GET['id'];
+//        $this->render_template('entradas/anexo_lote', $this->data);
+//
+////        die();
+////        $this->render_template('entradas/anexo_lote', $this->data);
+////        $this->render_template('entradas/anexo_lote', $this->data);
+//
+//    }
+
     /*
     * It Fetches the products data from the product tabled
     * this function is called from the datatable ajax function
@@ -146,7 +164,7 @@ class Entradas extends Admin_Controller
 
         $this->form_validation->set_rules('Proovedor', 'Proovedor', 'trim|required');
         $this->form_validation->set_rules('Cantidad', 'Cantidad', 'trim|required');
-        $this->form_validation->set_rules('Pagado', 'Pagado', 'trim');
+//        $this->form_validation->set_rules('Pagado', 'Pagado', 'trim');
 
         if ($this->form_validation->run() == TRUE) {
 
@@ -227,7 +245,7 @@ class Entradas extends Admin_Controller
             $this->form_validation->set_rules('edit_fecha', 'Fecha', 'trim|required');
 //            $this->form_validation->set_rules('edit_cantidad', 'Cantidad', 'trim|required');
 //            $this->form_validation->set_rules('edit_descripcion', 'Descripcion', 'trim');
-            $this->form_validation->set_rules('edit_active', 'Estado', 'trim|required');
+//            $this->form_validation->set_rules('edit_active', 'Estado', 'trim|required');
             $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
 
@@ -239,7 +257,7 @@ class Entradas extends Admin_Controller
 //                    'Proovedor' => $this->input->post('edit_proovedor'),
                     'Fecha' => $this->input->post('edit_fecha'),
 //                    'Cantidad' => $this->input->post('edit_cantidad'),
-                    'Pagado' => $this->input->post('edit_active'),
+                   // 'Pagado' => $this->input->post('edit_active'),
 //                    'Descripcion' => $this->input->post('edit_descripcion'),
                 );
 //                echo json_encode($data);
@@ -309,19 +327,23 @@ class Entradas extends Admin_Controller
 
 
         $search_field = $this->input->get('searchField'); // search field name
-        $search_string = $this->input->get('searchString'); // search string
+        $search_strings = $this->input->get('searchString'); // search string
         $page = $this->input->get('page'); //page number
         $limit = $this->input->get('rows'); // number of rows fetch per page
         $sidx = $this->input->get('sidx'); // field name which you want to sort
         $sord = $this->input->get('sord'); // field data which you want to soft
         if(!$sidx) { $sidx = 1; } // if its empty set to 1
-        $count = $this->model_entradas->countTotal($search_field, $search_string);
+        if ($this->input->get('_search') && $this->input->get('filters')) {
+
+            $search_strings = json_decode($this->input->get('filters'));
+        }
+        $count = $this->model_entradas->countTotal($search_field, $search_strings);
         $total_pages = 0;
         if($count > 0) { $total_pages = ceil($count/$limit); }
         if($page > $total_pages) { $page = $total_pages; }
         $start = ($limit * $page) - $limit;
 
-        $entradasdata=($this->model_entradas->getEntradasDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_string));
+        $entradasdata=($this->model_entradas->getEntradasDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings));
 //        $famdata = $this->model_familia->getFamiliaData();
 
 
@@ -334,10 +356,18 @@ class Entradas extends Admin_Controller
             if (in_array('updateProduct', $this->permission)) {
                 $buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value->ID.')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
             }
+            if (in_array('viewProduct', $this->permission) && isset($value->Anexo) && $value->Anexo != '') {
+                $path = array();
+                $path['absolute']=substr($value->Anexo,2);
+                $path['relative'] = explode("/",$path['absolute'])[3];
+                $buttons .= '<a type="button" id="'.$path['absolute'].'" class="btn btn-default" onclick="viewAnexo(this)" data-toggle="modal" data-target="#anexoModal" ><i class="fa fa-eye"></i></a>';
+            }
+//            var_dump($value->Anexo);
+//            die();
             $value->Buttons=$buttons;
 
-            $status = ($value->Pagado == 1) ? '<span class="label label-success" >Pagado</span>' : '<span class="label label-warning" >Sin pagar</span>';
-            $value -> Pagado =$status;
+//            $status = ($value->Pagado == 1) ? '<span class="label label-success" >Pagado</span>' : '<span class="label label-warning" >Sin pagar</span>';
+//            $value -> Pagado =$status;
 
 //                foreach($famdata as $famkey => $famvalue){
 //                    if($famvalue['ID']==$value->Familia)

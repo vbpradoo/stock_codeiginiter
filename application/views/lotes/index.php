@@ -1,4 +1,10 @@
 
+<link type="text/css" rel="stylesheet" href="<?php echo base_url('assets/plugins/jqGrid/css/theme-jqgrid.css') ?>"/>
+<script type="text/ecmascript" src="<?php echo base_url('assets/plugins/GuriddoJqGrid/js/i18n/grid.locale-es.js') ?>"></script>
+<!-- This is the Javascript file of jqGrid -->
+<script type="text/ecmascript" src="<?php echo base_url('assets/plugins/GuriddoJqGrid/src/jquery.jqGrid.js') ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/plugins/GuriddoJqGrid/js/jszip.min.js')?>"></script>
+
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -9,7 +15,7 @@
             <small>Lotes</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Principal</a></li>
+            <li><a href="<?php echo base_url('dashboard/') ?>""><i class="fa fa-dashboard"></i>Principal</a></li>
             <li class="active">Lotes</li>
         </ol>
     </section>
@@ -22,22 +28,24 @@
 
                 <div id="messages"></div>
 
-                <?php if($this->session->flashdata('success')): ?>
+                <?php if ($this->session->flashdata('success')): ?>
                     <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         <?php echo $this->session->flashdata('success'); ?>
                     </div>
-                <?php elseif($this->session->flashdata('error')): ?>
+                <?php elseif ($this->session->flashdata('error')): ?>
                     <div class="alert alert-error alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         <?php echo $this->session->flashdata('error'); ?>
                     </div>
                 <?php endif; ?>
 
-                <?php if(in_array('createProduct', $user_permission)): ?>
+                <?php if (in_array('createProduct', $user_permission)): ?>
                     <a href="<?php echo base_url('entradas/createEntrada') ?>" class="btn btn-primary">Añadir Lotes</a>
                     <a href="<?php echo base_url('lotes/edit') ?>" class="btn btn-success">Editar Lotes</a>
-                    <br /> <br />
+                    <br/> <br/>
                 <?php endif; ?>
 
                 <div class="box">
@@ -46,16 +54,18 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div id="filter_control" class="btn-group box-tools pull-right" style="margin-right: 4em;margin-bottom: 1em;">
-                            <button id="filter_button" type="button" class="btn btn-default btn_fixed">
-                                Filtrado
+                        <div id="filter_control" class="btn-group box-tools pull-right"
+                             style="margin-right: 4em;margin-bottom: 1em;">
+                            <button  type="button" data-toggle="modal" data-target="#exportModal" class="btn btn-default btn_fixed btn-warning" style="color: #ffffff;">
+                                <!--                            <button  type="button" id="export_button_header" class="btn btn-default btn_fixed btn-warning" style="color: #ffffff;">-->
+                                Exportar selección
                             </button>
-<!--                            <button id="filter_button" type="button" onclick="removeFunc(30,16)" class="btn btn-default btn_fixed">-->
-<!--                                Borrar-->
-<!--                            </button>-->
+                            <!--                            <button id="filter_button" type="button" onclick="removeFunc(30,16)" class="btn btn-default btn_fixed">-->
+                            <!--                                Borrar-->
+                            <!--                            </button>-->
                         </div>
                         <div class="col-md-12">
-                            <table id="jqGrid" class="box-body"></table>
+                            <table id="lotes_jqGrid" class="box-body"></table>
                             <div id="jqGridPager"></div>
                         </div>
                     </div>
@@ -73,17 +83,18 @@
 </div>
 <!-- /.content-wrapper -->
 
-<?php if(in_array('deleteProduct', $user_permission)): ?>
+<?php if (in_array('deleteProduct', $user_permission)): ?>
     <!-- remove brand modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Borrar Lote</h4>
                 </div>
 
-                <form role="form"  method="post" id="removeForm">
+                <form role="form" method="post" id="removeForm">
                     <div class="modal-body">
                         <p> ¿Está seguro de querer borrar el lote? </p>
                     </div>
@@ -99,59 +110,83 @@
     </div><!-- /.modal -->
 <?php endif; ?>
 
+<!-- export brand modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="exportModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Exportar tabla</h4>
+            </div>
+            <form class="form-inline">
+                <div class="modal-body">
+                    <p> ¿Con qué nombre desea exportar? </p>
+                    <div class="form-group">
+                        <input id="exportName" class="form-control" align="left" name="exportName" type="text" >.xlsx
+                    </div>
+                </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="export_button" class="btn btn-primary">Exportar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script type="text/javascript">
     var base_url = "<?php echo base_url(); ?>";
-    var filter_click = false;
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
         $("#lotesNav").addClass('active');
         $("#indexLNav").addClass('active');
 
-        document.getElementById("filter_button").addEventListener("click", function () {
+        $("#export_button").unbind("click").click(function () {
+            // function exportExcel(filename){
+            //     var filename = "lotes_registro";
+            var filename = $("#exportName").val();
+            if(filename === "")
+                filename="lotes_registro";
 
-            if (filter_click === true) {
-                filter_click = false;
-                $("#filter_button").removeClass("btn-warning");
-                $("#filter_button").addClass("btn-default");
-                // $("#libGrid").jsGrid("option", "filtering", false);
-                $(".ui-search-toolbar").css("visibility","visible");
+            var options = {
+                includeLabels: true,
+                includeGroupHeader: true,
+                includeFooter: true,
+                fileName: filename+".xlsx",
+                mimetype: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                maxlength: 40,
+                onBeforeExport: null,
+                replaceStr: null
+            };
 
-                console.log("TRUE");
-            }
-            else if (filter_click === false) {
-                filter_click = true;
-                $("#filter_button").removeClass("btn-default");
-                $("#filter_button").addClass("btn-warning");
-                // $("#libGrid").jsGrid("option", "filtering", true);
-                $(".ui-search-toolbar").css(" visibility" ,"hidden");
-
-            }
-
-            $('#jqGrid').trigger('reloadGrid');
+            $("#lotes_jqGrid").jqGrid('exportToExcel', options);
+            $("#exportModal").modal('hide');
+            $("#exportName").val("");
         });
 
-        $("#jqGrid").jqGrid({
+        $("#lotes_jqGrid").jqGrid({
 
-            url: base_url + "lotes/fetchLotesDataFilteringPagination",
+            url:base_url + "lotes/fetchLotesDataFilteringPagination",
             datatype: "json",
             search: true,
             styleUI: "Bootstrap",
-            // columns:[{cellClass: 'ui-grid-cell-contents-auto'}],
+            responsive: true,
+            // columns: [{cellClass: 'ui-grid-cell-contents-auto'}],
             colModel: [
                 {
                     label: 'ID',
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "100%",
+                    hidden: true,
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["cn","eq"] // eq = equal to
+                        sopt: ["cn", "eq"] // eq = equal to
                     }
                 },
                 {
@@ -159,12 +194,11 @@
                     name: 'Serial',
                     index: 'Serial',
                     sorttype: 'text',
-                    // width: "100%",
                     search: true,
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                        sopt: ["eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
                     }
                     // formatter: formatLink
                 },
@@ -172,21 +206,31 @@
                     label: 'Artículo',
                     name: 'Articulo',
                     index: 'Articulo',
-                    // width: "100%",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["cn","eq"] // eq = equal to
+                        sopt: ["cn", "eq"] // eq = equal to
                     }
-                }, {
+                },{
+                    label: 'Familia',
+                    name: 'Familia',
+                    index: 'Familia',
+                    sorttype: 'text',
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
+                },
+                {
                     label: 'Entrada',
                     name: 'Entrada',
                     index: 'Entrada',
                     // width: "100%",
                     sorttype: 'text',
                     align: 'center',
+                    formatter: formatFecha,
                     searchoptions: {
                         // dataInit is the client-side event that fires upon initializing the toolbar search field for a column
                         // use it to place a third party control to customize the toolbar
@@ -197,31 +241,29 @@
                                 //minDate: new Date(2010, 0, 1),
                                 maxDate: new Date(2030, 0, 1),
                                 showOn: 'focus',
-                                language:'es',
+                                language: 'es',
                             });
                         },
                         // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                        sopt: ["ge", "le", "eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
                     }
                 }, {
                     label: 'Descripción',
                     name: 'Descripcion',
                     index: 'Descripcion',
-                    // width: "100%",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center'
                 }, {
                     label: 'Cantidad',
                     name: 'Cantidad',
                     index: 'Cantidad',
-                    // width: "100%",
+                    search: false,
+                    sortable: false,
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                        sopt: ["ge", "le", "eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
                     }
                 },
                 // {
@@ -239,11 +281,13 @@
                     index: 'Stock',
                     // width: "100%",
                     sorttype: 'text',
+                    search: false,
+                    sortable: false,
                     // formatter: 'number',
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["ge","le","eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
+                        sopt: ["ge", "le", "eq"] // ge = greater or equal to, le = less or equal to, eq = equal to
                     }
                 },
                 // {
@@ -276,35 +320,29 @@
                     label: 'Almacen',
                     name: 'Almacen',
                     index: 'Almacen',
-                    // width: "100%",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center',
                     searchoptions: {
                         // show search options
-                        sopt: ["cn","eq"] // eq = equal to
+                        sopt: ["cn", "eq"] // eq = equal to
                     }
                 },
                 {
                     label: 'Vendido',
                     name: 'Vendido',
                     index: 'Vendido',
-                    // width: "100%",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center',
                     stype: "select",
                     // searchoptions value - name values pairs for the dropdown - they will appear as options
-                    searchoptions: { value: ":[All];1:Vendido;0:Por Vender"}
+                    searchoptions: {value: ":[All];1:Vendido;0:Por Vender"}
                 },
                 {
                     label: 'Division',
                     name: 'Division',
                     index: 'Division',
                     hidden: true,
-                    // width: "10px",
                     sorttype: 'text',
-                    // formatter: 'number',
                     align: 'center'
                 },
                 // {
@@ -322,8 +360,8 @@
                     name: 'Buttons',
                     search: false,
                     index: 'Control',
-                    // width: "100%",
-                    align: 'center'
+                    align: 'center',
+                    sortable:false,
                 }
             ],
 
@@ -331,29 +369,30 @@
             width: "auto",
             height: "auto",
             rowNum: 10,
-            rowList : [10, 20, 50, 100],
+            rowList: [10, 20, 50, 100, 1000],
             autowidth: true,
             pager: "#jqGridPager",
             caption: "Lotes",
             subGrid: true,
             subGridWidth: "45%",
-            subGridOptions: { "plusicon" : "fa fa-plus",
-                "minusicon" :"fa fa-minus",
-                "openicon" : "fa fa-angle-double-right",
-                "reloadOnExpand" : false,
-                "selectOnExpand" : true ,
+            subGridOptions: {
+                "plusicon": "fa fa-plus",
+                "minusicon": "fa fa-minus",
+                "openicon": "fa fa-angle-double-right",
+                "reloadOnExpand": false,
+                "selectOnExpand": true,
             },
 
-            subGridRowExpanded: function(subgrid_id, row_id) {
+            subGridRowExpanded: function (subgrid_id, row_id) {
                 // we pass two parameters
                 // subgrid_id is a id of the div tag created within a table
                 // the row_id is the id of the row
                 // If we want to pass additional parameters to the url we can use
                 // the method getRowData(row_id) - which returns associative array in type name-value
                 // here we can easy construct the following
-                console.log(subgrid_id);
+                // console.log(subgrid_id);
                 var string = "?";
-                var obj = JSON.parse($("#jqGrid").getRowData(row_id)['Division']);
+                var obj = JSON.parse($("#lotes_jqGrid").getRowData(row_id)['Division']);
                 console.log(obj);
                 for (var i = 0; i < obj.id.length; i++) {
                     if (i === obj.id.length - 1)
@@ -361,35 +400,36 @@
                     else
                         string += "id[]=" + obj.id[i] + "&";
                 }
-                console.log($("#jqGrid").getRowData(row_id));
-                var subgrid_table_id = subgrid_id+"_t";
+                // console.log($("#lotes_jqGrid").getRowData(row_id));
+                var subgrid_table_id = subgrid_id + "_t";
 
-                $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='jqGridPager' class='scroll'></div>");
+                $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table><div id='jqGridPager' class='scroll'></div>");
 
                 $("#" + subgrid_table_id).jqGrid({
                     // url: base_url+"lotes/getDivisionData"+string,
-                    url: base_url+"lotes/getDivisionData"+string,
+                    url: base_url + "lotes/getDivisionData" + string,
                     datatype: "json",
                     styleUI: "Bootstrap",
+                    responsive: true,
                     colModel: [
                         {
                             label: 'ID',
-                            name: 'ID',
+                            name: ' ID',
                             index: 'ID',
                             hidden: true,
                             sorttype: 'number',
-                            // width: "1px",
-                            align: 'center'
-                            // formatter: formatTitle
+                            align: 'center',
+                            sortable:false,
+
                         },
                         {
-                            label: 'Piezas',
+                            label: 'Cantidad',
                             name: 'Piezas',
                             index: 'Piezas',
                             sorttype: 'text',
                             width: "100%",
-                            align: 'center'
-                            // formatter: formatLink
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Stock',
@@ -397,8 +437,8 @@
                             index: 'Piezas_Stock',
                             sorttype: 'text',
                             width: "100%",
-                            align: 'center'
-                            // formatter: formatLink
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Largo',
@@ -406,15 +446,16 @@
                             index: 'Largo',
                             width: "100%",
                             sorttype: 'text',
-                            // formatter: 'number',
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
                         }, {
                             label: 'Alto/Ancho',
                             name: 'Alto',
                             index: 'Alto',
                             sorttype: 'text',
                             width: "100%",
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Espesor',
@@ -422,7 +463,8 @@
                             index: 'Espesor',
                             sorttype: 'text',
                             width: "100%",
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Metros Lineales',
@@ -430,7 +472,8 @@
                             index: 'Metros Lineales',
                             sorttype: 'text',
                             width: "100%",
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Metros Cuadrados',
@@ -438,7 +481,8 @@
                             index: 'Metros Cuadrados',
                             sorttype: 'text',
                             width: "150%",
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
                         },
                         {
                             label: 'Metros Cúbicos',
@@ -446,74 +490,87 @@
                             index: 'Metros Cubicos',
                             sorttype: 'text',
                             width: "150%",
-                            align: 'center'
+                            align: 'center',
+                            sortable:false,
+
                         }
                     ],
                     height: '100%',
-                    // rowNum: 20,
                     sortname: 'num',
-                    sortorder: "asc"
-                });
-                var subgrid = $("#" + subgrid_table_id);
-                console.log(subgrid_table_id);
-                setTimeout(function() {
-                for (var j = 1; j <= obj.id.length; j++) {
-                    var piezas=parseFloat(subgrid.jqGrid('getCell',j,'Piezas_Stock'));
-                    var ml=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*piezas;
-                    var m2=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*parseFloat(subgrid.jqGrid('getCell',j,'Alto'))*piezas;
-                    var m3=parseFloat(subgrid.jqGrid('getCell',j,'Largo'))*parseFloat(subgrid.jqGrid('getCell',j,'Alto'))*parseFloat(subgrid.jqGrid('getCell',j,'Espesor'))*piezas;
-                    // console.log("ENTRA:"+subgrid.jqGrid('getCell',1,'Piezas_Stock'));
-                    subgrid.jqGrid('setCell',j,'Metros Lineales',ml+"   ml");
-                    subgrid.jqGrid('setCell',j,'Metros Cuadrados',m2+"   m²");
-                    subgrid.jqGrid('setCell',j,'Metros Cubicos',m3+"   m³   ");
-                } },400);
+                    sortorder: "asc",
+                    gridComplete:function() {
+                        var subgrid = $("#" + subgrid_table_id);
+                        for (var j = 1; j <= obj.id.length; j++) {
+                            var piezas = parseFloat(subgrid.jqGrid('getCell', j, 'Piezas_Stock'));
+                            var ml = parseFloat(subgrid.jqGrid('getCell', j, 'Largo')) * piezas;
+                            var m2 = parseFloat(subgrid.jqGrid('getCell', j, 'Largo')) * parseFloat(subgrid.jqGrid('getCell', j, 'Alto')) * piezas;
+                            var m3 = parseFloat(subgrid.jqGrid('getCell', j, 'Largo')) * parseFloat(subgrid.jqGrid('getCell', j, 'Alto')) * parseFloat(subgrid.jqGrid('getCell', j, 'Espesor')) * piezas;
+                            // console.log("ENTRA:"+subgrid.jqGrid('getCell',1,'Piezas_Stock'));
+                            subgrid.jqGrid('setCell', j, 'Metros Lineales', round(ml) + "   ml");
+                            subgrid.jqGrid('setCell', j, 'Metros Cuadrados', round(m2) + "   m²");
+                            subgrid.jqGrid('setCell', j, 'Metros Cubicos', round(m3) + "   m³   ");
+                        }
 
+                        //ADJUST CONTENT
+                        adjustGrid("#" + subgrid_table_id,true)
+                    },
+                });
+            }
+            // ,beforeRequest: function(data, status, xhr){
+            //     console.log("ENTRA")
+            //     $('#jqGrid').jqGrid('clearGridData');
+            // }
+            , loadComplete: function (data) {
+                var grid = $('#lotes_jqGrid')[0];
+                var datos = data.rows;
+                datos.forEach(function (campo) {
+                    delete campo.Buttons;
+                    delete campo.Vendido;
+                    delete campo.Division;
+                    delete campo.Unidades;
+                    // delete campo.Descripcion;
+                    delete campo.Ent_ID;
+                });
+                grid.p.data = datos;
+                // adjustGrid("#lotes_jqGrid")
 
             },
-            loadComplete: function (data) {
+            onPaging: function (pgButton) {
+                // $('#jqGrid').jqGrid('clearGridData');
+            },
+            loadError : function(xhr,st,err) {
+                // alert("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+                alert("La búsqueda que desea realizar no encuentra nada. Cambie los campos de búsqueda.");
+                $("#lotes_jqGrid").jqGrid("clearGridData", true);
 
-                // $("#jqGrid").jqGrid()[0].p.subGridWidth = $("#jqGrid_ID").width();
-
-                // $(".sgcollapsed").width($("#jqGrid_subgrid").width());
-                // $(".sgcollapsed").css("display","inline-block");
-                reSizeGrid();
-
-                $("#jqGrid_subgrid").width($(".sgcollapsed").width());
-
-                $(".fa-angle-double-right").css("margin-left","1.2em") ;
-
-                //Subgrrid Meter Values
-                // $.each($('.ui-widget-content jqgrow ui-row-ltr ui-state-highlight'),function(i){
-                //
-                //     console.log($('#jqGrid').jqGrid('getCell',i,'Espesor'));
-                //
-                // });
-                // console.log(data.records);
-                // for(var i=1;i<=data.records;i++)
-                // {
-                //     var subgrid_table_id = "jqGrid_"+i.toString()+ "_t";
-                //     var subgrid = $("#" + subgrid_table_id);
-                //     console.log(subgrid);
-                //     for (var j = 1; j <= subgrid[0].rows.length-1; j++) {
-                //         var piezas = parseFloat(subgrid.jqGrid('getCell', j, 'Piezas_Stock'));
-                //         var ml = parseFloat(subgrid.jqGrid('getCell', j, 'Largo')) * piezas;
-                //         console.log("ENTRA:" + subgrid.jqGrid('getCell', j, 'Piezas_Stock'));
-                //         subgrid.jqGrid('setCell', j, 'Metros Lineales', ml)
-                //     }
-                // }
+            },gridComplete: function(){
+                // adjustGrid("#lotes_jqGrid")
+                // console.log("ACABA");
             },
 
         });
 
-        $("#jqGrid").jqGrid('filterToolbar', {stringResult: true, searchOnEnter: true,
-            defaultSearch: 'cn', ignoreCase: true,searchOperators: true });
+        function formatFecha (cellvalue, options, rowObject)
+        {
+            // do something here
+            console.log(cellvalue);
+            cellvalue = moment(cellvalue).format('DD-MM-YYYY');
+            return cellvalue;
+        }
 
-        $("#jqGrid").jqGrid()[0].p.subGridWidth = $("#jqGrid_ID").width();
+        $("#lotes_jqGrid").jqGrid('filterToolbar', {
+            stringResult: true, searchOnEnter: true,
+            defaultSearch: 'cn', ignoreCase: true, searchOperators: true
+        });
+
+        $("#lotes_jqGrid").jqGrid()[0].p.subGridWidth = $("#jqGrid_ID").width();
 
 
-        ChangejQGridDesign("#jqGrid", "#jqGridPager");
+        ChangejQGridDesign("#lotes_jqGrid", "#jqGridPager");
+        $(".ui-jqgrid-hdiv ").css("overflow","hidden");
 
         function ChangejQGridDesign(table, pager) {
+
             jQuery(table).jqGrid('navGrid', pager, {
                 edit: false, add: false, del: false,
                 search: true,
@@ -539,16 +596,16 @@
             //updatePagerIcons
             var replacement =
                 {
-                    'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
-                    'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
-                    'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
-                    'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
+                    'glyphicon-step-backward': 'ace-icon fa fa-angle-double-left bigger-140',
+                    'glyphicon-backward': 'ace-icon fa fa-angle-left bigger-140',
+                    'glyphicon-forward': 'ace-icon fa fa-angle-right bigger-140',
+                    'glyphicon-step-forward': 'ace-icon fa fa-angle-double-right bigger-140'
                 };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .glyphicon').each(function () {
                 var icon = $(this);
-                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-
-                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+                var $class = $.trim(icon.attr('class').replace('glyphicon', ''));
+                if ($class in replacement)
+                    icon.attr('class', 'ui-icon ' + replacement[$class]);
             });
 
             // enableTooltips
@@ -561,40 +618,24 @@
 
 
             $(window).on("resize", function () {
-                // var $grid = $(table),
-                //     newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
-                // $grid.jqGrid("setGridWidth", newWidth, true);
-                // // console.log(newWidth);
-                // var objRows = $("#jqGrid tr").splice(1);
-                // var objHeader = $("tr[class=ui-jqgrid-labels]");
-                // var objFirstRowHeader = $(objHeader[1]).children("th");
-                //
-                // for (i = 0; i < objRows.length; i++) {
-                //     var objFirstRowColumns = $(objRows[i]).children("td");
-                //
-                //     for (i = 0; i < objFirstRowColumns.length; i++) {
-                //        $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-                //     }
-                // }
-                reSizeGrid();
-                $("#jqGrid_subgrid").width($(".sgcollapsed").width());
+                // reSizeGrid();
+                // $("#jqGrid_subgrid").width($(".sgcollapsed").width());
 
                 // $("#jqGrid_subgrid").width($(".sgcollapsed").width()+9);
 
             });
         }
-        // $(window).on("resize", function () {
-        //     $("#jqGrid_subgrid").width($(".sgcollapsed").width());
-        //
-        // });
+
     });
 
-    function reSizeGrid(){
-        var $grid = $("#jqGrid"),
+    function reSizeGrid() {
+        //OVERFLOW Y HIDDEN
+        $(".ui-jqgrid-hdiv ").css("overflow","hidden");
+        var $grid = $("#lotes_jqGrid"),
             newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
         $grid.jqGrid("setGridWidth", newWidth, true);
         // console.log(newWidth);
-        var objRows = $("#jqGrid tr").splice(1);
+        var objRows = $("#lotes_jqGrid tr").splice(1);
         var objHeader = $("tr[class=ui-jqgrid-labels]");
         var objFirstRowHeader = $(objHeader[1]).children("th");
 
@@ -607,57 +648,57 @@
         }
     }
 
-    // $("#jqGrid").bind("jqGridAfterLoadComplete", function () {
-        //     var $this = $(this), iCol, iRow, rows, row, cm, colWidth,
-        //         $cells = $this.find(">tbody>tr>td"),
-        //         $colHeaders = $(this.grid.hDiv).find(">.ui-jqgrid-hbox>.ui-jqgrid-htable>thead>.ui-jqgrid-labels>.ui-th-column>div"),
-        //         colModel = $this.jqGrid("getGridParam", "colModel"),
-        //         n = $.isArray(colModel) ? colModel.length : 0,
-        //         idColHeadPrexif = "jqgh_" + this.id + "_";
-        //
-        //     $cells.wrapInner("<span class='mywrapping'></span>");
-        //     $colHeaders.wrapInner("<span class='mywrapping'></span>");
-        //
-        //     for (iCol = 0; iCol < n; iCol++) {
-        //         cm = colModel[iCol];
-        //         colWidth = $("#" + idColHeadPrexif + $.jgrid.jqID(cm.name) + ">.mywrapping").outerWidth() + 25; // 25px for sorting icons
-        //         for (iRow = 0, rows = this.rows; iRow < rows.length; iRow++) {
-        //             row = rows[iRow];
-        //             if ($(row).hasClass("jqgrow")) {
-        //                 colWidth = Math.max(colWidth, $(row.cells[iCol]).find(".mywrapping").outerWidth());
-        //             }
-        //         }
-        //         $this.jqGrid("setColWidth", iCol, colWidth);
-        //     }
-        // });
+    function adjustGrid(grid, subgrid = false){
+        var $grid = $(grid),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
+        $grid.jqGrid("setGridWidth", newWidth, true);
+        // console.log(grid);
+        var objRows = $(grid+" tr").splice(1);
+        if(!subgrid) {
+            var objHeader = $("tr[class=ui-jqgrid-labels]");
+            var objFirstRowHeader = $(objHeader[0]).children("th");
+        }else{
+            var objHeader = $("tr[class=ui-jqgrid-labels]");
+            console.log(objHeader);
+            var objFirstRowHeader = $(objHeader[1]).children("th");
+        }
+        for (var i = 0; i < objRows.length; i++) {
+            var objFirstRowColumns = $(objRows[i]).children("td");
 
+            for (var j = 0; j < objFirstRowColumns.length; j++) {
+                var paddT = $(objFirstRowHeader[j]).innerWidth() - $(objFirstRowHeader[j]).width();
+                $(objFirstRowColumns[j]).css("width", $(objFirstRowHeader[j]).innerWidth()+1);
+                $(objFirstRowColumns[j]).css("margin-right", "1");
+
+            }
+        }
+    }
 
     // remove functions
-    function removeFunc(id,entradas)
-    {
-        if(id) {
+    function removeFunc(id, entradas) {
+        if (id) {
             // console.log(id,entradas);
 
-            $("#removeForm").on('submit', function() {
+            $("#removeForm").on('submit', function () {
 
                 var form = $(this);
-                form .attr("action",base_url+"lotes/remove");
+                form.attr("action", base_url + "lotes/remove");
                 // remove the text-danger
                 $(".text-danger").remove();
 
                 $.ajax({
                     url: form.attr('action'),
                     type: form.attr('method'),
-                    data: { lote_id: id, entrada_id: entradas},
+                    data: {lote_id: id, entrada_id: entradas},
                     dataType: 'json',
-                    success:function(response) {
+                    success: function (response) {
 
-                        $("#jqGrid").trigger('reloadGrid');
+                        $("#lotes_jqGrid").trigger('reloadGrid');
 
-                        if(response.success === true) {
-                            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
+                        if (response.success === true) {
+                            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
                                 '</div>');
 
                             // hide the modal
@@ -665,9 +706,9 @@
 
                         } else {
 
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
+                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
                                 '</div>');
                         }
                     }
@@ -676,6 +717,19 @@
                 return false;
             });
         }
+    }
+
+    function round(num, decimales = 3) {
+        var signo = (num >= 0 ? 1 : -1);
+        num = num * signo;
+        if (decimales === 0) //con 0 decimales
+            return signo * Math.round(num);
+        // round(x * 10 ^ decimales)
+        num = num.toString().split('e');
+        num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+        // x * 10 ^ (-decimales)
+        num = num.toString().split('e');
+        return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
     }
 
 

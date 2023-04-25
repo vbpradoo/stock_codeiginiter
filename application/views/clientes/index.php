@@ -72,8 +72,9 @@
                     <h4 class="modal-title">Añadir Cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('clientes/create') ?>" method="POST" id="createForm"
-                      enctype="multipart/form-data">
+                <?php echo form_open_multipart("clientes/create"); ?>
+<!--                <form role="form" action="--><?php //echo base_url('clientes/create') ?><!--" method="POST" id="createForm"-->
+<!--                      enctype="multipart/form-data">-->
 
                     <div class="modal-body">
 
@@ -84,12 +85,7 @@
                                     <input id="cliente_image" name="cliente_image" type="file">
                                 </div>
                             </div>
-                            <!--                                <div id="proovedor_image" class="dropzone">-->
-                            <!--                                    <div class="dz-message">-->
-                            <!--                                        <h3>Arrastre la imagen</h3> ó <strong>clique</strong> para cargar-->
-                            <!--                                        <span class="glyphicon glyphicon-upload" style="font-size: 1.5em; position: center"></span>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
+
                         </div>
                         <div class="form-group">
                             <label for="cliente_nombre">Nombre Cliente</label>
@@ -114,7 +110,7 @@
                         </div>
                         <div class="form-group">
                             <label for="cliente_correo">Correo</label>
-                            <input type="text" class="form-control" id="cliente_correo" name="cliente_correo"
+                            <input type="email" class="form-control" id="cliente_correo" name="cliente_correo"
                                    placeholder="Introduzca correo" autocomplete="off">
                         </div>
 <!--                        <div class="form-group">-->
@@ -135,8 +131,7 @@
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
 
-                </form>
-
+                <?php echo form_close();?>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -154,8 +149,8 @@
                     <h4 class="modal-title">Editar Cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('clientes/update') ?>" method="post" id="updateForm"
-                      enctype="multipart/form-data">
+                <?php echo form_open_multipart("clientes/update"); ?>
+
 
                     <div class="modal-body">
                         <div id="messages"></div>
@@ -169,6 +164,9 @@
                                 <div class="file-loading">
                                     <input id="edit_cliente_image" name="edit_cliente_image" type="file">
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <input id="cliente_id" class="form-control" name="cliente_id" type="text" style="visibility: hidden;">
                             </div>
                             <div class="form-group">
                                 <label for="edit_cliente_nombre">Nombre Cliente</label>
@@ -195,7 +193,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit_cliente_correo">Correo</label>
-                                <input type="text" class="form-control" id="edit_cliente_correo"
+                                <input type="email" class="form-control" id="edit_cliente_correo"
                                        name="edit_cliente_correo"
                                        placeholder="Introduzca correo" autocomplete="off">
                             </div>
@@ -219,7 +217,7 @@
                             <button type="submit" class="btn btn-primary">Guardar cambios</button>
                         </div>
                     </div>
-                </form>
+                <?php echo form_close();?>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -238,15 +236,18 @@
                     <h4 class="modal-title">Eliminar cliente</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('clientes/remove') ?>" method="post" id="removeForm">
+                <?php echo form_open_multipart("clientes/remove"); ?>
                     <div class="modal-body">
                         <p>Está seguro de que desea eliminar este cliente?</p>
                     </div>
+                <div class="form-group">
+                    <input id="cliente_id_remove" class="form-control" name="cliente_id_remove" type="text" style="visibility: hidden;">
+                </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
-                </form>
+                <?php echo form_close();?>
 
 
             </div><!-- /.modal-content -->
@@ -275,45 +276,58 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "1px",
-                    align: 'center'
-                    // formatter: formatTitle
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 }, {
                     name: 'image',
                     label: 'Imagen',
-                    // width: 150,
                     align: 'center',
-                    // formatter: formatImage
+                    search: false,
+                    sortable: false,
                 },
                 {
                     label: 'Nombre',
                     name: 'Nombre',
                     index: 'Nombre',
                     sorttype: 'text',
-                    // width: "2px",
-                    align: 'center'
-                    // formatter: formatLink
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 }, {
                     label: 'Correo',
                     name: 'Correo',
                     index: 'Correo',
-                    // width: "3px",
                     sorttype: 'text',
-                    align: 'center'
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 }, {
                     label: 'Teléfono',
                     name: 'Telefono',
                     index: 'Telefono',
-                    // width: "3px",
                     sorttype: 'text',
-                    align: 'center'
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 }, {
                     label: 'Empresa',
                     name: 'Empresa',
                     index: 'Empresa',
-                    // width: "3px",
                     sorttype: 'text',
-                    align: 'center'
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 },
                     // }, {
                 //     label: 'Cantidad',
@@ -336,13 +350,19 @@
                     index: 'NIF',
                     // width: "3px",
                     sorttype: 'text',
-                    align: 'center'
+                    align: 'center',
+                    searchoptions: {
+                        // show search options
+                        sopt: ["cn", "eq"] // eq = equal to
+                    }
                 },
                 {  label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
                     // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    search: false,
+                    sortable: false,
                 }
             ],
 
@@ -353,7 +373,7 @@
             rowList : [10, 20, 50, 100],
             autowidth: true,
             pager: "#jqGridPager",
-            caption: "clientes",
+            caption: "Clientes",
 
             loadComplete: function () {
                 // var objRows = $("#jqGrid tr").splice(1);
@@ -370,10 +390,12 @@
             },
         });
 
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
+        $("#jqGrid").jqGrid('filterToolbar', {
+            stringResult: true, searchOnEnter: true,
+            defaultSearch: 'cn', ignoreCase: true, searchOperators: true
+        });
 
         function ChangejQGridDesign(table, pager) {
             jQuery(table).jqGrid('navGrid', pager, {
@@ -421,18 +443,6 @@
                 newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
             $grid.jqGrid("setGridWidth", newWidth, true);
 
-            // var objRows = $("#jqGrid tr").splice(1);
-            // var objHeader = $("tr[class=ui-jqgrid-labels]");
-            // var objFirstRowHeader = $(objHeader[1]).children("th");
-            //
-            // for (i = 0; i < objRows.length; i++) {
-            //     var objFirstRowColumns = $(objRows[i]).children("td");
-            //
-            //     for (i = 0; i < objFirstRowColumns.length; i++) {
-            //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-            //     }
-            // }
-
             $(window).on("resize", function () {
                 var $grid = $(table),
                     newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
@@ -453,70 +463,6 @@
         }
 
 
-        // submit the create from
-        $("#createForm").unbind('submit').on('submit', function () {
-            var form = $(this);
-            // remove the text-danger
-            $(".text-danger").remove();
-            console.log("ENTRA");
-
-
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(), // /converting the form data into array and sending it to server
-                dataType: 'json',
-                success: function (response) {
-
-                    $('#jqGrid').trigger('reloadGrid');
-
-                    if (response.success === true) {
-                        $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                            '</div>');
-
-
-                        // hide the modal
-                        $("#addModal").modal('hide');
-
-                        // reset the form
-                        $("#createForm")[0].reset();
-                        $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                    } else {
-
-                        if (response.messages instanceof Object) {
-                            $.each(response.messages, function (index, value) {
-                                var id = $("#" + index);
-
-                                id.closest('.form-group')
-                                    .removeClass('has-error')
-                                    .removeClass('has-success')
-                                    .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                id.after(value);
-
-                            });
-                        } else {
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                '</div>');
-                        }
-                    }
-                }
-            });
-
-            return false;
-        });
-
-
-        //IMAGE
-        var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-            'onclick="alert(\'Call your custom code here.\')">' +
-            '<i class="glyphicon glyphicon-tag"></i>' +
-            '</button>';
         $("#cliente_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -532,14 +478,9 @@
             // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
             // layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
-            allowedFileExtensions: ["jpg", "png", "gif"]
+            allowedFileExtensions: ["jpg", "png", "gif","jpeg"]
         });
 
-        //IMAGE
-        var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-            'onclick="alert(\'Call your custom code here.\')">' +
-            '<i class="glyphicon glyphicon-tag"></i>' +
-            '</button>';
         $("#edit_cliente_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -555,7 +496,7 @@
             // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
             // layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
-            allowedFileExtensions: ["jpg", "png", "gif"]
+            allowedFileExtensions: ["jpg", "png", "gif","jpeg"]
         });
 
 
@@ -569,71 +510,17 @@
             dataType: 'json',
             success: function (response) {
 
-                console.log(response);
+                // console.log(response);
                 // $("#edit_proovedor_").val(response.);
                 $("#preimage").attr("src", base_url + "/" + response.image);
                 $("#edit_cliente_nombre").val(response.Nombre);
+                $("#cliente_id").val(id);
                 $("#edit_cliente_empresa").val(response.Empresa);
+                $("#edit_cliente_nif").val(response.NIF);
                 $("#edit_cliente_telefono").val(response.Telefono);
                 $("#edit_cliente_correo").val(response.Correo);
                 $("#edit_cliente_cantidad").val(response.Cantidad);
                 $("#edit_cliente_gastado").val(response.Gastado);
-
-                // submit the edit from
-                $("#updateForm").unbind('submit').bind('submit', function () {
-                    var form = $(this);
-
-                    // remove the text-danger
-                    $(".text-danger").remove();
-
-                    $.ajax({
-                        url: form.attr('action') + '/' + id,
-                        type: form.attr('method'),
-                        data: form.serialize(), // /converting the form data into array and sending it to server
-                        dataType: 'json',
-                        success: function (response) {
-
-                            $('#jqGrid').trigger('reloadGrid');
-
-                            if (response.success === true) {
-                                $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                    '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                                    '</div>');
-
-
-                                // hide the modal
-                                $("#editModal").modal('hide');
-                                // reset the form
-                                $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                            } else {
-
-                                if (response.messages instanceof Object) {
-                                    $.each(response.messages, function (index, value) {
-                                        var id = $("#" + index);
-
-                                        id.closest('.form-group')
-                                            .removeClass('has-error')
-                                            .removeClass('has-success')
-                                            .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                        id.after(value);
-
-                                    });
-                                } else {
-                                    $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                        '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                        '</div>');
-                                }
-                            }
-                        }
-                    });
-
-                    return false;
-                });
-
             }
         });
     }
@@ -641,44 +528,7 @@
     // remove functions
     function removeFunc(id) {
         if (id) {
-
-            $("#removeForm").on('submit', function () {
-
-                var form = $(this);
-                // console.log("SHIT");
-                // remove the text-danger
-                $(".text-danger").remove();
-
-                $.ajax({
-                    url: form.attr('action'),
-                    type: form.attr('method'),
-                    data: {cliente_id: id},
-                    dataType: 'json',
-                    success: function (response) {
-
-                        $('#jqGrid').trigger('reloadGrid');
-
-                        if (response.success === true) {
-                            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                                '</div>');
-
-                            // hide the modal
-                            $("#removeModal").modal('hide');
-
-                        } else {
-
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                '</div>');
-                        }
-                    }
-                });
-
-                return false;
-            });
+            $("#cliente_id_remove").val(id);
         }
     }
 

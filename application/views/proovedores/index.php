@@ -72,8 +72,8 @@
                     <h4 class="modal-title">Añadir Proovedor</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/create') ?>" method="POST" id="createForm"
-                      enctype="multipart/form-data">
+                <?php echo form_open_multipart("proovedores/create"); ?>
+<!--                <form role="form"  method="POST" id="createForm" enctype="multipart/form-data">-->
 
                     <div class="modal-body">
 
@@ -84,12 +84,7 @@
                                     <input id="proovedor_image" name="proovedor_image" type="file">
                                 </div>
                             </div>
-                            <!--                                <div id="proovedor_image" class="dropzone">-->
-                            <!--                                    <div class="dz-message">-->
-                            <!--                                        <h3>Arrastre la imagen</h3> ó <strong>clique</strong> para cargar-->
-                            <!--                                        <span class="glyphicon glyphicon-upload" style="font-size: 1.5em; position: center"></span>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
+
                         </div>
                         <div class="form-group">
                             <label for="proovedor_nombre">Nombre Proveedor</label>
@@ -114,7 +109,7 @@
                         </div>
                         <div class="form-group">
                             <label for="proovedor_correo">Correo</label>
-                            <input type="text" class="form-control" id="proovedor_correo" name="proovedor_correo"
+                            <input type="email" class="form-control" id="proovedor_correo" name="proovedor_correo"
                                    placeholder="Introduzca correo" autocomplete="off">
                         </div>
 <!--                        <div class="form-group">-->
@@ -135,7 +130,8 @@
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
 
-                </form>
+<!--                </form>-->
+                <?php echo form_close();?>
 
 
             </div><!-- /.modal-content -->
@@ -154,14 +150,17 @@
                     <h4 class="modal-title">Editar Proveedor</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/update') ?>" method="post" id="updateForm"
-                      enctype="multipart/form-data">
+                <?php echo form_open_multipart("proovedores/update"); ?>
+
 
                     <div class="modal-body">
                         <div id="messages"></div>
                         <div class="form-group">
                             <label>Imagen Actual: </label>
                             <img id="preimage" width="150" height="150" class="img-circle">
+                        </div>
+                        <div class="form-group">
+                            <input id="proovedor_id" class="form-control" name="proovedor_id" type="text" style="visibility: hidden;">
                         </div>
                         <div class="form-group">
                             <label for="edit_proovedor_image">Imagen</label>
@@ -195,7 +194,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit_proovedor_correo">Correo</label>
-                                <input type="text" class="form-control" id="edit_proovedor_correo"
+                                <input type="email" class="form-control" id="edit_proovedor_correo"
                                        name="edit_proovedor_correo"
                                        placeholder="Introduzca correo" autocomplete="off">
                             </div>
@@ -219,7 +218,8 @@
                             <button type="submit" class="btn btn-primary">Guardar cambios</button>
                         </div>
                     </div>
-                </form>
+<!--                </form>-->
+                <?php echo form_close();?>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -238,15 +238,20 @@
                     <h4 class="modal-title">Eliminar proveedor</h4>
                 </div>
 
-                <form role="form" action="<?php echo base_url('proovedores/remove') ?>" method="post" id="removeForm">
+                <?php echo form_open_multipart("proovedores/remove"); ?>
+<!--                <form role="form" action="--><?php //echo base_url('proovedores/remove') ?><!--" method="post" id="removeForm">-->
                     <div class="modal-body">
                         <p>Está seguro de que desea eliminar este proveedor?</p>
+                    </div>
+                    <div class="form-group">
+                        <input id="proovedor_id_remove" class="form-control" name="proovedor_id_remove" type="text" style="visibility: hidden;">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
-                </form>
+<!--                </form>-->
+                <?php echo form_close();?>
 
 
             </div><!-- /.modal-content -->
@@ -275,43 +280,34 @@
                     name: 'ID',
                     index: 'ID',
                     sorttype: 'number',
-                    // width: "1px",
                     align: 'center'
-                    // formatter: formatTitle
                 }, {
                     name: 'image',
                     label: 'Imagen',
-                    // width: 150,
                     align: 'center',
-                    // formatter: formatImage
                 },
                 {
                     label: 'Nombre',
                     name: 'Nombre',
                     index: 'Nombre',
                     sorttype: 'text',
-                    // width: "2px",
                     align: 'center'
-                    // formatter: formatLink
                 }, {
                     label: 'Correo',
                     name: 'Correo',
                     index: 'Correo',
-                    // width: "3px",
                     sorttype: 'text',
                     align: 'center'
                 }, {
                     label: 'Teléfono',
                     name: 'Telefono',
                     index: 'Telefono',
-                    // width: "3px",
                     sorttype: 'text',
                     align: 'center'
                 }, {
                     label: 'Empresa',
                     name: 'Empresa',
                     index: 'Empresa',
-                    // width: "3px",
                     sorttype: 'text',
                     align: 'center'
                 },
@@ -319,7 +315,6 @@
                     label: 'NIF',
                     name: 'NIF',
                     index: 'NIF',
-                    // width: "3px",
                     sorttype: 'text',
                     align: 'center'
                 },
@@ -342,8 +337,8 @@
                     label: 'Control',
                     name: 'Buttons',
                     index: 'Control',
-                    // width: "3px",
-                    align: 'center'
+                    align: 'center',
+                    sortable:false,
                 }
             ],
 
@@ -354,25 +349,12 @@
             rowList : [10, 20, 50, 100],
             autowidth: true,
             pager: "#jqGridPager",
-            caption: "Provedores",
+            caption: "Proveedores",
 
             loadComplete: function () {
-                // var objRows = $("#jqGrid tr").splice(1);
-                // var objHeader = $("tr[class=ui-jqgrid-labels]");
-                // var objFirstRowHeader = $(objHeader[1]).children("th");
-                //
-                // for (i = 0; i < objRows.length; i++) {
-                //     var objFirstRowColumns = $(objRows[i]).children("td");
-                //
-                //     for (i = 0; i < objFirstRowColumns.length; i++) {
-                //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-                //     }
-                // }
             },
         });
 
-        // var width = ($(".box").width());
-        // $("#jqGrid").setGridWidth(width);
         ChangejQGridDesign("#jqGrid", "#jqGridPager");
 
 
@@ -422,17 +404,6 @@
                 newWidth = $grid.closest(".ui-jqgrid").parent().width() - 50;
             $grid.jqGrid("setGridWidth", newWidth, true);
 
-            // var objRows = $("#jqGrid tr").splice(1);
-            // var objHeader = $("tr[class=ui-jqgrid-labels]");
-            // var objFirstRowHeader = $(objHeader[1]).children("th");
-            //
-            // for (i = 0; i < objRows.length; i++) {
-            //     var objFirstRowColumns = $(objRows[i]).children("td");
-            //
-            //     for (i = 0; i < objFirstRowColumns.length; i++) {
-            //         $(objFirstRowColumns[i]).css("width", $(objFirstRowHeader[i]).width());
-            //     }
-            // }
 
             $(window).on("resize", function () {
                 var $grid = $(table),
@@ -454,70 +425,12 @@
         }
 
 
-        // submit the create from
-        $("#createForm").unbind('submit').on('submit', function () {
-            var form = $(this);
-            // remove the text-danger
-            $(".text-danger").remove();
-            console.log("ENTRA");
-
-
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(), // /converting the form data into array and sending it to server
-                dataType: 'json',
-                success: function (response) {
-
-                    $('#jqGrid').trigger('reloadGrid');
-
-                    if (response.success === true) {
-                        $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                            '</div>');
-
-
-                        // hide the modal
-                        $("#addModal").modal('hide');
-
-                        // reset the form
-                        // $("#createForm")[0].reset();
-                        // $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                    } else {
-
-                        if (response.messages instanceof Object) {
-                            $.each(response.messages, function (index, value) {
-                                var id = $("#" + index);
-
-                                id.closest('.form-group')
-                                    .removeClass('has-error')
-                                    .removeClass('has-success')
-                                    .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                id.after(value);
-
-                            });
-                        } else {
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                '</div>');
-                        }
-                    }
-                }
-            });
-
-            return false;
-        });
-
-
         //IMAGE
         var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
             'onclick="alert(\'Call your custom code here.\')">' +
             '<i class="glyphicon glyphicon-tag"></i>' +
             '</button>';
+
         $("#proovedor_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -533,14 +446,10 @@
             // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
             // layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
-            allowedFileExtensions: ["jpg", "png", "gif"]
+            allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
         });
 
-        //IMAGE
-        var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-            'onclick="alert(\'Call your custom code here.\')">' +
-            '<i class="glyphicon glyphicon-tag"></i>' +
-            '</button>';
+
         $("#edit_proovedor_image").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -556,7 +465,7 @@
             // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
             // layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
-            allowedFileExtensions: ["jpg", "png", "gif"]
+            allowedFileExtensions: ["jpg", "png", "gif","jpeg"]
         });
 
 
@@ -564,76 +473,22 @@
 
     // edit function
     function editFunc(id) {
+
         $.ajax({
             url: 'getProovedoresDataById/' + id,
             type: 'post',
             dataType: 'json',
             success: function (response) {
 
-                console.log(response);
-                // $("#edit_proovedor_").val(response.);
                 $("#preimage").attr("src", base_url + "/" + response.image);
                 $("#edit_proovedor_nombre").val(response.Nombre);
+                $("#proovedor_id").val(response.ID);
                 $("#edit_proovedor_empresa").val(response.Empresa);
+                $("#edit_proovedor_nif").val(id);
                 $("#edit_proovedor_telefono").val(response.Telefono);
                 $("#edit_proovedor_correo").val(response.Correo);
                 // $("#edit_proovedor_cantidad").val(response.Cantidad);
                 // $("#edit_proovedor_gastado").val(response.Gastado);
-
-                // submit the edit from
-                $("#updateForm").unbind('submit').bind('submit', function () {
-                    var form = $(this);
-
-                    // remove the text-danger
-                    $(".text-danger").remove();
-
-                    $.ajax({
-                        url: form.attr('action') + '/' + id,
-                        type: form.attr('method'),
-                        data: form.serialize(), // /converting the form data into array and sending it to server
-                        dataType: 'json',
-                        success: function (response) {
-
-                            $('#jqGrid').trigger('reloadGrid');
-
-                            if (response.success === true) {
-                                $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                    '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                                    '</div>');
-
-
-                                // hide the modal
-                                $("#editModal").modal('hide');
-                                // reset the form
-                                $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                            } else {
-
-                                if (response.messages instanceof Object) {
-                                    $.each(response.messages, function (index, value) {
-                                        var id = $("#" + index);
-
-                                        id.closest('.form-group')
-                                            .removeClass('has-error')
-                                            .removeClass('has-success')
-                                            .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                        id.after(value);
-
-                                    });
-                                } else {
-                                    $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                        '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                        '</div>');
-                                }
-                            }
-                        }
-                    });
-
-                    return false;
-                });
 
             }
         });
@@ -641,47 +496,11 @@
 
     // remove functions
     function removeFunc(id) {
-        if (id) {
+        if(id)
+            $("#proovedor_id_remove").val(id);
 
-            $("#removeForm").on('submit', function () {
-
-                var form = $(this);
-                // console.log("SHIT");
-                // remove the text-danger
-                $(".text-danger").remove();
-
-                $.ajax({
-                    url: form.attr('action'),
-                    type: form.attr('method'),
-                    data: {proovedor_id: id},
-                    dataType: 'json',
-                    success: function (response) {
-
-                        $('#jqGrid').trigger('reloadGrid');
-
-                        if (response.success === true) {
-                            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
-                                '</div>');
-
-                            // hide the modal
-                            $("#removeModal").modal('hide');
-
-                        } else {
-
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
-                                '</div>');
-                        }
-                    }
-                });
-
-                return false;
-            });
         }
-    }
+
 
 
 </script>

@@ -1,4 +1,6 @@
+
 <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/select_bootstrap_resp.css') ?>">
+<!--<link rel="stylesheet" href="">-->
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -69,10 +71,25 @@
                                                 <option value="<?php echo $v['ID'] ?>"> <?php echo $v['Nombre'] ?> </option>
                                             <?php endforeach ?>
                                         </select>
-                                        <!--                      <input type="text" class="form-control" id="cliente_nombre" name="cliente_nombre" placeholder="Introduzca nombre de cliente" autocomplete="off" />-->
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Nº Albarán</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="num_albaran"
+                                               name="num_albaran" placeholder="Introduzca nº de albarán."
+                                               autocomplete="off" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Fecha</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="fecha_alb"
+                                               name="fecha_alb" placeholder="Introduzca fecha."
+                                               autocomplete="off" >
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Empresa</label>
                                     <div class="col-sm-7">
@@ -154,7 +171,7 @@
                                     </td>
                                     <td>
                                         <input type="number" name="cantidad[]" id="cantidad_1" class="form-control"
-                                               onchange="getTotal(1)" disabled required>
+                                               oninput="getTotal(1); this.setCustomValidity('')"  disabled required>
                                     </td>
                                     <td>
                                         <input type="text" name="stock[]" id="stock_1" class="form-control" disabled
@@ -236,6 +253,15 @@
         $("#mainSalidasNav").addClass('active');
         $("#addSalidaNav").addClass('active');
 
+        //Initialize datepicker
+        $("#fecha_alb").datetimepicker({
+            date: moment(),
+            minDate: new Date(2018, 1, 1),
+            // maxDate: new Date(2030, 0, 1),
+            // showOn: 'focus',
+            locale: 'es',
+        });
+
         var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
             'onclick="alert(\'Call your custom code here.\')">' +
             '<i class="glyphicon glyphicon-tag"></i>' +
@@ -288,7 +314,7 @@
                 '</select>' +
                 '</td>' +
                 '<td>' +
-                '<input type="number" name="cantidad[]" id="cantidad_' + row_id + '" class="form-control" onchange="getTotal(' + row_id + ')" disabled required>' +
+                '<input type="number" name="cantidad[]" id="cantidad_' + row_id + '" class="form-control" oninput ="getTotal(' + row_id + ')" disabled required>' +
                 '</td>' +
                 '<td>' +
                 '<input type="text" name="stock[]" id="stock_' + row_id + '" class="form-control" disabled autocomplete="off">' +
@@ -356,7 +382,7 @@
             var data_area = piezas * (largo * alto);
             var data_vol = piezas * (largo * alto * espesor);
 
-            var total = {"Lineal": data_lineal, "Area": data_area, "Volumen": data_vol};
+            var total = {"Lineal": round(data_lineal), "Area": round(data_area), "Volumen": round(data_vol)};
             cantidad_total.set(row, total);
             refreshTotal();
         } else {
@@ -372,8 +398,8 @@
             volumen += cantidad.Volumen;
         }
 
-        $("#cantidad_total").prop('value', "Lineal T: " + lineal + "m" + "\tÁrea T: " + area + "m²" + "\tVolumen T: " + volumen + "m³");
-        $("#cantidad_total_hidden").prop('value', "Lineal T: " + lineal + "m" + "\tÁrea T: " + area + "m²" + "\tVolumen T: " + volumen + "m³");
+        $("#cantidad_total").prop('value', "Lineal T: " + round(lineal) + "m" + "\tÁrea T: " + round(area) + "m²" + "\tVolumen T: " + round(volumen) + "m³");
+        $("#cantidad_total_hidden").prop('value', "Lineal T: " + round(lineal) + "m" + "\tÁrea T: " + round(area) + "m²" + "\tVolumen T: " + round(volumen) + "m³");
     }
 
     // get the product information from the server
@@ -446,18 +472,6 @@
 
 
                     });
-                    // $("#division_"+row_id).val(response.Division);
-
-                    // $("#cantidad"+row_id).val(1);
-
-                    // $("#qty_value_"+row_id).val(1);
-
-                    // var total = Number(response.price) * 1;
-                    // total = total.toFixed(2);
-                    // $("#amount_"+row_id).val(total);
-                    // $("#amount_value_"+row_id).val(total);
-
-                    // subAmount();
                 } // /success
             }); // /ajax function to fetch the product data
         }
@@ -546,10 +560,14 @@
             console.log(JSON.parse(response));
             var stock = JSON.parse(response).Piezas_Stock;
             var division = JSON.parse(response);
+            var step = 1;
+            if(stock % 1 !== 0)
+                step = 0.001;
 
             $("#cantidad_" + row_id).attr({
                 "max": stock,        // substitute your own
-                "min": 0          // values (or variables) here
+                "min": 0,          // values (or variables) here
+                "step": step
             });
 
             $('#stock_' + row_id).prop('value', stock);
@@ -572,7 +590,14 @@
 
     // submit the create from
     $("#createForm").unbind('submit').on('submit', function () {
-        var form = $(this);
+    // $("#env_salida").unbind('click').on('click', function () {
+
+        // // Check of cantidad field in order to be <= stock
+        // if(checkCantidad())
+        //     return;
+
+        var form = $("#createForm");
+        // console.log(form.serialize());
         //We place the action for the add Division Form
         form.attr('action', base_url + 'salidas/create');
 
@@ -585,69 +610,101 @@
             dataType: 'json',
         }).done(function (response) {
 
-                console.log(response);
-                // response = JSON.parse(response);
-                // console.log(response)
-                // $.each(response, function () {
+            // console.log(response);
+            $.each(response, function () {
 
-                    if (response.success === true) {
+                if (response.success === true) {
 
-                        $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.message +
-                            '</div>');
+                    $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                        '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.message +
+                        '</div>');
 
-                        // console.log(response.checkSold);
+                    // console.log(response.checkSold);
 
-                        response.checkSold.forEach(function(lote) {
-                            console.log(lote);
-                            if(lote.success_lote) {
-                                $("#messages").append('<div class="alert alert-success alert-dismissible" role="alert">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                    '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + lote.messages +
-                                    '</div>');
-                            }
-                            else{
-                                $("#messages").append('<div class="alert alert-warning alert-dismissible" role="alert">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                    '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + lote.messages +
-                                    '</div>');
-                            }
-                        });
-                        // Mostramos el boton de imprimir//
-                        if(response.hasOwnProperty("sal_id")) {
-                            $("#imp_presupuesto").show(100);
-                            $("#imp_presupuesto").attr("href", base_url + "salidas/printDiv/" +response.sal_id);
-                            $("#env_salida").hide(100);
-                        }
-                       //$("#createForm")[0].reset();
-                        $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
-
-                    } else {
-
-                        if (response.messages instanceof Object) {
-                            $.each(response.messages, function (index, value) {
-                                var id = $("#" + index);
-
-                                id.closest('.form-group')
-                                    .removeClass('has-error')
-                                    .removeClass('has-success')
-                                    .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                                id.after(value);
-
-                            });
-                        } else {
-                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                    response.checkSold.forEach(function (lote) {
+                        console.log(lote);
+                        if (lote.success_lote) {
+                            $("#messages").append('<div class="alert alert-success alert-dismissible" role="alert">' +
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.message +
+                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + lote.messages +
                                 '</div>');
                         }
+                        else {
+                            $("#messages").append('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + lote.messages +
+                                '</div>');
+                        }
+                    });
+                    // Mostramos el boton de imprimir//
+                    if (response.hasOwnProperty("sal_id")) {
+                        $("#imp_presupuesto").show(100);
+                        $("#imp_presupuesto").attr("href", base_url + "salidas/printDiv/" + response.sal_id);
+                        $("#env_salida").hide(100);
                     }
-                // });
+                    //$("#createForm")[0].reset();
+                    $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
+
+                } else {
+
+                    if (response.messages instanceof Object) {
+                        $.each(response.messages, function (index, value) {
+                            var id = $("#" + index);
+
+                            id.closest('.form-group')
+                                .removeClass('has-error')
+                                .removeClass('has-success')
+                                .addClass(value.length > 0 ? 'has-error' : 'has-success');
+
+                            id.after(value);
+
+                        });
+                    } else {
+                        $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                            '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.message +
+                            '</div>');
+                    }
+                }
             });
+        });
 
         return false;
     });
+
+
+    function round(num, decimales = 3) {
+        var signo = (num >= 0 ? 1 : -1);
+        num = num * signo;
+        if (decimales === 0) //con 0 decimales
+            return signo * Math.round(num);
+        // round(x * 10 ^ decimales)
+        num = num.toString().split('e');
+        num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+        // x * 10 ^ (-decimales)
+        num = num.toString().split('e');
+        return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+    }
+
+    // function checkCantidad(){
+    //
+    //     for(var n=1;n<cantidad_total.size+1;n++) {
+    //         // var el2=$("#cantidad_" + n)[0];
+    //         // el2.setCustomValidity('');
+    //         // console.log(parseFloat($("#cantidad_" + n).val())+"\t"+parseFloat($("#stock_" + n).val()));
+    //         if(parseFloat($("#cantidad_" + n).val())>= parseFloat($("#stock_" + n).val())) {
+    //             // alert("ERROR");
+    //             console.log(document.getElementById("cantidad_" + n).value);
+    //             var el=$("#cantidad_" + n)[0];
+    //             // el.invalid
+    //             el.setCustomValidity("Ha dfallo");
+    //             return true;
+    //         }
+    //
+    //     }
+    //     return false;
+    //
+    // }
 
 </script>

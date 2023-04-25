@@ -9,6 +9,8 @@ class Proovedores extends Admin_Controller
         parent::__construct();
 
         $this->not_logged_in();
+        $this->load->helper('form');
+        $this->load->helper('url');
 
         $this->data['page_title'] = 'Proovedores';
 
@@ -75,6 +77,8 @@ class Proovedores extends Admin_Controller
 
     public function getProovedoresDataById($id)
     {
+//        echo $id;
+//        die();
         if ($id) {
             $data = $this->model_proovedores->getProovedorData($id);
             echo json_encode($data);
@@ -92,6 +96,7 @@ class Proovedores extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
+
         $response = array();
 
         $this->form_validation->set_rules('proovedor_nombre', 'Nombre', 'trim|required');
@@ -104,14 +109,12 @@ class Proovedores extends Admin_Controller
 
 
         if ($this->form_validation->run() == TRUE) {
-            // true case
-//            echo "AKI";
 
             $upload_image = $this->upload_image();
+
             if ($upload_image == false || $upload_image == '<p>You did not select a file to upload.</p>') {
                 $upload_image = 'assets/images/user.png';   //DEFAULT PIC
             }
-//            echo $upload_image;
             $data = array(
                 'Nombre' => $this->input->post('proovedor_nombre'),
                 'Empresa' => $this->input->post('proovedor_empresa'),
@@ -119,56 +122,53 @@ class Proovedores extends Admin_Controller
                 'Telefono' => $this->input->post('proovedor_telefono'),
                 'Correo' => $this->input->post('proovedor_correo'),
                 'image' => $upload_image,
-//                'Cantidad' => $this->input->post('proovedor_cantidad'),
-//                'Gastado' => $this->input->post('proovedor_gastado')
 
             );
 
             $create = $this->model_proovedores->create($data);
-
             if ($create == true) {
-                $response['success'] = true;
-                $response['messages'] = 'Proveedor creado';
+                $this->session->set_flashdata('success', 'Proveedor creado');
+                redirect('proovedores/', 'refresh');
             } else {
-                $response['success'] = false;
-                $response['messages'] = 'Error!';
+                $this->session->set_flashdata('error', 'Ha habido un error!!');
+                redirect('proovedores/', 'refresh');
             }
         } else {
-            $response['success'] = false;
-            foreach ($_POST as $key => $value) {
-                $response['messages'][$key] = form_error($key);
-            }
+            $this->session->set_flashdata('error', 'Ha habido un error!!');
+            redirect('proovedores/', 'refresh');
+
         }
 
-        echo json_encode($response);
+        $this->render_template('proovedores/index', $this->data);
+
     }
 
     /*
     * This function is invoked from another function to upload the image into the assets folder
     * and returns the image path
     */
-    public function upload_image()
+    public function upload_image($file = 'proovedor_image' )
     {
+
         // assets/images/product_image
-        $config['upload_path'] = 'assets/images/proovedor_image';
+        $config['upload_path'] ='./assets/images/proovedor_image';
         $config['file_name'] = uniqid();
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = '1000';
+        $config['allowed_types'] = '*';
+        $config['max_size'] = '1500';
+
+        $this->load->library('upload',$config);
 
         // $config['max_width']  = '1024';s
         // $config['max_height']  = '768';
 
-        $this->load->library('upload', $config);
-//        echo(json_encode(! $this->upload->do_upload('proovedor_image')));
-//        die();
 
 
-        if (!$this->upload->do_upload('proovedor_image')) {
+        if (!$this->upload->do_upload($file)) {
             $error = $this->upload->display_errors();
             return $error;
         } else {
             $data = array('upload_data' => $this->upload->data());
-            $type = explode('.', $_FILES['proovedor_image']['name']);
+            $type = explode('.', $_FILES[$file]['name']);
             $type = $type[count($type) - 1];
 
             $path = $config['upload_path'] . '/' . $config['file_name'] . '.' . $type;
@@ -182,26 +182,22 @@ class Proovedores extends Admin_Controller
     * If the validation is successfully then it updates the data into the database
     * and it stores the operation message into the session flashdata and display on the manage product page
     */
-    public function update($id)
+    public function update()
     {
         if (!in_array('updateProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
-        $response = array();
+        $proovedor_id = $this->input->post('proovedor_id');
+        if ($proovedor_id) {
 
-        if ($id) {
-
-
+//            echo "sakfba";
             $this->form_validation->set_rules('edit_proovedor_nombre', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_empresa', 'Nombre Proovedor', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_telefono', 'Telefono', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_nif', 'NIF', 'trim|required');
             $this->form_validation->set_rules('edit_proovedor_correo', 'Correo', 'trim|required');
-//            $this->form_validation->set_rules('edit_proovedor_cantidad', 'Cantidad', 'trim|required');
-//            $this->form_validation->set_rules('edit_proovedor_gastado', 'Gastado', 'trim|required');
 
             if ($this->form_validation->run() == TRUE) {
-                // true case
 
                 $data = array(
                     'Nombre' => $this->input->post('edit_proovedor_nombre'),
@@ -209,40 +205,40 @@ class Proovedores extends Admin_Controller
                     'NIF' => $this->input->post('edit_proovedor_nif'),
                     'Telefono' => $this->input->post('edit_proovedor_telefono'),
                     'Correo' => $this->input->post('edit_proovedor_correo'),
-                    'Cantidad' => $this->input->post('edit_proovedor_cantidad'),
-                    'Gastado' => $this->input->post('edit_proovedor_gastado'),
+//                    'Cantidad' => $this->input->post('edit_proovedor_cantidad'),
+//                    'Gastado' => $this->input->post('edit_proovedor_gastado'),
                 );
 
 
-//                if ($_FILES['proovedores']['size'] > 0) {
-//                    $upload_image = $this->upload_image();
-//                    $upload_image = array('image' => $upload_image);
-//
-//                    $this->model_proovedores->update($upload_image, $id);
-////                    echo "IN";
-//                }
+                if ($_FILES['edit_proovedor_image']['size'] > 0) {
+                    $upload_image = $this->upload_image('edit_proovedor_image');
+                    $upload_image = array('image' => $upload_image);
 
-                $update = $this->model_proovedores->update($data, $id);
+                    $this->model_proovedores->update($upload_image, $proovedor_id);
+
+                }
+
+                $update = $this->model_proovedores->update($data, $proovedor_id);
 
                 if ($update == true) {
-                    $response['success'] = true;
-                    $response['messages'] = 'Se ha actualizado correctamente!';
+                    $this->session->set_flashdata('success', 'Se ha actualizado correctamente !!');
+
                 } else {
-                    $response['success'] = false;
-                    $response['messages'] = 'Error al actualizar';
+                    $this->session->set_flashdata('error', 'Ha habido un error al actualizar!!');
+                    redirect('proovedores/', 'refresh');
                 }
             } else {
-                $response['success'] = false;
-                foreach ($_POST as $key => $value) {
-                    $response['messages'][$key] = form_error($key);
-                }
+                $this->session->set_flashdata('error', 'Ha habido un error al actualizar!!');
+                redirect('proovedores/', 'refresh');
             }
         } else {
-            $response['success'] = false;
-            $response['messages'] = "Recargue la página!!";
+            $this->session->set_flashdata('error', 'Ha habido un error al actualizar!!');
+            redirect('proovedores/', 'refresh');
         }
 
-        echo json_encode($response);
+
+        $this->render_template('proovedores/index', $this->data);
+
 
     }
 
@@ -256,24 +252,23 @@ class Proovedores extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $id = $this->input->post('proovedor_id');
+        $id = $this->input->post('proovedor_id_remove');
 
-        $response = array();
         if ($id) {
             $delete = $this->model_proovedores->remove($id);
             if ($delete == true) {
-                $response['success'] = true;
-                $response['messages'] = "Eliminado correctamente!!";
+                $this->session->set_flashdata('success', 'Se ha eliminado correctamente !!');
+
             } else {
-                $response['success'] = false;
-                $response['messages'] = "Error al eliminar";
+                $this->session->set_flashdata('error', 'Ha habido un error al eliminar!!');
+                redirect('proovedores/', 'refresh');
             }
         } else {
-            $response['success'] = false;
-            $response['messages'] = "Recargue la página!!";
+            $this->session->set_flashdata('error', 'Ha habido un error al eliminar!!');
+            redirect('proovedores/', 'refresh');
         }
 
-        echo json_encode($response);
+        $this->render_template('proovedores/index', $this->data);
     }
 
     /*************PROOVEDORES CON PAGINADO Y FILTRADO******************/

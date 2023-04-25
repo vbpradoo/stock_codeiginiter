@@ -17,6 +17,7 @@ class Lotes extends Admin_Controller
         $this->load->model('model_lotes');
         $this->load->model('model_divisiones');
         $this->load->model('model_almacenes');
+        $this->load->model('model_familia');
 
         $this->load->model('model_proovedores');
 
@@ -103,8 +104,8 @@ class Lotes extends Admin_Controller
                 'Articulo' => $articulo_data['Nombre'],
                 'Serial' => $value['Serial'],
                 'Entrada' => $value['Entrada'],
-                'Coste' => $value['Coste'],
-                'Precio' => $value['Precio'],
+//                'Coste' => $value['Coste'],
+//                'Precio' => $value['Precio'],
                 'Cantidad' => $value['Cantidad'],
 //                'Unidades'=>$value['Unidades'],
                 'Division' => $value['Division'],
@@ -215,17 +216,17 @@ class Lotes extends Admin_Controller
             }
 
             $qty_status = '';
-            if ($value['Piezas'] <= 5) {
-                $qty_status = '<span class="label label-warning">Pocas !</span>';
-            } else if ($value['Piezas'] <= 0) {
-                $qty_status = '<span class="label label-danger">Fuera de Stock !</span>';
-            }
+//            if ($value['Piezas'] <= 5) {
+//                $qty_status = '<span class="label label-warning">Pocas !</span>';
+//            } else if ($value['Piezas'] <= 0) {
+//                $qty_status = '<span class="label label-danger">Fuera de Stock !</span>';
+//            }
 
             //echo $buttons;
             $result['rows'][$key] = array(
                 'ID' => $value['ID'],
-                'Piezas' => $value['Piezas'] . ' ' . $qty_status,
-                'Piezas_Stock' => $value['Piezas_Stock'] . ' ' . $qty_status,
+                'Piezas' => $value['Piezas'],
+                'Piezas_Stock' => $value['Piezas_Stock'],
                 'Largo' => $value['Largo'],
                 'Alto' => $value['Alto'],
                 'Espesor' => $value['Espesor'],
@@ -271,6 +272,7 @@ class Lotes extends Admin_Controller
                 'Piezas_Stock' => $value['Piezas_Stock'] . ' ' . $qty_status,
                 'Largo' => $value['Largo'],
                 'Alto' => $value['Alto'],
+                'Lote' => $value['Lote'],
                 'Espesor' => $value['Espesor'],
                 'Buttons' => $buttons
             );
@@ -563,12 +565,12 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim|required');
-        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
-        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
+//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
 //        $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
-        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
 //        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
 
         if ($this->form_validation->run() == True) {
@@ -588,9 +590,9 @@ class Lotes extends Admin_Controller
                 'Serial' => $Serial,
                 'Articulo' => $this->input->post('articulo'),
                 'Entrada' => $this->input->post('entrada'),
-                'Coste' => $this->input->post('coste'),
+//                'Coste' => $this->input->post('coste'),
                 'Cantidad' => $this->input->post('cantidad'),
-                'Unidades' => $this->input->post('unidades'),
+//                'Unidades' => $this->input->post('unidades'),
                 'Stock' => $this->input->post('stock'),
                 'Division' => $this->input->post('division'),
                 'Descripcion' => $this->input->post('descripcion'),
@@ -639,13 +641,13 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
-        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
 //        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
 //        $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
 //        $this->form_validation->set_rules('salida', 'Almacen', 'trim');
-        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
 //        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
         $this->form_validation->set_rules('fecha', 'Fecha', 'trim|required');
         $this->form_validation->set_rules('proovedor', 'Proovedor', 'trim|required');
@@ -687,9 +689,9 @@ class Lotes extends Admin_Controller
 //                'Serial' => $this->input->post('lote_serial'),
                 'Articulo' => intval($this->input->post('articulo')),
                 'Entrada' => intval($this->input->post('entrada')),
-                'Coste' => $this->input->post('coste'),
+//                'Coste' => $this->input->post('coste'),
                 'Cantidad' => $this->input->post('cantidad'),
-                'Precio' => $this->input->post('precio'),
+//                'Precio' => $this->input->post('precio'),
 //                'Unidades' => $this->input->post('unidades'),
 //                'Stock' => $this->input->post('stock'),
                 'Division' => json_encode($lista),
@@ -739,17 +741,17 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('lote_serial', 'Lote Serial', 'trim|required');
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
-        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
 //        $this->form_validation->set_rules('unidades', 'Unidades', 'trim|required');
 //        $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
 //        $this->form_validation->set_rules('salida', 'Almacen', 'trim');
-        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
 //        $this->form_validation->set_rules('stock', 'Stock', 'trim|required');
         $this->form_validation->set_rules('fecha', 'Fecha', 'trim|required');
         $this->form_validation->set_rules('proovedor', 'Proovedor', 'trim|required');
-        $this->form_validation->set_rules('pagado', 'Estado', 'trim|required');
+//        $this->form_validation->set_rules('pagado', 'Estado', 'trim|required');
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 
@@ -776,9 +778,9 @@ class Lotes extends Admin_Controller
                 'Serial' => $this->input->post('lote_serial'),
                 'Articulo' => intval($this->input->post('articulo')),
                 'Entrada' => intval($create_entrada),
-                'Coste' => $this->input->post('coste'),
+//                'Coste' => $this->input->post('coste'),
                 'Cantidad' => $this->input->post('cantidad'),
-                'Precio' => $this->input->post('precio'),
+//                'Precio' => $this->input->post('precio'),
 //                'Unidades' => $this->input->post('unidades'),
                 'Stock' => $this->input->post('cantidad'),
                 'Division' => json_encode($lista),
@@ -822,7 +824,7 @@ class Lotes extends Admin_Controller
 
         $data = array(
             'Proovedor' => $entrada_data['Proovedor'],
-            'Pagado' => $entrada_data['Pagado'],
+//            'Pagado' => $entrada_data['Pagado'],
         );
 
         $update = $this->model_entradas->update($data, $entrada_data['ID']);
@@ -983,17 +985,18 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('proovedor', 'Provedor', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
-        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
         $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
-        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
-        $this->form_validation->set_rules('pagado', 'Pagado', 'trim|required');
+//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('pagado', 'Pagado', 'trim|required');
 
         if ($this->form_validation->run() == True) {
 
             //Creamos la entrada primero
-            $entrada_data = array('Proovedor' => $this->input->post('proovedor'), 'Pagado' => $this->input->post('pagado'));
+//            $entrada_data = array('Proovedor' => $this->input->post('proovedor'), 'Pagado' => $this->input->post('pagado'));
+            $entrada_data = array('Proovedor' => $this->input->post('proovedor'));
 
             $create_entrada = $this->model_entradas->create($entrada_data);
 
@@ -1009,8 +1012,8 @@ class Lotes extends Admin_Controller
                     'Serial' => $this->input->post('lote_serial'),
                     'Articulo' => $this->input->post('articulo'),
                     'Entrada' => $create_entrada,
-                    'Coste' => $this->input->post('coste'),
-                    'Precio' => $this->input->post('precio'),
+//                    'Coste' => $this->input->post('coste'),
+//                    'Precio' => $this->input->post('precio'),
                     'Cantidad' => $this->input->post('cantidad'),
                     'Stock' => $this->input->post('cantidad'), //Cuando se crea el lote la cantidad = stock
                     'Descripcion' => $this->input->post('descripcion'),
@@ -1089,12 +1092,12 @@ class Lotes extends Admin_Controller
         $this->form_validation->set_rules('articulo', 'Artículo', 'trim|required');
         $this->form_validation->set_rules('entrada', 'Entrada', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'trim');
-        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
+//        $this->form_validation->set_rules('precio', 'Precio', 'trim|required');
         $this->form_validation->set_rules('division', 'Division', 'trim|required');
         $this->form_validation->set_rules('cantidad', 'Cantidad', 'trim|required');
         $this->form_validation->set_rules('almacen', 'Almacen', 'trim|required');
-        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
-        $this->form_validation->set_rules('pagado', 'Pagado', 'trim|required');
+//        $this->form_validation->set_rules('coste', 'Coste', 'trim|required');
+//        $this->form_validation->set_rules('pagado', 'Pagado', 'trim|required');
         $this->form_validation->set_rules('proovedor', 'Proovedor', 'trim|required');
 
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
@@ -1177,9 +1180,9 @@ class Lotes extends Admin_Controller
             $data = array(
                 'Articulo' => intval($this->input->post('articulo')),
                 'Entrada' => intval($this->input->post('entrada')),
-                'Coste' => $this->input->post('coste'),
+//                'Coste' => $this->input->post('coste'),
                 'Cantidad' => $this->input->post('cantidad'),
-                'Precio' => $this->input->post('precio'),
+//                'Precio' => $this->input->post('precio'),
                 'Division' => $div_ids,
                 'Descripcion' => $this->input->post('descripcion'),
                 'Almacen' => intval($this->input->post('almacen'))
@@ -1206,11 +1209,142 @@ class Lotes extends Admin_Controller
 
     }
 
+    public function updateAnexo(){
+
+        $lote_id = $this->input->post('lote_id');
+        $response_success = array();
+        $response_error = array();
+
+        if ($_FILES['lote_anexo']['size'] > 0) {
+            $upload_image = $this->upload_doc('lote_anexo', $lote_id);
+            $upload_image = array('Anexo' => $upload_image);
+
+            $update = $this->model_lotes->updateBySerial($upload_image, $lote_id);
+        }
+        if($update) {
+            array_push($response_success,"Anexo actualizado!");
+
+        }else {
+            array_push($response_error,"Error al actualizar!");
+
+        }
+        $this->session->set_flashdata('success',$response_success);
+        $this->session->set_flashdata('error', $response_error);
+
+        redirect('entradas/index');
+
+    }
+
+    public function updateEntrada()
+    {
+
+        $entrada_id = $this->input->post('entrada_id');
+        $lote_id = $this->model_lotes->getLoteByEntrada($entrada_id);
+        $response_success = array();
+        $response_error = array();
+//        $update_anexo = false; //DEFAULT VALUE
+        if ($entrada_id) {
+
+//            $this->form_validation->set_rules('edit_proovedor', 'Proovedor', 'trim|required');
+            $this->form_validation->set_rules('edit_fecha', 'Fecha', 'trim|required');
+//            $this->form_validation->set_rules('edit_cantidad', 'Cantidad', 'trim|required');
+//            $this->form_validation->set_rules('edit_descripcion', 'Descripcion', 'trim');
+//            $this->form_validation->set_rules('edit_active', 'Estado', 'trim|required');
+            $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+
+            if ($this->form_validation->run() == TRUE) {
+                // true case
+//                echo "ENTRA2";
+                $date = explode(" ",$this->input->post('edit_fecha'));
+                $date_0 = explode('/',$date[0]);
+                $date = $date_0[2].'-'. $date_0[1].'-'. $date_0[0].' '.$date[1];
+                $data = array(
+//                    'Proovedor' => $this->input->post('edit_proovedor'),
+                    'Fecha' => $date,
+//                    'Cantidad' => $this->input->post('edit_cantidad'),
+                    // 'Pagado' => $this->input->post('edit_active'),
+//                    'Descripcion' => $this->input->post('edit_descripcion'),
+                );
+//                echo json_encode($data);
+//                echo $entrada_id;
+//                echo $data['Fecha'];
+
+                $update_ent = $this->model_entradas->update($data, $entrada_id);
+//                echo $update_ent;
+//                die();
+            }
+
+            if ($_FILES['lote_anexo']['size'] > 0) {
+                $upload_image = $this->upload_doc('lote_anexo', $lote_id['Serial']);
+                $upload_image = array('Anexo' => $upload_image);
+
+                $update_anexo = $this->model_lotes->updateBySerial($upload_image, $lote_id['Serial']);
+
+//                echo $update_anexo;
+            }
+//            echo $update_anexo;
+//            echo $update_ent;
+            if ($update_ent) {
+                array_push($response_success,"Entrada actualizada!");
+            }
+            if ($update_anexo){
+                array_push($response_success,"Anexo actualizada!");
+            }
+            if(isset($update_anexo)) {
+                if(!$update_anexo) {
+                    array_push($response_error, "Error al actualizar el anexo!");
+                }
+            }if(!$update_ent) {
+                array_push($response_error,"Error al actualizar la entrada!");
+            }
+//            var_dump($response_success);
+//            var_dump($response_error);
+//            echo isset($update_anexo);
+//            die();
+            $this->session->set_flashdata('success', $response_success);
+            $this->session->set_flashdata('error', $response_error);
+
+            redirect('entradas/index');
+        }
+    }
+
+
+    public function upload_doc($file = 'lote_doc', $lote_id )
+    {
+
+        // assets/images/product_image
+        $config['upload_path'] ='./assets/documentation/lotes';
+        $config['file_name'] = $lote_id.'_'.uniqid();
+        $config['allowed_types'] = '*';
+        $config['max_size'] = '1500';
+
+        $this->load->library('upload',$config);
+
+        // $config['max_width']  = '1024';s
+        // $config['max_height']  = '768';
+
+
+
+        if (!$this->upload->do_upload($file)) {
+            $error = $this->upload->display_errors();
+            return $error;
+        } else {
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES[$file]['name']);
+            $type = $type[count($type) - 1];
+
+            $path = $config['upload_path'] . '/' . $config['file_name'] . '.' . $type;
+            return ($data == true) ? $path : false;
+        }
+
+    }
+
+
     /************ PRUEBA CON PAGINADO Y FILTRADO ******************/
     public function fetchLotesDataFilteringPagination()
     {
         $result = array('data' => array());
-
 
         $search_field = $this->input->get('searchField'); // search field name
         $search_strings = $this->input->get('searchString'); // search string
@@ -1221,26 +1355,28 @@ class Lotes extends Admin_Controller
         if (!$sidx) {
             $sidx = 1;
         } // if its empty set to 1
-        $count = $this->model_lotes->countTotal($search_field, $search_strings);
-        $total_pages = 0;
-        if ($count > 0) {
-            $total_pages = ceil($count / $limit);
-        }
-        if ($page > $total_pages) {
-            $page = $total_pages;
-        }
-        $start = ($limit * $page) - $limit;
-
         if ($this->input->get('_search') && $this->input->get('filters')) {
 
             $search_strings = json_decode($this->input->get('filters'));
         }
 
 
-        $lotedata = ($this->model_lotes->getLoteDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings));
+        try {
+            $count = $this->model_lotes->countTotal($search_strings);
+            $total_pages = 0;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $start = ($limit * $page) - $limit;
+            $lotedata = ($this->model_lotes->getLoteDataFilterPagination($sidx, $sord, $start, $limit, $search_field, $search_strings));
+        }catch (Exception $e){
+            $lotedata = array();
+        }
 
-        //        echo $lotedata;
-        //        die();
+
         foreach ($lotedata as $key => $value) {
             $buttons = '';
             //            echo $x['ID'];
@@ -1251,6 +1387,47 @@ class Lotes extends Admin_Controller
                 $buttons .= '<a type="button" class="btn btn-default" href= "edit?lote_serial=' . $value->Serial . '&lote_id=' . $value->ID . ' "><i class="fa fa-pencil"></i></a>';
             }
 
+            $unidades = $value->Unidades;
+            $cantidad = preg_split("/\s+/", $value->Cantidad);
+            $stock =   preg_split("/\s+/", $value->Stock);
+            if(count($cantidad) == 9 && count($stock) ==9) {
+                switch ($unidades) {
+                    case "m":
+//                    $value->Cantidad =  $cantidad[0].":".$cantidad[1];
+//                        $value->Cantidad = $cantidad[0] . ' ' . $cantidad[1] . ' ' . $cantidad[2];
+                        $c1=substr_replace($cantidad[2], "", -1);
+                        $value->Cantidad = round(floatval($c1),3). ' m';
+//round(floatval($cantidad)*floatval($division['Largo']),3)
+//                        $value->Stock = $stock[0] . ' ' . $stock[1] . ' ' . $stock[2];
+                        $s1=substr_replace($stock[2], "", -1);
+                        $value->Stock = round(floatval($s1),3) . ' m';
+                        break;
+                    case "m2":
+//                        $value->Cantidad = $cantidad[3] . ' ' . $cantidad[4] . ' ' . $cantidad[5];
+                        $c2=substr_replace($cantidad[5], "", -3);
+                        $value->Cantidad = round(floatval($c2),3). ' m²' ;
+
+//                        $value->Stock = $stock[3] . ' ' . $stock[4] . ' ' . $stock[5];
+                        $s2=substr_replace($stock[5], "", -3);
+                        $value->Stock = round(floatval($s2),3). ' m²';
+                        break;
+                    case "m3":
+//                        $value->Cantidad = $cantidad[6] . ' ' . $cantidad[7] . ' ' . $cantidad[8];
+//                        $value->Cantidad = substr_replace($cantidad[8], " m³", -3);
+////                        $value->Stock = $stock[6] . ' ' . $stock[7] . ' ' . $stock[8];
+//                        $value->Stock = substr_replace($stock[8], " m³", -3);
+                        $c3=substr_replace($cantidad[8], "", -3);
+                        $value->Cantidad = round(floatval($c3),3). ' m³' ;
+
+//                        $value->Stock = $stock[3] . ' ' . $stock[4] . ' ' . $stock[5];
+                        $s3=substr_replace($stock[8], "", -3);
+                        $value->Stock = round(floatval($s3),3). ' m³';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             $status = ($value->Vendido == 1) ? '<span class="label label-success" >Vendido</span>' : '<span class="label label-warning" >Por vender!</span>';
             $value -> Vendido =$status;
 
@@ -1258,15 +1435,26 @@ class Lotes extends Admin_Controller
             //            echo  $value->Buttons;
         }
 
-
-        $data = array('page' => $page,
+//        $datos = trim(json_encode($lotedata),'"');
+//        echo $datos;
+        $data = array('page' => intval($page),
             'total' => $total_pages,
             'records' => $count,
             'rows' => $lotedata,
         );
+//        echo json_encode($data);
 
+//        echo "sajfbnskaf";
+//        set_time_limit(10);
+        $this->output->set_content_type('application/json');
+//        $this->output->set_
+        $this->output->set_output(json_encode($data));
 
-        echo json_encode($data);
+//        var_dump(json_encode($data));
+//        var_dump( json_last_error());
+
+//        echo json_encode($data);
+//        return;
     }
 
 
