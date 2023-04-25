@@ -156,7 +156,6 @@ class Entradas extends Admin_Controller
     */
     public function create()
     {
-        // echo "PUTA";
         if (!in_array('createProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }

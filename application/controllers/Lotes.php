@@ -291,20 +291,10 @@ class Lotes extends Admin_Controller
     }
 
     /************VALIDATORS***************************/
-//    public function is0($str){
-//        if(intval($str)==0) {
-//            $this->form_validation->set_message('is0', 'El campo %s no puede ser 0');
-//            return FALSE;
-//        }else {
-////                echo "SHIT";
-//            return TRUE;
-//        }
-//    }
 
 
     public function decimal_numeric($str)
     {
-//        echo "AKI";
         if (!is_numeric($str)) //Use your logic to check here
         {
             $this->form_validation->set_message('decimal_numeric', 'El campo %s no se corresponde con el formato');
@@ -340,7 +330,6 @@ class Lotes extends Admin_Controller
 
     public function entire_numeric($str)
     {
-//        echo "AKI";
         if (!is_numeric($str)) //Use your logic to check here
         {
             $this->form_validation->set_message('entire_numeric', 'El campo %s no se corresponde con el formato');
@@ -348,7 +337,6 @@ class Lotes extends Admin_Controller
         } else {
 
             $results = explode(".", $str, 2);
-//            echo "SHIT".$results[0];
 
             if (count($results) > 1) {
                 $this->form_validation->set_message('entire_numeric', 'El campo %s debe ser un número entero');
@@ -358,7 +346,6 @@ class Lotes extends Admin_Controller
                 $this->form_validation->set_message('entire_numeric', 'El campo %s no puede ser 0');
                 return FALSE;
             } else {
-//                echo "SHIT";
                 return TRUE;
             }
 
@@ -553,7 +540,6 @@ class Lotes extends Admin_Controller
     */
     public function create()
     {
-        // echo "PUTA";
         if (!in_array('createProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
@@ -973,7 +959,6 @@ class Lotes extends Admin_Controller
 
     public function createLote()
     {
-        // echo "PUTA";
         if (!in_array('createProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }

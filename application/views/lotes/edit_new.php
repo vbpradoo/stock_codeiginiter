@@ -427,7 +427,7 @@
                         try {
                             $('#descripcion').data("wysihtml5").editor.setValue(" ");
                         }catch (e) {
-                            console.log("SHIT");
+                            console.log(e);
                         }
                     }
                     // $("#lote_serial").select2({ disabled : true });
